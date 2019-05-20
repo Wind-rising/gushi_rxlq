@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "20e7cbb5-5866-4829-9199-7cf9fbe3b996",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "飞艇2": {
+      "ver": "1.0.3",
+      "uuid": "fac51c59-2018-4e6f-96c5-c926e3fbd662",
+      "rawTextureUuid": "20e7cbb5-5866-4829-9199-7cf9fbe3b996",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -29.5,
+      "offsetY": 15.5,
+      "trimX": 31,
+      "trimY": 8,
+      "width": 303,
+      "height": 128,
+      "rawWidth": 424,
+      "rawHeight": 175,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

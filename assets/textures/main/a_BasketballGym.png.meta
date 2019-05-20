@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "2456eed4-b3d5-4e2d-8480-49b7b572abef",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_BasketballGym": {
+      "ver": "1.0.3",
+      "uuid": "536c6038-6d3f-4b62-8099-c00ee47e5e43",
+      "rawTextureUuid": "2456eed4-b3d5-4e2d-8480-49b7b572abef",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 337,
+      "height": 191,
+      "rawWidth": 337,
+      "rawHeight": 191,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

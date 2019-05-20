@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "bab98c93-f7ec-4f89-b0b4-7a828e575ff7",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "训练场": {
+      "ver": "1.0.3",
+      "uuid": "92d65b82-6506-4c58-8d74-d4746e668da9",
+      "rawTextureUuid": "bab98c93-f7ec-4f89-b0b4-7a828e575ff7",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 223,
+      "height": 105,
+      "rawWidth": 223,
+      "rawHeight": 105,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

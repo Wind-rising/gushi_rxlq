@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "7a01aeb2-f26f-4ad0-abbe-ce3bdca41d90",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "首页夜晚": {
+      "ver": "1.0.3",
+      "uuid": "6ce01e83-fc35-46c8-9353-d388ca6baf04",
+      "rawTextureUuid": "7a01aeb2-f26f-4ad0-abbe-ce3bdca41d90",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1280,
+      "height": 640,
+      "rawWidth": 1280,
+      "rawHeight": 640,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "f64ebe2a-c168-41bf-acc8-f9c100356d97",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_title_LabourUnion": {
+      "ver": "1.0.3",
+      "uuid": "2d9413d1-5356-47c1-bfd9-b57f8e82a31d",
+      "rawTextureUuid": "f64ebe2a-c168-41bf-acc8-f9c100356d97",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 128,
+      "height": 43,
+      "rawWidth": 128,
+      "rawHeight": 43,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

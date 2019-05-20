@@ -1,0 +1,35 @@
+{
+	"STRENGTHEN":{
+		"LEVEL_0":10,
+		"LEVEL_1":20,
+		"LEVEL_2":30,
+		"LEVEL_3":40,
+		"LEVEL_4":50,
+		"LEVEL_5":60,
+		"LEVEL_6":70,
+		"LEVEL_7":80,
+		"LEVEL_8":90
+	},
+	"MERGE":{
+		"LEVEL_0":10,
+		"LEVEL_1":20,
+		"LEVEL_2":30,
+		"LEVEL_3":40,
+		"LEVEL_4":50,
+		"LEVEL_5":60,
+		"LEVEL_6":70,
+		"LEVEL_7":80,
+		"LEVEL_8":90
+	},
+	"GROW":{
+		"LEVEL_0":10,
+		"LEVEL_1":20,
+		"LEVEL_2":30,
+		"LEVEL_3":40,
+		"LEVEL_4":50,
+		"LEVEL_5":60,
+		"LEVEL_6":70,
+		"LEVEL_7":80,
+		"LEVEL_8":90
+	}
+}

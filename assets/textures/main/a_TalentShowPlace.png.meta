@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "6f53e176-9f2a-4274-9db5-61176bad2f6f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_TalentShowPlace": {
+      "ver": "1.0.3",
+      "uuid": "47146887-45a5-4252-ab29-901c5a3f86cc",
+      "rawTextureUuid": "6f53e176-9f2a-4274-9db5-61176bad2f6f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 257,
+      "height": 160,
+      "rawWidth": 257,
+      "rawHeight": 160,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "a2e268e8-95c4-4a6e-9b2c-d439f176907d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_血战重制": {
+      "ver": "1.0.3",
+      "uuid": "72bbf58c-b847-4062-9ea2-beddc97da216",
+      "rawTextureUuid": "a2e268e8-95c4-4a6e-9b2c-d439f176907d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -2,
+      "offsetY": 2.5,
+      "trimX": 11,
+      "trimY": 5,
+      "width": 301,
+      "height": 186,
+      "rawWidth": 327,
+      "rawHeight": 201,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

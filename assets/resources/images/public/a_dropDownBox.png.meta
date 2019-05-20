@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "001e21c8-26c0-4eec-8b0d-30335009acc9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_dropDownBox": {
+      "ver": "1.0.3",
+      "uuid": "7e01a34f-e8e4-4193-bbeb-2cd854cf0a7c",
+      "rawTextureUuid": "001e21c8-26c0-4eec-8b0d-30335009acc9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 178,
+      "height": 120,
+      "rawWidth": 178,
+      "rawHeight": 120,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

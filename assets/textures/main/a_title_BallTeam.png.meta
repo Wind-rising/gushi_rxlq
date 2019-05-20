@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "d92b571e-c514-4fa2-916f-8392b204a96b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_title_BallTeam": {
+      "ver": "1.0.3",
+      "uuid": "f10aafb3-406c-4ab1-b830-6cc22c7e3536",
+      "rawTextureUuid": "d92b571e-c514-4fa2-916f-8392b204a96b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 128,
+      "height": 43,
+      "rawWidth": 128,
+      "rawHeight": 43,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

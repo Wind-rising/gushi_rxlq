@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "366d65e7-d5e2-4dc9-84bb-6a69002bffe1",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "球队": {
+      "ver": "1.0.3",
+      "uuid": "5a8f65b9-6995-4a64-a943-3b2b7666bc26",
+      "rawTextureUuid": "366d65e7-d5e2-4dc9-84bb-6a69002bffe1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 68,
+      "height": 92,
+      "rawWidth": 68,
+      "rawHeight": 92,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

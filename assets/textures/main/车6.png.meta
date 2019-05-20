@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "3d727a5b-0bb4-4611-888f-34fef4fafecf",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "车6": {
+      "ver": "1.0.3",
+      "uuid": "df45e0c5-56d3-4401-8031-6aa9abc07ac5",
+      "rawTextureUuid": "3d727a5b-0bb4-4611-888f-34fef4fafecf",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 13,
+      "height": 14,
+      "rawWidth": 13,
+      "rawHeight": 14,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "8ce2dc54-276b-48fa-aed0-01b6870aea7f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_今日赛事内容": {
+      "ver": "1.0.3",
+      "uuid": "23c390c3-938b-43d6-b557-a993cb5cf2e0",
+      "rawTextureUuid": "8ce2dc54-276b-48fa-aed0-01b6870aea7f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 143,
+      "height": 50,
+      "rawWidth": 143,
+      "rawHeight": 50,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "27ff3e50-eac3-4322-8067-5e9c8dacd535",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "a_ballTeam_icon": {
+      "ver": "1.0.3",
+      "uuid": "334e0763-80a3-4cf5-bd02-9250339104fd",
+      "rawTextureUuid": "27ff3e50-eac3-4322-8067-5e9c8dacd535",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 1,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 0,
+      "width": 53,
+      "height": 57,
+      "rawWidth": 55,
+      "rawHeight": 57,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
