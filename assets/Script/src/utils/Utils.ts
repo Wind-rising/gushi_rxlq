@@ -179,4 +179,19 @@ export default class Utils {
     public static share(feedCode:String, feedVar:Object, type:number = 1):void{
         //todo sth
     };
+    /**
+     * 点击绑定事件
+     * @param [any]target 目标节点
+     * @param [string]component 目标组件名
+     * @param [string]handler 响应事件函数名
+     * @param [string]param 响应式事件携带参数
+     */
+    public static bindBtnEvent(target:any,component:string = "",handler:string="",param?){
+        let clickEventHandler = new cc.Component.EventHandler();
+        clickEventHandler.target = target; //这个 node 节点是你的事件处理代码组件所属的节点，这里就是Button2
+        clickEventHandler.component = component;//这个是脚本文件名
+        clickEventHandler.handler = handler; //回调函名称
+        param&&(clickEventHandler.customEventData = param); //用户数据
+        return clickEventHandler;
+    }
 }

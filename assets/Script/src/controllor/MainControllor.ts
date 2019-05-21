@@ -20,7 +20,7 @@ import LimitGiftModel from '../data/LimitGiftModel';
 import FriendModel from '../data/FriendModel';
 import EventConst from '../data/EventConst';
 import UnionMode from '../data/UnionMode';
-import Utils from '../utils/Utils';
+import Utils from 'Utils';
 
 @ccclass
 export default class MainControllor extends cc.Component {
