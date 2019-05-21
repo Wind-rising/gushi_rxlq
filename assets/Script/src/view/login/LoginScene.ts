@@ -1,9 +1,7 @@
-import HttpManager from "../../utils/HttpManager";
 import ManagerData from "../../data/ManagerData";
-import Utils from "../../utils/Utils";
 import Events from "../../signal/Events";
-import ManagerLvData from "../../data/ManagerLvData";
-import ErrMsg from "../../data/ErrMsg";
+import HttpManager from "../../utils/HttpManager";
+import Utils from "../../utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,11 +21,16 @@ export default class LoginScene extends cc.Component {
     @property(cc.ProgressBar)
     bar_current: cc.ProgressBar = null;
 
+    @property(cc.EditBox)
+    edt_account: cc.EditBox = null;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.bar_current = this.node.getChildByName("bar_current").getComponent(cc.ProgressBar);
         this.bar_current.progress = 0;
+
+        this.node.getChildByName('loginview').active = false;
     }
 
     start () {
@@ -50,7 +53,8 @@ export default class LoginScene extends cc.Component {
                             }
                         }
                         //加载完配置表，开始登录
-                        this.startLogin();
+                        //this.startLogin();
+                        this.node.getChildByName('loginview').active = true;
                     }else{
                         Utils.alert('配置文件加载失败,请重试！',this.start,{title:'提示',showCancel:false});
                     }
@@ -63,8 +67,11 @@ export default class LoginScene extends cc.Component {
      * 登录游戏，需要走sdk登录流程
      */
     startLogin(){
-
-        HttpManager.getInstance().request({uname:"test",s:"14"},function(response){
+        if(!this.edt_account.string || this.edt_account.string.length<=0){
+            Utils.fadeErrorInfo('请输入账号，比如 test')
+            return;
+        }
+        HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
             if(response.res){
                 ManagerData.getInstance().refresh();
             }else{

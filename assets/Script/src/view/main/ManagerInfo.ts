@@ -151,7 +151,7 @@ export default class ManagerInfoView extends cc.Component {
         //     TipManager.registerTip($vipMC, "1$您目前为VIP"+manager.Vip, WordTip);
         // }
         var sprVip = this.node.getChildByName('img_vip_level').getComponent(cc.Sprite);
-        sprVip.getComponent(cc.Animation).setCurrentTime(this.manager.Vip/60);
+        sprVip.getComponent(cc.Animation).setCurrentTime(this.manager.Vip+2/60);
 
         this.node.getChildByName('lbl_name').getComponent(cc.Label).string = this.manager.Name;
         this.node.getChildByName('lbl_money').getComponent(cc.Label).string = this.manager.Money+'';

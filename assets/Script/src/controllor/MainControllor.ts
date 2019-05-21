@@ -43,7 +43,7 @@ export default class MainControllor extends cc.Component {
     };
     private init():void{
         Events.getInstance().addListener(ManagerData.INIT, this.onInit,this);
-        ManagerData.getInstance().refresh();
+        //ManagerData.getInstance().refresh();
     };
 
     public update(dt){

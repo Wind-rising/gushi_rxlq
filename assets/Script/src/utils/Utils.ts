@@ -13,6 +13,7 @@ const {ccclass, property} = cc._decorator;
 
 import URLConfig from "../config/URLConfig";
 import HttpManager from "./HttpManager";
+
 @ccclass
 export default class Utils {
     public static showDialog(name:String,pos?:cc.Vec2,parent?:cc.Node):void {
@@ -36,7 +37,7 @@ export default class Utils {
      * @param function onCancel
      */
     public static alert (content:String,onOk?:Function,args?:any):void {
-        cc.find('alert').getComponent("Alert").show(content,onOk,args);
+        this.showConfirm(content,onOk,args);
     };
     /**
      * 提示框
@@ -44,7 +45,7 @@ export default class Utils {
      * @param title 提示标题
      */
     public static showAlert (content:string,title:string = ''){
-        cc.find('alert').getComponent("Alert").alert(content,title);
+        this.showConfirm(content,null,{title:title});
     }
     /**
      * 确认框
@@ -57,7 +58,23 @@ export default class Utils {
      *              }
      */
     public static showConfirm (content:String,onOk?:Function,args:Object = {}){
-        cc.find('alert').getComponent("Alert").confirm(content,onOk,args);
+        //cc.find('alert').getComponent("Alert").confirm(content,onOk,args);
+        var alert = cc.find('alert');
+        if(alert){
+            alert.getComponent("Alert").confirm(content,onOk,args);
+        }else{
+            cc.loader.loadRes("prefabs/common/alert", cc.Prefab, function (error, prefab) {
+                if (error) {
+                    cc.error(error);
+                    cc.error('未找到 ' + "prefabs/common/alert")
+                    return;
+                }
+                var alert = cc.instantiate(prefab);
+                alert.parent = args['parent']||cc.director.getScene();
+                //处理参数
+                alert.getComponent("Alert").confirm(content,onOk,args);
+            });
+        }
     }
 
     /**
@@ -65,10 +82,29 @@ export default class Utils {
      * @param content 显示loading转圈圈的效果 屏蔽点击
      */
     public static showLoading (content:string = ''):void {
-        cc.find('loading').getComponent("Loading").show(content);
+        var loading = cc.find('loading');
+        if(loading){
+            loading.getComponent("Loading").show(content);
+        }else{
+            cc.loader.loadRes("prefabs/common/loading", cc.Prefab, function (error, prefab) {
+                if (error) {
+                    cc.error(error);
+                    cc.error('未找到 ' + "prefabs/common/loading")
+                    return;
+                }
+                var dialog = cc.instantiate(prefab);
+                dialog.parent = cc.director.getScene();
+                //处理参数
+                dialog.getComponent("Loading").show(content);
+            });
+        }
     };
     public static hideLoading ():void{
-        cc.find('loading').getComponent("Loading").hide();
+        var loading = cc.find('loading');
+        if(loading){
+            loading.getComponent("Loading").hide();
+        }
+        
     };
 
     /** 屏幕飘子索引 */
