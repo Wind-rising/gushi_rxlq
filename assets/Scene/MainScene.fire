@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5512788638939126,
-      "y": 0.5512788638939126,
+      "x": 0.5580985915492958,
+      "y": 0.5580985915492958,
       "z": 1
     },
     "_quat": {
@@ -3118,7 +3118,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 41,
+      "width": 39.37,
       "height": 12
     },
     "_anchorPoint": {
@@ -4191,7 +4191,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 30,
+      "width": 27.81,
       "height": 12
     },
     "_anchorPoint": {
@@ -4364,7 +4364,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 30,
+      "width": 27.81,
       "height": 12
     },
     "_anchorPoint": {
@@ -6906,6 +6906,12 @@
       "__id__": 29
     },
     "_enabled": true,
+    "btn_Player_Strengthen": {
+      "__id__": 139
+    },
+    "btn_Science": {
+      "__id__": 11
+    },
     "_id": "8feXJTCedNp527aOZbIuA0"
   },
   {

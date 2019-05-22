@@ -17,8 +17,10 @@ export default class GameHud extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     EventListenerTag:string = 'GameHudListener';
-
-    private btn_Player_Strengthen:cc.Button;
+    @property(cc.Node)
+    private btn_Player_Strengthen = null;
+    @property(cc.Node)
+    private btn_Science = null;
 
     onLoad () {
         Events.getInstance().addListener(EventConst.SHOW_MSG, this.onShowMsg,this,this.EventListenerTag);
@@ -40,9 +42,9 @@ export default class GameHud extends cc.Component {
         var button = bottom_right.getChildByName('button1').getComponent(cc.Button); //获取cc.Button组件
         button.clickEvents.push(clickEventHandler); //增加处理
 
-
-        this.btn_Player_Strengthen = bottom_right.getChildByName('button8').getComponent(cc.Button);
-        this.btn_Player_Strengthen.node.on('click',this.onShowPlayerStrengthenView,this)
+        this.btn_Player_Strengthen.getComponent(cc.Button).clickEvents.push(
+            Utils.bindBtnEvent(this.node,"GameHud","onShowPlayerStrengthenView")
+        )
     }
 
     /**
@@ -51,9 +53,10 @@ export default class GameHud extends cc.Component {
      */
     public onShowMsg(data):void{
         //
+        console.log(11111,data)
     }
 
-    public onShowPlayerStrengthenView():data{
+    public onShowPlayerStrengthenView():void{
         Utils.showDialog('StrengthenView');
     }
 
