@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "fecac7e9-7d11-4868-a253-f715e0973216",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_战术设置面板复制战术(不可选)": {
+      "ver": "1.0.3",
+      "uuid": "492f9e88-d363-4f75-b14e-ceb38033982c",
+      "rawTextureUuid": "fecac7e9-7d11-4868-a253-f715e0973216",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 64,
+      "height": 20,
+      "rawWidth": 64,
+      "rawHeight": 20,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

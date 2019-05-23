@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "5e43f849-63cf-428d-8b6d-b9a8b726d853",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_球队logo": {
+      "ver": "1.0.3",
+      "uuid": "5fbded67-dbc8-4999-8957-e4990c343fb4",
+      "rawTextureUuid": "5e43f849-63cf-428d-8b6d-b9a8b726d853",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 130,
+      "height": 31,
+      "rawWidth": 130,
+      "rawHeight": 31,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

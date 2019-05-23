@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "ba863659-0389-4670-86bb-9f1c7daebb87",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_热血篮球2": {
+      "ver": "1.0.3",
+      "uuid": "f8935ff7-0703-4f51-849f-9809e2bf559d",
+      "rawTextureUuid": "ba863659-0389-4670-86bb-9f1c7daebb87",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 290,
+      "height": 74,
+      "rawWidth": 290,
+      "rawHeight": 74,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

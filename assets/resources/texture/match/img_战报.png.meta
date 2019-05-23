@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "213e28ba-7aac-4c82-af47-d9dd1c0a3a3a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_战报": {
+      "ver": "1.0.3",
+      "uuid": "b21ed402-2a43-40d1-9cab-90bf70dbb98a",
+      "rawTextureUuid": "213e28ba-7aac-4c82-af47-d9dd1c0a3a3a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 608,
+      "height": 75,
+      "rawWidth": 608,
+      "rawHeight": 75,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
