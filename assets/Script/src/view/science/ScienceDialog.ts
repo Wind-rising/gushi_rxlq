@@ -1,15 +1,14 @@
 const {ccclass,property} = cc._decorator;
 
 import Utils from "../../utils/Utils";
-import Events from "../../signal/Events";
 
 @ccclass
-export default class ScienceView extends cc.Component{
+export default class ScienceDialog extends cc.Component{
     //场景元素
     @property(cc.Node)
     private btn_close = null;
-
     //场景模块
+    private module_switch;
     private module_playList;
     private module_equipment;
     private module_upgrade;
@@ -26,12 +25,14 @@ export default class ScienceView extends cc.Component{
     }
 
     start(){
+        console.log(this.btn_close.getComponent(cc.Button).node,"this.btn_close")
         this.btn_close.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"ScienceView","onClose")
+            Utils.bindBtnEvent(this.node,"ScienceDialog","onClose")
         )
+        // this.btn_close.getComponent(cc.Button).node.on('click',this.onClose,this);
     }
 
-    private onClose(e):void{
+    public onClose(e):void{
         this.node.destroy();
     }
 }

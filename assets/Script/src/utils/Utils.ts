@@ -186,12 +186,16 @@ export default class Utils {
      * @param [string]handler 响应事件函数名
      * @param [string]param 响应式事件携带参数
      */
-    public static bindBtnEvent(target:any,component:string = "",handler:string="",param?){
+    public static bindBtnEvent(target:any,component:string = "",handler:string="",param="22"){
+        console.log(component,handler)
         let clickEventHandler = new cc.Component.EventHandler();
         clickEventHandler.target = target; //这个 node 节点是你的事件处理代码组件所属的节点，这里就是Button2
         clickEventHandler.component = component;//这个是脚本文件名
         clickEventHandler.handler = handler; //回调函名称
+        console.log(clickEventHandler.customEventData,"bbbb")
         param&&(clickEventHandler.customEventData = param); //用户数据
+        console.log(clickEventHandler)
+        console.log(clickEventHandler.customEventData,"aaaa")
         return clickEventHandler;
     }
 }

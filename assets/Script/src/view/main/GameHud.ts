@@ -44,7 +44,10 @@ export default class GameHud extends cc.Component {
 
         this.btn_Player_Strengthen.getComponent(cc.Button).clickEvents.push(
             Utils.bindBtnEvent(this.node,"GameHud","onShowPlayerStrengthenView")
-        )
+        );
+        this.btn_Science.getComponent(cc.Button).clickEvents.push(
+            Utils.bindBtnEvent(this.node,"GameHud","onShowScienceView")
+        );
     }
 
     /**
@@ -58,6 +61,9 @@ export default class GameHud extends cc.Component {
 
     public onShowPlayerStrengthenView():void{
         Utils.showDialog('StrengthenView');
+    }
+    public onShowScienceView():void{
+        Utils.showDialog('ScienceView');
     }
 
     btnClick2(e){

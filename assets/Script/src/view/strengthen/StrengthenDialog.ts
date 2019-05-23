@@ -17,9 +17,10 @@ export default class StrengthenDialog extends cc.Component {
 
     @property(cc.Node)
     private btn_close = null;
-
     start () {
-        this.btn_close.getComponent(cc.Button).clickEvents.push(Utils.bindBtnEvent(this.node,"StrengthenDialog","onClose")); //增加处理
+        this.btn_close.getComponent(cc.Button).clickEvents.push(
+            Utils.bindBtnEvent(this.node,"StrengthenDialog","onClose")
+        ); //增加处理
     }
     public onClose(e):void{
         this.node.destroy();

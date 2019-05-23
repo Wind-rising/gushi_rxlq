@@ -72,7 +72,7 @@ export default class LoginScene extends cc.Component {
             return;
         }
         HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
-            if(response.res){
+            if(response.res){ 
                 ManagerData.getInstance().refresh();
             }else{
                 Utils.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
