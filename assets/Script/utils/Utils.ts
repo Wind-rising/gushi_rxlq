@@ -1,14 +1,4 @@
 
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const {ccclass, property} = cc._decorator;
 
 import URLConfig from "../config/URLConfig";
@@ -19,7 +9,14 @@ import { promises } from "fs";
 
 @ccclass
 export default class Utils {
-    public static showDialog(name:String,pos?:cc.Vec2,parent?:cc.Node):void {
+    
+    public static showDialog(name:String,args:{
+        pos?:cc.Vec2,
+        parent?:cc.Node,
+        callBack?:Function,
+        context?:Object
+    } = {}):void 
+    {
         this.showLoading();
         cc.loader.loadRes("prefabs/"+name, cc.Prefab, (error, prefab)=>{
             this.hideLoading();
@@ -29,9 +26,17 @@ export default class Utils {
                 return;
             }
             var dialog = cc.instantiate(prefab);
-            dialog.position = pos || {x:cc.winSize.width/2,y:cc.winSize.height/2};
-            dialog.parent = parent||cc.director.getScene();
-            //处理参数
+            dialog.position = args.pos || {x:cc.winSize.width/2,y:cc.winSize.height/2};
+            dialog.parent = args.parent || cc.director.getScene();
+            //TODO: 处理参数
+
+            if(args.callBack){
+                if(args.context){
+                    args.callBack.apply(args.context);
+                }else{
+                    args.callBack();
+                }
+            }
         });
     };
     /**
@@ -62,7 +67,11 @@ export default class Utils {
      *              onCancel:Function=null  点取消按钮的回调
      *              }
      */
-    public static showConfirm (content:String,onOk?:Function,args:Object = {}){
+    public static showConfirm (content:String,onOk?:Function,args?:{
+        showCancel?:boolean,
+        title?:string,
+        onCancel?:Function
+    }){
         //cc.find('alert').getComponent("Alert").confirm(content,onOk,args);
         var alert = cc.find('alert');
         if(alert){
@@ -165,6 +174,8 @@ export default class Utils {
         Utils.fadeInfo(message, location, cc.color(255, 50, 0));
     };
 
+    
+    /** 游戏逻辑相关，不应该在这里做-------------------------------------------------------- */
     /** 获取分享信息 */
     public static getFeed():void{
         let srvArgs = {action:URLConfig.Get_Data,
@@ -184,6 +195,9 @@ export default class Utils {
     public static share(feedCode:String, feedVar:Object, type:number = 1):void{
         //todo sth
     };
+   /** 游戏逻辑相关，不应该在这里做-------------------------------------------------------- */
+
+
     /**
      * 点击绑定事件
      * @param [any]target 目标节点
