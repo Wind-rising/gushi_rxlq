@@ -28,6 +28,7 @@ export default class PlayerListData extends Singleton {
         let vo:CommandVo = new CommandVo(URLConfig.Get_Data,args)
 
         let data = await HttpManager.getInstance().request(vo,null,this);
+        console.log(data)
         this._data = data.data;
         return this._data;
     }

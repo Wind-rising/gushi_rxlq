@@ -13,6 +13,11 @@ export default class BallPlayerItem extends PackageItem{
     constructor(){
         super();
     }
+    // public onClick(){
+    //     this.node.getComponent(cc.Button).clickEvents.push(
+    //         Utils.bindBtnEvent(this.node,"prefab_PackageItem","openEquip")
+    //     )
+    // }
 
     public change(data){
         if(!ScienceViewData.playerList_ID){

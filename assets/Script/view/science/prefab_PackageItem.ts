@@ -22,13 +22,16 @@ export default class PackageItem extends cc.Component{
     public id = "package";
 
     start(){
-        this.node.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"PackageItem","openEquip")
-        )
+        this.onClick();
         Events.getInstance().addListener("PlayerListClick",this.stateChange,this);
     }
     onDestroy(){
         Events.getInstance().removeListener("PlayerListClick",this.stateChange,this);
+    }
+    public onClick(){
+        this.node.getComponent(cc.Button).clickEvents.push(
+            Utils.bindBtnEvent(this.node,"prefab_PackageItem","openEquip")
+        )
     }
 
     public async stateChange(){

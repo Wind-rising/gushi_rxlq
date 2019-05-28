@@ -37,7 +37,8 @@ export default class HttpManager extends cc.Component {
 
     
     // update (dt) {}
-
+    private srvArgs;
+    private action;
     /**
      * 
      * @param srvArgs 请求参数  JSON || String
@@ -46,7 +47,9 @@ export default class HttpManager extends cc.Component {
      * @param method GET || POST
      * @param action 调用服务器接口
      */
-    public request(srvArgs,callback?:Function,context?:Object,method:string='GET',action:string='interface'){//(url,method,obj,callback){
+    public async request(srvArgs,callback?:Function,context?:Object,method:string='GET',action:string='interface'){//(url,method,obj,callback){
+        this.srvArgs = srvArgs;
+        this.action = action;
         /** 公共参数，所有协议都需要带的部分 */
         let headObj = {
             //"Content-Type":"application/json;charset=utf-8"
@@ -56,7 +59,10 @@ export default class HttpManager extends cc.Component {
         /**
          * 发送请求
          */
-        this.sendRequest(url,callback,context,'',method,headObj);
+        let data = await this.sendRequest(url,callback,context,'',method,headObj);
+        console.log("data............")
+        console.log(data)
+        return data;
     };
 
     /**
@@ -72,98 +78,110 @@ export default class HttpManager extends cc.Component {
 
 
 
-    public sendRequest (url:string
+    public async sendRequest (url:string
         , callback?:Function
         , context?:Object
         , responseType:XMLHttpRequestResponseType =''
         ,method:string = 'GET'
         , headObj:Object = {})
     {
-        Utils.showLoading();
-        var xhr = cc.loader.getXMLHttpRequest();
-        /*
-         "arraybuffer",
-        * "blob",
-        * "document",
-        * "json", and
-        * "text".
-        */
-        xhr.responseType = responseType;
-        //请求进度
-        // xhr.onprogress = function(ev){
-        //     cc.log('loaded/total = '+ev.loaded+'/'+ev.total)
-        // }
-        /** 加载完成 */
-        xhr.onreadystatechange = function(){
-            if (this.readyState == 4){
-                Utils.hideLoading();
-                if(this.status >= 200 && this.status < 400){
-                    let response;
-                    switch(this.responseType){
-                        case 'arraybuffer':
-                            response = this.response;
-                            break;
-                        case "json":
-                            response = this.response;
-                            break;
-                        default:
-                            try{
-                                response = JSON.parse(this.responseText);
-                            }catch (error){
-                                Utils.alert('返回数据格式错误，this.responseText = ' + this.responseText);
-                            }
-                            break;
-
-                    }
-                    
-                    if(callback){
-                        if(context){
-                            callback.apply(context, [response]);
-                        }else{
-                            callback(response);
+       return new Promise((resolve,reject)=>{
+        {
+            Utils.showLoading();
+            var xhr = cc.loader.getXMLHttpRequest();
+            /*
+             "arraybuffer",
+            * "blob",
+            * "document",
+            * "json", and
+            * "text".
+            */
+            xhr.responseType = responseType;
+            //请求进度
+            // xhr.onprogress = function(ev){
+            //     cc.log('loaded/total = '+ev.loaded+'/'+ev.total)
+            // }
+            /** 加载完成 */
+            let _this = this;
+            xhr.onreadystatechange = function(){
+                if (this.readyState == 4){
+                    Utils.hideLoading();
+                    if(this.status >= 200 && this.status < 400){
+                        let response;
+                        switch(this.responseType){
+                            case 'arraybuffer':
+                                response = this.response;
+                                break;
+                            case "json":
+                                response = this.response;
+                                break;
+                            default:
+                                try{
+                                    response = JSON.parse(this.responseText);
+                                }catch (error){
+                                    Utils.alert('返回数据格式错误，this.responseText = ' + this.responseText);
+                                }
+                                break;
+    
                         }
-                    }
-                }else{
-                    //http请求出错
-                    Utils.showConfirm('服务器未响应，请重试',function(){
-                        //重试
-                        HttpManager.getInstance().sendRequest(url,callback,context,responseType,method,headObj)
-                    },{
-                        onCancel:function(){
-                            if(callback){
-                                if(context){
-                                    callback.apply(context, [{res:false,status:this.status}]);
+                        
+                        if(callback){
+                            if(context){
+                                callback.apply(context, [response]);
+                                resolve(response)
+                            }else{
+                                callback(response);
+                                resolve(response)
+                            }
+                        }else{
+                            resolve(response)
+                        }
+                    }else{
+                        //http请求出错
+                        reject(false)
+                        Utils.showConfirm('服务器未响应，请重试',function(){
+                            //重试
+                            HttpManager.getInstance().sendRequest(url,callback,context,responseType,method,headObj)
+                        },{
+                            onCancel:function(){
+                                if(callback){
+                                    if(context){
+                                        callback.apply(context, [{res:false,status:this.status}]);
+                                    }else{
+                                        callback({res:false,status:this.status});
+                                    }
                                 }else{
-                                    callback({res:false,status:this.status});
+                                    resolve(false)
                                 }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                };
+                xhr.timeout = 5000;
+                // var param = Object.assign({}, srvArgs);
+                // delete param.name;
+                // let url = _this.requestUrl(_this.srvArgs,_this.action);
+                
+                // cc.log('request url = ' + url);
+                // xhr.open(method, url, true);
+                // for(let key in headObj){
+                //     xhr.setRequestHeader(key,headObj[key]);
+                // }
             };
             xhr.timeout = 5000;
             // var param = Object.assign({}, srvArgs);
             // delete param.name;
-            let url = this.requestUrl(srvArgs,action);
-            
+    
             cc.log('request url = ' + url);
+    
             xhr.open(method, url, true);
             for(let key in headObj){
                 xhr.setRequestHeader(key,headObj[key]);
             }
-        };
-        xhr.timeout = 5000;
-        // var param = Object.assign({}, srvArgs);
-        // delete param.name;
-
-        cc.log('request url = ' + url);
-
-        xhr.open(method, url, true);
-        for(let key in headObj){
-            xhr.setRequestHeader(key,headObj[key]);
-        }
-        //发送请求
-        // xhr.send(JSON.stringify(param));
-        xhr.send();
+            //发送请求
+            // xhr.send(JSON.stringify(param));
+            xhr.send();
+           }
+       })
     }
 }
