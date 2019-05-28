@@ -1,3 +1,6 @@
+import CountController from "../../controllor/CountController";
+import Utils from "../../utils/Utils";
+
 /**
  * 加载数据
  */
@@ -5,6 +8,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class LoadingFullScreen extends cc.Component {
+
+    /** 保存当前对象 */
+    static instance:LoadingFullScreen = null;
 
     /**
      * 加载进度
@@ -15,16 +21,55 @@ export default class LoadingFullScreen extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        LoadingFullScreen.instance = this;
+    }
+    onDestroy () {
+        LoadingFullScreen.instance = null;
+    }
 
     start () {
         this.img_loading.fillRange = 0;
     }
 
+    update (dt) {
+        this.img_loading.fillRange = 0.7*CountController.getInstance().loadingProgress/100;
+        // if(this.img_loading.fillRange>=0.7){
+        //     this.node.runAction(cc.sequence(cc.delayTime(0.5),cc.fadeOut(0.5),cc.callFunc(function(){
+        //         this.node.destory();
+        //     },this)));
+        // }
+    }
+
     /**
-     * 设置百分比
+     * 
+     * @param percent 0-100
      */
-    public set fillRange(value:number){
-        this.img_loading.fillRange = value;
+    public updateProgress (percent){
+        if(!LoadingFullScreen.instance){
+            LoadingFullScreen.fadeIn();
+            return;
+        }
+        this.img_loading.fillRange = 0.7*CountController.getInstance().loadingProgress/100;
+    }
+
+    /**
+     * 显示 关闭加载战报页
+     */
+    public static fadeIn(callBack?:Function) {
+        //已经存在了，不再显示
+        if(this.instance){
+            return;
+        }
+        Utils.showDialog('match/LoadingDialog',{callBack:callBack});
+    }
+
+    public static fadeOut () {
+        if(!this.instance){
+            return;
+        }
+        this.instance.node.runAction(cc.sequence(cc.fadeOut(0.5),cc.callFunc(function(){
+            this.instance.node.destroy();
+        },this)));
     }
 }

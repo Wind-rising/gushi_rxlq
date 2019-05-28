@@ -13,6 +13,8 @@ import EventConst from "../data/EventConst";
 import Events from "../signal/Events";
 import ErrMsg from "../data/ErrMsg";
 import Utils from "../utils/Utils";
+import CountController from "./CountController";
+import LoadingFullScreen from "../view/public/LoadingFullScreen";
 
 @ccclass
 export default class MatchControllor extends Singleton {
@@ -83,13 +85,12 @@ export default class MatchControllor extends Singleton {
         //     _matchCompare.showCompare(matchType, awayId, homeId);
         //     _matchCompare.addEventListener(MatchCompareView.START, onStart);
         // }
-        Utils.showDialog('match/MatchCompare');
+        Utils.showDialog('match/MatchCompareView');
     }
     
     //获取比赛数据
-    public onStart(){
-        //TODO:关闭 match compare 页面
-        //发送比赛请求
+    //发送比赛请求
+        public onStart(){
         let vo = {};
         if(this._matchType == MatchType.NORMAL_MATCH){
             vo['action'] = URLConfig.Post_Regular_Fight;
@@ -158,13 +159,11 @@ export default class MatchControllor extends Singleton {
             this.showReplay(this._matchType, this._matchData['SyncData']['MatchId']);
             if(data['data'] && data['data']['SyncData']['Score'])
                 ManagerData.getInstance().Score = parseInt(data['data']['SyncData']['Score']);
-            this.getRewardData();
         }else{
             Utils.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
             
-            //TODO: close MatchBG
-            
             Events.getInstance().dispatch(EventConst.SHOW_MAIN);
+            LoadingFullScreen.fadeOut();
         }
     }
     
@@ -205,24 +204,8 @@ export default class MatchControllor extends Singleton {
     public showReplay(matchType: string, matchId: string):void{
         this._matchId = matchId;
         this._matchType = matchType;
-        //植入加载
-        //TODO: show loading view 
         
-        //TODO: show match view
-        // if(!this._match)
-        // {//需要缓存
-        //     this._match = new CountView();
-        // }
-        //_match = new CountView();
-        // _match.matchId = getMatchURL(matchType, matchId);
-        // _match.callback = onMatchOver;
-        // _match.noMatchBack = noMatchFun;
-        // _match.show();
-        // TimerCommand.removeTimeCommand(SoundManager.play);
-        // SoundManager.stop(SoundConfig.BG);
-        
-        //比赛开始，关闭主界面
-        Events.getInstance().dispatch(EventConst.CLOSE_MAIN);
+        CountController.getInstance().showReplay(matchId,matchType);
     }
     
     private noMatchFun():void
@@ -251,11 +234,5 @@ export default class MatchControllor extends Singleton {
         //  needFresh:Boolean = (_homeId=="" || Manager.getInstance().Mid == _homeId || Manager.getInstance().Mid == _awayId)
         // _analysisView.setData(data,_matchType,_matchId, needFresh);
         // MatchBG.getInstance().show();
-    }
-    
-    /**静态方法，获取比赛录像地址*/
-    public static getMatchURL(matchType: string, matchId: string): string{
-        //http://dev.lanqiu.the9.com/test/match.php?matchid=20130805520898cb7e46c7d35700000e&matchtype=1
-        return AppConfig.httpRoot+"match.php?matchid="+matchId+"&matchtype="+matchType
     }
 }

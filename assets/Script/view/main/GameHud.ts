@@ -24,6 +24,12 @@ export default class GameHud extends cc.Component {
 
     onLoad () {
         Events.getInstance().addListener(EventConst.SHOW_MSG, this.onShowMsg,this,this.EventListenerTag);
+        Events.getInstance().addListener(EventConst.SHOW_MAIN,()=>{
+            this.node.active = true;
+        },this,this.EventListenerTag);
+        Events.getInstance().addListener(EventConst.CLOSE_MAIN,()=>{
+            this.node.active = false;
+        },this,this.EventListenerTag);
     }
 
     onDestroy(){

@@ -14,6 +14,7 @@ import ItemData from './data/ItemData'
 import MainControllor from './controllor/MainControllor';
 import ManagerLvData from './data/ManagerLvData';
 import ErrMsg from './data/ErrMsg';
+import CountSkillType from './data/CountSkillType';
 
 function urlParse(){
     var params = {};
@@ -51,6 +52,7 @@ export default class app extends cc.Component {
         ManagerLvData.getInstance().init();
         ErrMsg.getInstance().init();
         ItemData.init();
+        CountSkillType.getInstance().init();
     }
 
     start () {

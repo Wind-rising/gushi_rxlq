@@ -25,6 +25,6 @@ export default class NewClass extends cc.Component {
      * 进入比赛测试
      */
     testEnterMatch () {
-        MatchControllor.getInstance().startMatch(MatchType.NORMAL_MATCH, '-1');
+        MatchControllor.getInstance().startMatch(MatchType.NORMAL_MATCH, '1');
     }
 }

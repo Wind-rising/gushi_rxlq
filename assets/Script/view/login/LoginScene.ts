@@ -31,6 +31,9 @@ export default class LoginScene extends cc.Component {
         this.bar_current.progress = 0;
 
         this.node.getChildByName('loginview').active = false;
+
+        /** 测试账号 */
+        this.edt_account.string = 'test';
     }
 
     start () {

@@ -16,7 +16,7 @@ import Utils from "../../utils/Utils";
 export default class StrengthenDialog extends cc.Component {
 
     @property(cc.Node)
-    private btn_close;
+    private btn_close:cc.Node = null;
 
     start () {
         this.btn_close.getComponent(cc.Button).clickEvents.push(Utils.bindBtnEvent(this.node,"StrengthenDialog","onClose")); //增加处理

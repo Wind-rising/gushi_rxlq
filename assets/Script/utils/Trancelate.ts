@@ -33,21 +33,21 @@ export default class Trancelate extends Singleton {
      * @param {ByteArray} data 
      * @param {function} callBack 
      */
-    ConverData(byteArray) 
+    ConverData(byteArray:ArrayBuffer) 
     {	
         this._roundList = [];
-        if(byteArray.length <= 0)
+        if(byteArray.byteLength <= 0)
         {
             console.log('战斗数据为空');
             return;
         }
 
-        var data = new jspb.BinaryDecoder(byteArray);
-        var compress = data.readUint8();
-        if(compress == 1)
+        var compressArray = new jspb.BinaryDecoder(byteArray.slice(0,1));
+        var dataArray = new jspb.BinaryDecoder(byteArray.slice(1,byteArray.byteLength));
+        if(compressArray.readUint8() == 1)
         {
-            byteArray = Zlib.inflateSync(new Buffer(data.readBytes(data.getEnd() - data.getCursor())));
-            data = new jspb.BinaryDecoder(byteArray);
+            byteArray = Zlib.inflateSync(new Buffer(byteArray.slice(1,byteArray.byteLength)));
+            dataArray = new jspb.BinaryDecoder(byteArray);
         }
         else
         {
@@ -57,11 +57,11 @@ export default class Trancelate extends Singleton {
 
         var matchVo = {};
 
-        var matchInfo = this.matchBasicInfo(data);
-        var homeManager = this.managerInfo(data);
-        var awayManager = this.managerInfo(data);
-        var roundTime = this.roundTime(data);
-        var roundInfo = this.roundDataInfo(data);
+        var matchInfo = this.matchBasicInfo(dataArray);
+        var homeManager = this.managerInfo(dataArray);
+        var awayManager = this.managerInfo(dataArray);
+        var roundTime = this.roundTime(dataArray);
+        var roundInfo = this.roundDataInfo(dataArray);
         
         
         this.processMatchInfo(matchInfo, matchVo);

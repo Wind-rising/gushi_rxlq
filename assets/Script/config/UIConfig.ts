@@ -59,16 +59,17 @@ export default class UIConfig {
     /**球场地图*/
     public static countMap: string = "image/map/map_";
     
-    /** 球场地图*/
-    public static countBall: string = "assets/chs/swf/count/ball.swf";
+    /** 球  */
+    public static countBall: string = "prefabs/competition/BallNode.prefab";
     
-    /** 球场地图*/
-    public static countBallFall: string = "assets/chs/swf/count/ballFall.swf";
-    
-    public static countUI: string = "assets/chs/swf/count/countUi.swf";
+    /** 球员 */
+    public static countPlayer: string = "prefabs/competition/PlayerNode.prefab";
+
+    /** 比赛场景 */
+    public static CompetitionView: string = "prefabs/competition/CompetitionView.prefab";
     
     /** 比赛结束页面的prefab */
-    public static countEnd: string = "prefabs/battle/countEnd.prefab";
+    public static countEnd: string = "prefabs/competition/CompetitionEndView.prefab";
     
     public static countButton: string = "assets/chs/swf/count/countButton.swf";
     
@@ -260,4 +261,12 @@ export default class UIConfig {
     public static bosswar: string = "assets/chs/swf/bosswar.swf";
     
     public static newSign: string = "assets/chs/swf/newSign.swf";
+
+    private static nameArray:Array<string> = [];
+    public static getAssetName(url:string):string{
+        if(!this.nameArray[url]){
+            this.nameArray[url] = url.split('/').pop().split('.').shift();
+        }
+        return this.nameArray[url];
+    }
 }

@@ -116,7 +116,7 @@ export default class IconManager extends cc.Component {
 		
 		/**获取完整图像地址*/
 		public static get preURL():string{
-			return '';
+			return 'image/';
 		}
 		
 		/**
