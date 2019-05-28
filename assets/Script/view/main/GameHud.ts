@@ -63,7 +63,7 @@ export default class GameHud extends cc.Component {
         Utils.showDialog('StrengthenView');
     }
     public onShowScienceView():void{
-        Utils.showDialog('ScienceView');
+        Utils.showDialog('Science/ScienceView');
     }
 
 

@@ -15,6 +15,7 @@ import URLConfig from "../config/URLConfig";
 import HttpManager from "./HttpManager";
 import ManagerData from "../data/ManagerData";
 import ItemData from "../data/ItemData";
+import { promises } from "fs";
 
 @ccclass
 export default class Utils {
@@ -202,9 +203,39 @@ export default class Utils {
 
 
 
+    public static async insertPrefab(name:String,parent?:cc.Node):Promise<void> {
+        return new Promise((resolve,reject)=>{
+            cc.loader.loadRes("prefabs/"+name, cc.Prefab, (error, prefab)=>{
+                this.hideLoading();
+                if (error) {
+                    cc.error(error);
+                    cc.error('未找到 ' + "prefabs/"+name)
+                    return;
+                }
+                var dialog = cc.instantiate(prefab);
+                parent&&(dialog.parent = parent);
+                resolve(dialog);
+            });
+        })
+    };
 
-
-
+    //判断数据类型
+    public static judgeDataType(data){
+        let type = typeof data;
+        if(type != "object"){
+            return type
+        }else{
+            if(!data){
+                return null;
+            }
+            if(data.constructor == Array ){
+                return "array"
+            }else{
+                return "object"
+            }
+        }
+    }
+    //判断对象类型
 
 
 
