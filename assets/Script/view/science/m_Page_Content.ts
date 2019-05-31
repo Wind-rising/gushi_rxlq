@@ -1,7 +1,6 @@
 
 import Events from "../../signal/Events"
 import Utils from "../../utils/Utils"
-import PlayerListData from "../../data/PlayerListData"
 export default class Page_Content{
     private data:any;
     private url:String;
@@ -46,19 +45,5 @@ export default class Page_Content{
         }
         isIn&&(prefab.parent = this.content);
         return prefab;
-    }
-    public refresh(data){
-        let type = Utils.judgeDataType(data);
-        if(type == "array"){
-            for(let i = 0;i<this.data.length;i++){
-                if(this.prefabArr[i].getComponent(this.componentName).change){
-                    this.prefabArr[i].getComponent(this.componentName).change(data[i])
-                }
-            }
-        }else{
-            if(this.prefabArr[0].getComponent(this.componentName).change){
-                this.prefabArr[0].getComponent(this.componentName).change(data)
-            }
-        }
     }
 }

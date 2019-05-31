@@ -71,6 +71,7 @@ export default class ItemData extends Singleton {
                     break;
                 }
                 case ItemData.PLAYER_URL:{
+
                     this._playerData = data;
                     break;
                 }
@@ -244,7 +245,7 @@ export default class ItemData extends Singleton {
         if(!info){
             info = {};
         }
-        return info["pair_"+pair]
+        return info["pair_"+(pair+1)]
     };
     
     /**

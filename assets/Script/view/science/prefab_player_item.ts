@@ -1,11 +1,9 @@
 const {ccclass,property} = cc._decorator;
 
 import ItemData from "../../data/ItemData"
-import Utils from "../../utils/Utils"
 import ManagerData from "../../data/ManagerData";
-import ScienceViewData from "./data_ScienceViewData"
-import Events from "../../signal/Events"
-import PackageItem from "./prefab_PackageItem"
+import ScienceData from "./data_science"
+import PackageItem from "./prefab_package_item"
 
 @ccclass
 export default class BallPlayerItem extends PackageItem{
@@ -13,15 +11,11 @@ export default class BallPlayerItem extends PackageItem{
     constructor(){
         super();
     }
-    // public onClick(){
-    //     this.node.getComponent(cc.Button).clickEvents.push(
-    //         Utils.bindBtnEvent(this.node,"prefab_PackageItem","openEquip")
-    //     )
-    // }
 
     public change(data){
-        if(!ScienceViewData.playerList_ID){
-            ScienceViewData.playerList_ID = data.Pid;
+        super.change(data);
+        if(!ScienceData.player_id){
+            ScienceData.player_id = data.Pid;
         }
         let playerInfo = data.srcData;
         this.thisName.getComponent(cc.RichText).string = "<color="+ItemData.getCardColor(playerInfo.CardLevel)+">"+playerInfo.ShowName+"</c>";
@@ -45,9 +39,9 @@ export default class BallPlayerItem extends PackageItem{
         }else{
             canUp2 = false;
         }
-        if(ScienceViewData.type == 0){
+        if(ScienceData.index == 0){
             this.maxUI.active = canUp2;
-        }else if(ScienceViewData.type == 1){
+        }else if(ScienceData.index == 1){
             this.upUI.active = canPair;
         }
         this.active_on.active = false;

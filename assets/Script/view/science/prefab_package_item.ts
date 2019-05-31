@@ -1,9 +1,7 @@
 const {ccclass,property} = cc._decorator;
 
-import ItemData from "../../data/ItemData"
 import Utils from "../../utils/Utils"
-import ManagerData from "../../data/ManagerData";
-import ScienceViewData from "./data_ScienceViewData"
+import ScienceData from "./data_science"
 import Events from "../../signal/Events"
 
 @ccclass
@@ -19,30 +17,33 @@ export default class PackageItem extends cc.Component{
     public upUI:cc.Node;
     @property(cc.Node)
     public thisName:cc.Node;
-    public id = "package";
+    public id = "BAG";
+    public _data;
 
     start(){
         this.onClick();
-        Events.getInstance().addListener("PlayerListClick",this.stateChange,this);
-    }
-    onDestroy(){
-        Events.getInstance().removeListener("PlayerListClick",this.stateChange,this);
     }
     public onClick(){
         this.node.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"prefab_PackageItem","openEquip")
+            Utils.bindBtnEvent(this.node,"prefab_package_item","openEquip")
         )
     }
 
-    public async stateChange(){
-        if(ScienceViewData.playerList_ID == this.id){
+    public  stateChange(){
+        if(ScienceData.player_id == this.id){
             this.active_on.active = true;
         }else{
             this.active_on.active = false;
         }
     }
     public openEquip(){
-        ScienceViewData.playerList_ID = this.id;
-        Events.getInstance().dispatch("PlayerListClick");
+        if(ScienceData.player_id == this.id)return;
+        ScienceData.player_id = this.id;
+        ScienceData.playerEquip = this._data;
+        ScienceData.selectPlayer = this;
+        Events.getInstance().dispatch(ScienceData.EventChange);
+    }
+    public change(data){
+        this._data = data;
     }
 }

@@ -236,6 +236,14 @@ export default class Utils extends cc.Component {
         })
     };
 
+    public  static loadUrlSprite(url,parent){
+        cc.loader.loadRes(url, cc.SpriteFrame, function (err, spriteFrame) {
+            var sprite = parent.addComponent(cc.Sprite);
+            sprite.spriteFrame = spriteFrame;
+        });
+    }
+
+
     //判断数据类型
     public static judgeDataType(data){
         let type = typeof data;

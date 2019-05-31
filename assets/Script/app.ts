@@ -14,7 +14,6 @@ import ItemData from './data/ItemData'
 import MainControllor from './controllor/MainControllor';
 import ManagerLvData from './data/ManagerLvData';
 import ErrMsg from './data/ErrMsg';
-import PlayerListData from "./data/PlayerData";
 import CountSkillType from './data/CountSkillType';
 
 function urlParse(){
