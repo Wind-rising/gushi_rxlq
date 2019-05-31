@@ -65,6 +65,7 @@ export default class ItemData {
                     break;
                 }
                 case ItemData.PLAYER_URL:{
+
                     this._playerData = data;
                     break;
                 }
@@ -238,7 +239,7 @@ export default class ItemData {
         if(!info){
             info = {};
         }
-        return info["pair_"+pair]
+        return info["pair_"+(pair+1)]
     };
     
     /**

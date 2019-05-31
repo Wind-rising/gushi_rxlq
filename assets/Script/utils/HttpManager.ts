@@ -3,7 +3,7 @@
  */
 const {ccclass, property} = cc._decorator;
 import AppConfig from "../config/AppConfig";
-import Utils from "./Utils";
+import Utils from "../utils/Utils";
 @ccclass
 export default class HttpManager extends cc.Component {
 
@@ -47,7 +47,7 @@ export default class HttpManager extends cc.Component {
      * @param method GET || POST
      * @param action 调用服务器接口
      */
-    public async request(srvArgs,callback?:Function,context?:Object,method:string='GET',action:string='interface'){//(url,method,obj,callback){
+    public request(srvArgs,callback?:Function,context?:Object,method:string='GET',action:string='interface'){//(url,method,obj,callback){
         this.srvArgs = srvArgs;
         this.action = action;
         /** 公共参数，所有协议都需要带的部分 */
@@ -59,10 +59,7 @@ export default class HttpManager extends cc.Component {
         /**
          * 发送请求
          */
-        let data = await this.sendRequest(url,callback,context,'',method,headObj);
-        console.log("data............")
-        console.log(data)
-        return data;
+        let data = this.sendRequest(url,callback,context,'',method,headObj);
     };
 
     /**
@@ -78,15 +75,13 @@ export default class HttpManager extends cc.Component {
 
 
 
-    public async sendRequest (url:string
+    public sendRequest (url:string
         , callback?:Function
         , context?:Object
         , responseType:XMLHttpRequestResponseType =''
         ,method:string = 'GET'
         , headObj:Object = {})
     {
-       return new Promise((resolve,reject)=>{
-        {
             Utils.showLoading();
             var xhr = cc.loader.getXMLHttpRequest();
             /*
@@ -128,17 +123,13 @@ export default class HttpManager extends cc.Component {
                         if(callback){
                             if(context){
                                 callback.apply(context, [response]);
-                                resolve(response)
                             }else{
                                 callback(response);
-                                resolve(response)
                             }
                         }else{
-                            resolve(response)
                         }
                     }else{
                         //http请求出错
-                        reject(false)
                         Utils.showConfirm('服务器未响应，请重试',function(){
                             //重试
                             HttpManager.getInstance().sendRequest(url,callback,context,responseType,method,headObj)
@@ -150,14 +141,12 @@ export default class HttpManager extends cc.Component {
                                     }else{
                                         callback({res:false,status:this.status});
                                     }
-                                }else{
-                                    resolve(false)
                                 }
                             }
                         });
                     }
                 };
-                xhr.timeout = 5000;
+                xhr.timeout = 60000;
                 // var param = Object.assign({}, srvArgs);
                 // delete param.name;
                 // let url = _this.requestUrl(_this.srvArgs,_this.action);
@@ -181,7 +170,6 @@ export default class HttpManager extends cc.Component {
             //发送请求
             // xhr.send(JSON.stringify(param));
             xhr.send();
-           }
-       })
+           
     }
 }

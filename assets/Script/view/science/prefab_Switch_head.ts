@@ -1,8 +1,10 @@
-import { on } from "cluster";
+
 const LEVEL = cc.Enum({IMAGE:0,CCNODE:1})
 const {ccclass,property} = cc._decorator;
+import Utils from "../../utils/Utils"
+import Events from "../../signal/Events"
 @ccclass    
-export default class Switch_head extends cc.Component{
+export default class prefab_Switch_head extends cc.Component{
      /**
      * 全局变量
      * const LEVEL = cc.Enum({EASY:1,HARD:2});
@@ -31,9 +33,18 @@ export default class Switch_head extends cc.Component{
         type:cc.Node,
     })
     private acitve_off_node:cc.Node = null;
-
+    @property
+    private index:number = 0;
+    start(){
+        this.node.getComponent(cc.Button).clickEvents.push(
+            Utils.bindBtnEvent(this.node,"prefab_Switch_head","active_on")
+        )
+    }
     public state = 0;
     public active_on(){
+        if(this.state == 1){
+            return;
+        }
         this.state = 1;
         this.node.getChildByName('word').color = new cc.Color(255, 255, 255);
         switch(this.active_on_state){
@@ -45,6 +56,7 @@ export default class Switch_head extends cc.Component{
                 this.acitve_off_node.active = false;
                 break;
         }
+        Events.getInstance().dispatch("switchNavClick",[this.index]);
     }
     public active_off(){
         this.state = 0;

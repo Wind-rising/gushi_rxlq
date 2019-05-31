@@ -14,7 +14,6 @@ import ItemData from './data/ItemData'
 import MainControllor from './controllor/MainControllor';
 import ManagerLvData from './data/ManagerLvData';
 import ErrMsg from './data/ErrMsg';
-import PlayerListData from "./data/PlayerData";
 import CountSkillType from './data/CountSkillType';
 
 function urlParse(){
@@ -50,7 +49,6 @@ export default class app extends cc.Component {
         cc.game.addPersistRootNode(this.node);
 
         /** 初始化单例类，暂时写在这里，有时间改成通过模板解决 */
-        PlayerListData.getInstance().init();
         ManagerLvData.getInstance().init();
         ErrMsg.getInstance().init();
         ItemData.init();
