@@ -19,11 +19,16 @@ export default class ErrMsg extends Singleton{
 
     _data:Object = null;
 
-    private URL:String = "Dic_code_chs";
+    private URL:string = "Dic_code_chs";
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
+
+    constructor(){
+        super();
+        this.init();
+    }
 
     public init(){
         Events.getInstance().addListener('EventJsonDataLoaded',function(name,data){
@@ -61,3 +66,4 @@ export default class ErrMsg extends Singleton{
     }
     // update (dt) {}
 }
+ErrMsg.getInstance();

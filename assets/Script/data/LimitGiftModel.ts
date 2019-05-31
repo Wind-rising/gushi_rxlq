@@ -71,3 +71,5 @@ export default class LimitGiftModel extends Singleton {
             },this);
 		}
 }
+
+LimitGiftModel.getInstance();

@@ -15,9 +15,10 @@
 const {ccclass, property} = cc._decorator;
 
 import Events from "../signal/Events";
+import Singleton from "../Utils/Singleton";
 
 @ccclass
-export default class ItemData {
+export default class ItemData extends Singleton {
 
     /**文本-球员位置*/
     private static posStr:"大前锋$小前锋$中锋$得分后卫$控球后卫";
@@ -50,6 +51,11 @@ export default class ItemData {
     private static EQUIP_WASH_URL:string = "Dic_equipmenthole_chs";
     /**装备强化需要的钱*/
     private static EQUIP_STR_URL:string = "Dic_equipment_chs";
+
+    constructor(){
+        super();
+        ItemData.init();
+    }
     public static init():void{
         this._args = null;
         this._itemData = null;
@@ -262,3 +268,5 @@ export default class ItemData {
         return this._playerData;
     };
 }
+
+ItemData.getInstance();

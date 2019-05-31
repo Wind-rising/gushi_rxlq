@@ -18,4 +18,7 @@ export default class Singleton extends cc.Component{
         }
         return (<any>this).instance;
     };
+    constructor(){
+        super();
+    }
 }

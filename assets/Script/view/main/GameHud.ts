@@ -93,7 +93,6 @@ export default class GameHud extends cc.Component {
     };
 
     btnClick4(e){
-        cc.director.loadScene('BattleScene');
     }
     // update (dt) {}
 }

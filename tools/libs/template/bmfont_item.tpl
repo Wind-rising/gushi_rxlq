@@ -1,0 +1,1 @@
+char id={charCode} x={frameX} y={frameY} width={frameWidth} height={frameHeight} xoffset={offsetX} yoffset={offsetY} xadvance={width} page=0 chnl=0 letter="{frameName}"

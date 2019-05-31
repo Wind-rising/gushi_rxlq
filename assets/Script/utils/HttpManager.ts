@@ -3,7 +3,7 @@
  */
 const {ccclass, property} = cc._decorator;
 import AppConfig from "../config/AppConfig";
-import Utils from "./Utils";
+import Utils from "../Utils";
 @ccclass
 export default class HttpManager extends cc.Component {
 

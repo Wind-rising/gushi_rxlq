@@ -32,11 +32,16 @@ export default class CountController extends Singleton {
      * 战斗数据 暂时保存就可以了
      */
     _data:Object = null;
+    
+    constructor(){
+        super();
+    }
 
     /**
      * 初始化比赛 在CompetitionView页面显示的时候被调用
      */
     init(){}
+    
 
     /**----------------------------------------------------*/
     /** 比赛数据获取 */
@@ -144,9 +149,9 @@ export default class CountController extends Singleton {
             }
             /** 如果比赛界面加载成功，显示出来，否则 需要将加载的资源缓存清掉 */
             if(this.resourceMap[competitionViewName]){
-                var dialog = cc.instantiate(this.resourceMap[competitionViewName]);
-                dialog.position = cc.Vec2.ZERO;
-                dialog.parent = cc.director.getScene();
+                var view = cc.instantiate(this.resourceMap[competitionViewName]);
+                view.position = {x:cc.winSize.width/2,y:cc.winSize.height/2};//cc.Vec2.ZERO;
+                view.parent = cc.director.getScene();
             }else{
                 this.resourceMap = null;
             }
@@ -163,3 +168,5 @@ export default class CountController extends Singleton {
         return this.resourceMap[prefabName];
     }
 }
+
+CountController.getInstance();

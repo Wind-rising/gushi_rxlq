@@ -22,7 +22,12 @@ export default class CountSkillType extends Singleton {
     /***/
     //private _args:Array;
     /**数据地址*/
-    private URL:String = "Dic_modelId_chs";
+    private URL:string = "Dic_modelId_chs";
+
+    constructor(){
+        super();
+        this.init();
+    }
 
     /**初始化*/
     public init(/*callback:Function=null, args:Array=null*/):void{
@@ -106,3 +111,5 @@ export default class CountSkillType extends Singleton {
         return this.ShowCombs[id]['PlayerIds'].split(",")
     }
 }
+
+CountSkillType.getInstance();

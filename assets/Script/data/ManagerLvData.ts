@@ -20,8 +20,12 @@ export default class ManagerLvData extends Singleton {
     /***/
     //private _args:Array;
     /**数据地址*/
-    private URL:String = "Dic_managerlv_chs";
+    private URL:string = "Dic_managerlv_chs";
 
+    constructor(){
+        super();
+        this.init();
+    }
     /**初始化*/
     public init(/*callback:Function=null, args:Array=null*/):void{
         Events.getInstance().addListener('EventJsonDataLoaded',function(name,data){
@@ -36,3 +40,5 @@ export default class ManagerLvData extends Singleton {
         return this._data[lv.valueOf()+1];
     }
 }
+
+ManagerLvData.getInstance();

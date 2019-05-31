@@ -21,6 +21,7 @@ import CountPlayerType from '../data/CountPlayerType';
 import PlayerActionType from '../data/PlayerActionType';
 import PlayerSideType from '../data/PlayerSideType';
 import MatchConfig from '../config/MatchConfig';
+import GridController from '../controllor/GridController';
 
 @ccclass
 export default class Trancelate extends Singleton {
@@ -579,7 +580,7 @@ export default class Trancelate extends Singleton {
                 
                 player.match[i].x = p.x;
                 player.match[i].y = p.y;
-                player.match[i].playerPoint = this.getScenePosition(new cc.Vec3(p.x, p.y));
+                player.match[i].playerPoint = GridController.getInstance().getScenePosition(new cc.Vec3(p.x, p.y));
                 
                 if(player.match[i].state == PlayerActionType.run)
                 {
@@ -845,7 +846,7 @@ export default class Trancelate extends Singleton {
             info['y'] += 5;
         }
         
-        info['playerPoint'] = this.getScenePosition(new cc.Vec3(info['x'], info['y']));
+        info['playerPoint'] = GridController.getInstance().getScenePosition(new cc.Vec3(info['x'], info['y']));
         
         n = data.readUint8();
         info['dir'] = n >> 5 & 0x07;
@@ -958,7 +959,7 @@ export default class Trancelate extends Singleton {
                 
                 info.passFaul.stopX = data.readUint8();
                 info.passFaul.stopY = data.readUint8();
-                info.passFaul.stopFact = this.getScenePosition(new cc.Vec3(info.passFaul.stopX, info.passFaul.stopY, MatchConfig.BALL_HEIGHT));
+                info.passFaul.stopFact = GridController.getInstance().getScenePosition(new cc.Vec3(info.passFaul.stopX, info.passFaul.stopY, MatchConfig.BALL_HEIGHT));
                 info.passFaul.stopRound = this.readRound(data);
                 break;
             case CountPlayerType.shoot:
@@ -1020,36 +1021,6 @@ export default class Trancelate extends Singleton {
         
         return pp;
     };
-    /**
-     * 通过对应格子坐标计算出屏幕上的绝对坐标
-     * @param vec 分别横纵高坐标
-     * @6.3:缩放比率
-     */	
-    getScenePosition(vec)
-    {
-        /**
-         * 缩放比率
-         */
-        var dx = (vec.x - MatchConfig.GroundWidth/2) * 10.28;
-        var dy = vec.z;
-        var dz = (MatchConfig.GroundHeight/2 - vec.y) * 30.1;
-        
-        /**
-         * X轴旋转
-         */
-        let p = this.round(new cc.Vec2(dy, dz), 7.2);
-        dy = p.x;
-        dz = p.y;
-        
-        //todo 需要做坐标转换
-        //let tar = sp.local3DToGlobal(new cc.Vec3(dx,dy,dz)); 
-        let tar = new cc.Vec3(dx,dy,dz);
-
-        // tar.x = (tar.x + cc.winSize.width/2) - LayerManager.delX/2;
-        // tar.y = (tar.y + cc.winSize.height/2) - LayerManager.delY/2;
-
-        return tar;
-    };
 
     pass(obj,data)
     {
@@ -1066,13 +1037,13 @@ export default class Trancelate extends Singleton {
         
         obj.startY = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.startX, obj.startY, MatchConfig.BALL_HEIGHT));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.startX, obj.startY, MatchConfig.BALL_HEIGHT));
         
         obj.endX = data.readUint8();
         
         obj.endY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY, MatchConfig.BALL_HEIGHT));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY, MatchConfig.BALL_HEIGHT));
     };
     
     /**
@@ -1111,7 +1082,7 @@ export default class Trancelate extends Singleton {
         
         obj.assitant = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.shootX, obj.shootY));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.shootX, obj.shootY));
     };
     
     foulShoot (obj,data)
@@ -1137,7 +1108,7 @@ export default class Trancelate extends Singleton {
         
         obj.shootY = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.shootX, obj.shootY));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.shootX, obj.shootY));
     };
     
     reboundOutside (obj,data)
@@ -1148,7 +1119,7 @@ export default class Trancelate extends Singleton {
         
         obj.endY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY));
     };
     
     reboundFreeBall (obj,data)
@@ -1159,7 +1130,7 @@ export default class Trancelate extends Singleton {
         
         obj.endY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY));
         
         obj.getBallCid = data.readUint8();
         
@@ -1171,7 +1142,7 @@ export default class Trancelate extends Singleton {
         
         obj.getBallY = data.readUint8();
         
-        obj.getBallFact = this.getScenePosition(new cc.Vec3(obj.getBallX, obj.getBallY));
+        obj.getBallFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.getBallX, obj.getBallY));
     };
     
     rebound(obj,data)
@@ -1184,7 +1155,7 @@ export default class Trancelate extends Singleton {
         
         obj.targetY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.targetX, obj.targetY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.targetX, obj.targetY));
     };
     
     blockFree (obj,data)
@@ -1193,7 +1164,7 @@ export default class Trancelate extends Singleton {
         
         obj.startY = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.startX, obj.startY));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.startX, obj.startY));
         
         obj.endRound = this.readRound(data);
         
@@ -1201,7 +1172,7 @@ export default class Trancelate extends Singleton {
         
         obj.endY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY));
         
         var n = data.readUint8();
         
@@ -1215,7 +1186,7 @@ export default class Trancelate extends Singleton {
         
         obj.getBallY = data.readUint8();
         
-        obj.getBallFact = this.getScenePosition(new cc.Vec3(obj.getBallX, obj.getBallY));
+        obj.getBallFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.getBallX, obj.getBallY));
     }
     
     blockOutside (obj,data)
@@ -1224,7 +1195,7 @@ export default class Trancelate extends Singleton {
         
         obj.startY = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.startX, obj.startY));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.startX, obj.startY));
         
         obj.endRound = this.readRound(data);
         
@@ -1250,7 +1221,7 @@ export default class Trancelate extends Singleton {
             obj.endY += this.Outside;
         }
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY));
     };
     
     steal(obj,data)
@@ -1265,13 +1236,13 @@ export default class Trancelate extends Singleton {
         
         obj.targetY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.targetX, obj.targetY));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.targetX, obj.targetY));
         
         obj.stealX = data.readUint8();
         
         obj.stealY = data.readUint8();
         
-        obj.stealFact = this.getScenePosition(new cc.Vec3(obj.stealX, obj.stealY));
+        obj.stealFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.stealX, obj.stealY));
     }
     
     offSide (obj,data)
@@ -1286,13 +1257,13 @@ export default class Trancelate extends Singleton {
         
         obj.startY = data.readUint8();
         
-        obj.startFact = this.getScenePosition(new cc.Vec3(obj.startX, obj.startY, MatchConfig.BALL_HEIGHT));
+        obj.startFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.startX, obj.startY, MatchConfig.BALL_HEIGHT));
         
         obj.endX = data.readUint8();
         
         obj.endY = data.readUint8();
         
-        obj.endFact = this.getScenePosition(new cc.Vec3(obj.endX, obj.endY, MatchConfig.BALL_HEIGHT));
+        obj.endFact = GridController.getInstance().getScenePosition(new cc.Vec3(obj.endX, obj.endY, MatchConfig.BALL_HEIGHT));
     }
 
     readRound(data)

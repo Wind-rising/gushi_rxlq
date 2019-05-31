@@ -90,7 +90,7 @@ export default class MatchControllor extends Singleton {
     
     //获取比赛数据
     //发送比赛请求
-        public onStart(){
+    public onStart(){
         let vo = {};
         if(this._matchType == MatchType.NORMAL_MATCH){
             vo['action'] = URLConfig.Post_Regular_Fight;
@@ -236,3 +236,5 @@ export default class MatchControllor extends Singleton {
         // MatchBG.getInstance().show();
     }
 }
+
+MatchControllor.getInstance();

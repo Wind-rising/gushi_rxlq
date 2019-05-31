@@ -72,12 +72,12 @@ export default class XUtil {
     
     /**获取有效舞台宽度*/
     public static getStageWidth(width:number):number{
-        return Math.min(width, 1400);
+        return Math.min(width, 1136);
     }
     
     /**获取有效舞台高度*/
     public static getStageHeight(height:number):number{
-        return Math.min(height, 700);
+        return Math.min(height, 640);
     }
     
     

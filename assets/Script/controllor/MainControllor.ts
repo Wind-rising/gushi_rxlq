@@ -66,8 +66,7 @@ export default class MainControllor extends cc.Component {
                 this.startGame();
             });
         }else{//创建球队
-            Utils.showDialog('MatchBG')
-            Utils.showDialog('CreateLogoView');
+            Utils.showDialog('login/CreateRoleView');
             
         }
     };

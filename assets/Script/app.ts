@@ -48,13 +48,6 @@ export default class app extends cc.Component {
 
     onLoad () {
         cc.game.addPersistRootNode(this.node);
-
-        /** 初始化单例类，暂时写在这里，有时间改成通过模板解决 */
-        PlayerListData.getInstance().init();
-        ManagerLvData.getInstance().init();
-        ErrMsg.getInstance().init();
-        ItemData.init();
-        CountSkillType.getInstance().init();
     }
 
     start () {

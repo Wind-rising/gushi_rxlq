@@ -114,6 +114,7 @@ export default class PlayerNode extends cc.Component {
         
         if(move == true)
         {
+            this.node.stopAllActions();
             this.node.runAction(cc.moveTo(MatchConfig.MoveLive,this._info['match'][round]['playerPoint']));
         }
         else
@@ -445,7 +446,7 @@ export default class PlayerNode extends cc.Component {
      */
     public excuteAction(value:string):void
     {
-        cc.log('播放球员动画 value = ' + value);
+        //cc.log('播放球员动画 value = ' + value);
         // if(this._head == null || _skin == null || _cloth == null)
         // {
         //     return;
@@ -660,5 +661,52 @@ export default class PlayerNode extends cc.Component {
         // _skillMc.y = -_skillMc.height/2;
         
         // _skillMc.addEventListener(Event.ENTER_FRAME, skillFrame);
+    }
+    /**
+     * 添加球员头上的弹出框
+     */
+    public addTalk(value:String):void
+    {
+        // mc.talkContent.text = value;
+        
+        // mc.y = -155;
+        // mc.x = -120;
+        
+        // this.addChild(mc);
+        
+        // _tween = TweenLite.to(mc, MatchConfig.Living, {onCompleteParams:[mc, this], onComplete:
+        //     function(value:MovieClip, player:Player):void
+        //     {
+        //         TweenLite.killTweensOf(this, true);
+                
+        //         //_tween.kill();
+        //         //_tween = null;
+                
+        //         if(player.contains(value))
+        //         {
+        //             player.removeChild(value);
+        //         }
+        //     }
+        // })
+        
+    }
+
+    public restart():void
+    {
+        // if(_head && _cloth && _skin)
+        // {
+        //     _head.player.play();
+        //     _cloth.player.play();
+        //     _skin.player.play();
+        // }
+        
+        // if(_skillMc)
+        // {
+        //     if(_skillMc.player)
+        //     {
+        //         _skillMc.player.play();
+        //     }
+        // }
+        // _shadow.start();
     }
 }

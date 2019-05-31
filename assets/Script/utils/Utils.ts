@@ -1,4 +1,7 @@
-
+/**
+ * 全局公用方法，集合，全部使用静态方法，
+ * 方便调用，不涉及游戏逻辑，只做算法相关
+ */
 const {ccclass, property} = cc._decorator;
 
 import URLConfig from "../config/URLConfig";
@@ -8,7 +11,7 @@ import ItemData from "../data/ItemData";
 import { promises } from "fs";
 
 @ccclass
-export default class Utils {
+export default class Utils extends cc.Component {
     
     public static showDialog(name:String,args:{
         pos?:cc.Vec2,
@@ -40,7 +43,7 @@ export default class Utils {
         });
     };
     /**
-     * 此方法不再使用，
+     * 此方法不再使用，用showAlert 和 showConfirm 替代
      * @param String content 
      * @param String title
      * @param function onOk
@@ -287,7 +290,7 @@ export default class Utils {
     }
 
     /**
-     * 体力计算公式，叫复杂
+     * 体力计算公式，复杂
      * @param pid 球员PID
      * @param teamList 球员阵型列表
      * @section 节数

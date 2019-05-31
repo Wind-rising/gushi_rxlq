@@ -8,6 +8,10 @@ export default class PlayerListData extends Singleton{
     private _data:Object;
     private URL:String = "Dic_player_chs";
 
+    constructor(){
+        super();
+        this.init();
+    }
     public init():void{
         Events.getInstance().addListener('EventJsonDataLoaded',function(name,data){
             if(name == this.URL){

@@ -16,6 +16,10 @@ import CountMessageType from "../../data/type/CountMessageType";
 import CountSkillType from "../../data/CountSkillType";
 import CustomCurving from "../../libs/CustomControl/CustomCurving";
 import CustomCurveTo from "../../libs/CustomControl/CustomCurveTo";
+import LanConfig from "../../config/LanConfig";
+import GridController from "../../controllor/GridController";
+import SoundManager from "../../manager/SoundManager";
+import SoundConfig from "../../config/SoundConfig";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,9 +42,13 @@ export default class CompetitionView extends cc.Component {
     private competitionUI:CompetitionUI = null;
     private competitionMap:CompetitionMap = null;
     /** 左右篮网 */
-    private _leftNet = null;
-    private _rightNet = null;
+    private left_net:cc.Animation = null;
+    private right_net:cc.Animation = null;
 
+    public static curve:number = 1;
+	public static ground:number = 2;
+
+    public _spePass:number;
 
     /** 篮球 */
     private ballNode:BallNode = null;
@@ -73,6 +81,12 @@ export default class CompetitionView extends cc.Component {
     /** 得分情况 */
     private _score:Object = null;
 
+    /** 临时保存时间间隔 */
+    private _timeInterval = 0;
+
+    /** 比赛继续情况 */
+    private _pauseCompetition:boolean = false;
+
     /** 获取当前节己方球员数据 */
     public get enterHomePlayer () {
         return this.controller.data['enterHomePlayer'][this._curQuater];
@@ -94,13 +108,14 @@ export default class CompetitionView extends cc.Component {
         this._speed = 1;
         this._step = 0;
         this._score = {};
+        this._timeInterval = 0;
 
         /** 保存UI节点 */
         this.competitionUI = this.node.getChildByName('count_ui').getComponent(CompetitionUI);
         this.competitionMap = this.node.getChildByName('count_map').getComponent(CompetitionMap);
 
-        
-        this.initPlayer();
+        this.left_net = this.node.getChildByName('count_map').getChildByName('left_net').getComponent(cc.Animation);
+        this.right_net = this.node.getChildByName('count_map').getChildByName('right_net').getComponent(cc.Animation);
     }
 
     onDestroy () {
@@ -110,7 +125,7 @@ export default class CompetitionView extends cc.Component {
     }
 
     start () {
-
+        this.initPlayer();
     }
 
     onEnable () {
@@ -124,6 +139,15 @@ export default class CompetitionView extends cc.Component {
     }
     
     update (dt) {
+        if(this._pauseCompetition){
+            return;
+        }
+        this._timeInterval += dt;
+        if(this._timeInterval < MatchConfig.Living){
+            return;
+        }
+        this._timeInterval -= MatchConfig.Living;
+
         //TODO:
         /** 什么时候开始正式执行 */
 
@@ -143,6 +167,12 @@ export default class CompetitionView extends cc.Component {
             
             return;
         }
+
+        if(this._obj)
+        {
+            //dispatch(EventConst.CHANGE_STEP);
+            this.roundChange();
+        }
         
         //处理回合信息
         this.processRoundInfo();
@@ -159,9 +189,636 @@ export default class CompetitionView extends cc.Component {
 
         this.initCountPlayer();
 
-        //competitionUI.showTime(this.data['homeName'], this.data['awayName'], this.data['homeLogo'], this.data['awayLogo']);
+        this.competitionUI.showTime(this.data['homeName'], this.data['awayName'], this.data['homeLogo'], this.data['awayLogo']);
 
         this.updatePlayerList();
+    }
+
+    //根据当前的状态处理动作
+    private roundChange():void
+    {
+        if(this._speStep == this._step)
+        {
+            this._inShoot = false;
+            
+            switch(this._obj['type'])
+            {
+                case CountPlayerType.none:
+                case CountPlayerType.reboundFree:
+                case CountPlayerType.rebound:
+                case CountPlayerType.slamDunk:
+                case CountPlayerType.blockFree:
+                case CountPlayerType.blockOutside:
+                    //在投篮后立刻被处理，不需要后续处理
+                    //灌篮在前面直接处理
+                    break;
+                case CountPlayerType.passSuss:
+                    this.processPass(this._obj['pass'], this.clearOjb.bind(this));
+                    break;
+                case CountPlayerType.passFail:
+                    this.processPassFaul(this._obj['passFaul'], this.clearOjb.bind(this));
+                    break;
+                case CountPlayerType.shoot:
+                    this._inShoot = true;
+                    this.processShoot(this._obj, this.clearOjb.bind(this))
+                    break;
+                case CountPlayerType.foulShoot:
+                    this.processFoul(this._obj);
+                    break;
+                case CountPlayerType.reboundOutside:
+                    //processBlockOut(_obj.blockOutside);
+                    //to-do
+                    break;
+                case CountPlayerType.steal:
+                    this.processSteal(this._obj['steal'], this.clearOjb.bind(this));
+                    break;
+                case CountPlayerType.openBall:
+                    this.processPass(this._obj['offSide'], this.clearOjb.bind(this));
+                    break;
+            }
+        }
+    }
+
+    public restart():void
+    {
+        // if(_timer && _timer.running == false)
+        // {
+        //     _timer.start();
+        // }
+        
+        for(let i = 0; i < this.playerList.length;i++)
+        {
+            this.playerList[i].restart();
+        }
+        this._pauseCompetition = false;
+    }
+
+    //盖帽自由球
+    private processBlockFree(obj:Object):void
+    {
+        this.ballNode.show = true;
+        
+        this.ballNode.node.setPosition(obj['startFact']);
+        this.ballNode.node.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
+            ()=>{
+                this.ballNode.show = false;
+            }
+        )));
+    }
+
+    //盖帽
+    private processBlockOut(obj:Object):void
+    {
+        this.ballNode.show = true;
+        
+        this.ballNode.node.setPosition(obj['startFact']);
+
+        this.ballNode.node.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
+            ()=>{
+                this.ballNode.show = false;
+
+                this._pauseCompetition = true;
+                this.competitionUI.showFoul(this.restart.bind(this));
+            }
+        )));
+    }
+
+    //处理每个球员的实时得分情况
+    private showPlayerInfo(obj:Object):void
+    {
+        this.competitionUI.showScore(MatchConfig.PlayerInfo[obj['shootCid']], obj);
+    }
+
+    //投篮
+    private processShoot(shoot:Object, fun:Function):void
+    {
+        var obj:Object = shoot['shoot'];
+        var tem:Object;
+        var player:PlayerNode;
+        
+        var data:Object = {};
+        data['shootNum'] = 1;
+        data['pid'] = this.findPlayerByCid(obj['shootCid']);
+        data['side'] = obj['shootSide'];
+        data['shootCid'] = obj['shootCid'];
+        if(obj['assitant'] < 255)
+        {
+            data['ass'] = obj['assitant'];
+            data['assPid'] = this.findPlayerByCid(obj['assitant']);
+        }
+        
+        if(obj['isFoul'] != 0)
+        {
+            SoundManager.play(SoundConfig.COUNT_FOUL, 1.2, 0, 1);
+            
+            this._pauseCompetition = true;
+            this.competitionUI.showFoul(this.restart.bind(this));
+        }
+        
+        var end:cc.Vec2;
+        
+        this.ballNode.show = true;
+
+        this.ballNode.node.setPosition(GridController.getInstance().getScenePosition(new cc.Vec3(obj['shootX'], obj['shootY'])));
+        
+        //说明被盖帽
+        if(obj['isGoal'] == 0 && obj['isBlock'] != 0)
+        {
+            tem = this.data['matchInfo'][shoot['nextRound']];
+            
+            if(tem['type'] == CountPlayerType.blockFree)
+            {	
+                this.processBlockFree(tem['blockFree']);
+            }
+            else
+            {
+                this.processBlockOut(tem['blockOutside']);
+            }
+            
+            for(let i = 0;i<this.playerList.length;i++)
+            {
+                let player = this.playerList[i];
+                if(obj['blockCid'] == player.info['cid'])
+                {
+                    player.addTalk(LanConfig.block[MatchConfig.MatchTalk%LanConfig.block.length]);
+                    
+                    MatchConfig.MatchTalk++;
+                    break;
+                }
+            }
+            this.competitionUI.updateSingleInfo(data);
+            return;
+        }
+        
+        this.competitionMap.moveToSeeBall(obj['shootSide']);
+
+        this.ballNode.addComponent(CustomCurving).curveTo(new cc.Vec2(obj['shootX'], obj['shootY'])
+            ,this.getEndPoint(obj['shootSide'])
+            ,obj['endRound'] - this._step,true,true,(point:cc.Vec2)=>{
+                if(obj['isFoul'] != 0)
+                {
+                    this._pauseCompetition = true;;
+                    
+                    this.ballNode.show = false;
+                }
+
+                //进球
+                if(obj['isGoal'] != 0)
+                {
+                    SoundManager.play(SoundConfig.COUNT_SHOOT, 1.2, 0, 1);
+                    
+                    data['shoot']=1;
+                    
+                    this.competitionUI.updateSingleInfo(data);
+                    
+                    for(let i = 0;i<this.playerList.length;i++)
+                    {
+                        let player = this.playerList[i];
+                        if(obj['shootCid'] == player.info['cid'])
+                        {
+                            if(player.info['match'][shoot['round']].state == PlayerActionType.shot)
+                            {
+                                player.addTalk(LanConfig.shoot[MatchConfig.MatchTalk%LanConfig.shoot.length]);
+                                
+                                MatchConfig.MatchTalk++;
+                                
+                                player.info['score'] += 2;
+                            }
+                            else
+                            {
+                                player.addTalk( LanConfig.threeShoot[MatchConfig.MatchTalk%LanConfig.threeShoot.length]);
+                                
+                                MatchConfig.MatchTalk++;
+                                
+                                player.info['score'] += 3;
+                            }
+                            
+                            break;
+                        }
+                    }
+                    
+                    if(obj['isBlock'] == PlayerSide.Home)
+                    {
+                        this.competitionUI.updateScore(obj['score'], 0);
+                    }
+                    else
+                    {
+                        this.competitionUI.updateScore(0, obj['score']);
+                    }
+                    
+                    this.showPlayerInfo(obj);
+                    
+                    this.ballNode.show = false;
+                    var mc:cc.Animation;
+                    if(obj['shootSide'] == PlayerSide.Home)
+                    {
+                        mc = this.right_net;
+                    }
+                    else
+                    {
+                        mc = this.left_net;
+                    }
+                    
+                    this._pauseCompetition = true;
+                    
+                    mc.play();
+                    mc.on('stop',()=>{
+                        this._inShoot = false;
+                        this.restart();
+                    });
+                }else
+                {
+                    data['shoot'] = 0;
+                    
+                    this._inShoot = false;
+                    
+                    this.competitionUI.updateSingleInfo(data);
+                    
+                    SoundManager.play(SoundConfig.COUNT_NO_SHOOT, 1.2, 0, 1);
+                    
+                    if(this._messagetype == CountMessageType.noSkillShootGoal)
+                    {
+                        this._messagetype = CountMessageType.noSkillShootNoGoal;
+                    }
+                    else if(this._messagetype == CountMessageType.skillShootGoal)
+                    {
+                        this._messagetype = CountMessageType.skillShootNoGoal;
+                    }
+                    else if(this._messagetype == CountMessageType.noSkillThreeGoal)
+                    {
+                        this._messagetype = CountMessageType.noSkillThreeNoGoal;
+                    }
+                    else if(this._messagetype == CountMessageType.noSkillShootGoal)
+                    {
+                        this._messagetype = CountMessageType.skillThreeNoGoal;
+                    }
+                    
+                    if(obj['isGoal'] == 0)
+                    {
+                        for(let j = 0;j<this.playerList.length;j++)
+                        {
+                            let player = this.playerList[j];
+                            if(obj['shootCid'] == player.info['cid'])
+                            {
+                                player.addTalk( LanConfig.noShoot[MatchConfig.MatchTalk%LanConfig.noShoot.length]);
+                                
+                                MatchConfig.MatchTalk++;
+                                break;
+                            }
+                        }
+                    }
+                    //由于投篮需要篮球立刻做出反应，所以matchProcess里面的数据可能要提前执行
+                    tem = this.data['matchInfo'][shoot['nextRound']];
+                    
+                    if(tem == null)
+                    {
+                        return;
+                    }
+                    
+                    if(tem['type'] == CountPlayerType.none)
+                    {	
+                        for(let i = 0;i<this.playerList.length;i++)
+                        {
+                            let player = this.playerList[i];
+                            if(obj['shootCid'] == player.info['cid'])
+                            {
+                                this.competitionUI.showMessage(player.data['Pid']);
+                                
+                                break;
+                            }
+                        }
+                        return;
+                    }
+                    
+                    if(tem['type'] == CountPlayerType.reboundFree)
+                    {
+                        //篮板自由球
+                        if((tem['reboundFreeBall']['endRound'] - this._step) <= 3)
+                        {
+                            this.ballNode.node.runAction(cc.sequence(
+                                cc.moveTo(MatchConfig.Living * (tem['reboundFreeBall']['endRound'] - this._step),tem['reboundFreeBall']['endFact']),
+                                cc.callFunc(()=>{
+                                    this.ballNode.show = false;
+                                })
+                            ));
+                        }
+                        else
+                        {
+                            this.ballNode.addComponent(CustomCurveTo).curveTo(point
+                                , new cc.Vec2(tem['reboundFreeBall']['endX'],tem['reboundFreeBall']['endY'])
+                                ,tem['reboundFreeBall']['endRound'] - this._step - 1
+                                ,()=>{
+                                    this.ballNode.show = false;
+                                });
+                        }
+                    }
+                    else if(tem['type'] == CountPlayerType.rebound)
+                    {
+                        this._messagetype = CountMessageType.rebound;
+                        
+                        for(let i = 0;i<this.playerList.length;i++)
+                        {
+                            let player = this.playerList[i];
+                            if(tem['rebound']['getBallCid'] == player.info['cid'])
+                            {
+                                this.competitionUI.showMessage(player.data['Pid']);
+                                
+                                //特效
+                                //player.rebEffect = MatchConfig.MatchResource[ResourceType.rebEffect];
+                                player.inReboundAction = PlayerActionType.attack_rebounds;
+                                
+                                var data1:Object = {};
+                                data1['rebound'] = 1;
+                                data1['cid'] = tem['rebound']['getBallCid'];
+                                data1['pid'] = this.findPlayerByCid(tem['rebound']['getBallCid']);
+                                
+                                this.competitionUI.updateSingleInfo(data1);
+                                break;
+                            }
+                        }
+                        
+                        //抢篮板回合rebounds_noBall
+                        this.ballNode.addComponent(CustomCurveTo).curveTo(point
+                            ,new cc.Vec2(tem['rebound']['targetX'], tem['rebound']['targetY'])
+                            ,tem['rebound']['reboundEndRound'] - this._step + 5
+                            ,()=>{
+                                this.ballNode.show = false;
+                            });
+                        
+                        return;
+                    }
+                }
+                //showMessage();
+                for(let i = 0;i<this.playerList.length;i++)
+                {
+                    let player = this.playerList[i];
+                    if(obj['shootCid'] == player.info['cid'])
+                    {
+                        this.competitionUI.showMessage(player.data['Pid']);
+                        
+                        break;
+                    }
+                }
+            });
+    }
+
+    //盗球
+    private processSteal(obj:Object, fun:Function):void
+    {
+        var player:PlayerNode
+        
+        for(let i = 0;i< this.playerList.length;i++)
+        {
+            let player = this.playerList[i];
+            if(obj['stealCid'] == player.info['cid'])
+            {
+                player.addTalk(LanConfig.steal[MatchConfig.MatchTalk%LanConfig.steal.length]);
+                
+                MatchConfig.MatchTalk++;
+                break;
+            }
+        }
+        
+        this.ballNode.node.active = true;
+        
+        this.ballNode.node.setPosition(obj['stealFact']);
+        
+        this.addBallOnGround(obj['endRound'] - this._step, obj['stealFact'], obj['endFact'], fun);
+    }
+
+    /**
+     * 添加球在地上滚的动画
+     * round:表示滚的回合数
+     * pos:表示滚动的结束位置
+     */
+    private addBallOnGround(round:number, start:cc.Vec2, end:cc.Vec2, fun:Function=null):void
+    {
+        
+        this.ballNode.addComponent(CustomCurving).curveTo(
+            start,
+            end,
+            round,
+            true,
+            false,
+            ()=>{
+                this.ballNode.show = false;
+                if(fun != null)
+                {
+                    fun();
+                }
+            }
+        );
+    }
+
+    //传球失误
+    private processPassFaul(obj:Object, fun:Function):void
+    {
+        var player:PlayerNode
+        
+        for(let i = 0;i< this.playerList.length;i++)
+        {
+            let player = this.playerList[i];
+            if(obj['getBallCid'] == player.info['cid'])
+            {
+                player.addTalk(LanConfig.keepOff[MatchConfig.MatchTalk%LanConfig.keepOff.length]);
+                
+                MatchConfig.MatchTalk++;
+                break;
+            }
+        }
+        
+        //传球不成功
+        if(obj['passCid'] > 99)
+        {	
+            this.ballNode.passPos(this.data['awayPlayerInfo'][obj['passCid']%100].match[this._step].dir, -100, obj['startFact'], obj['stopFact'], (obj['endRound'] - this._step)/2, 
+                ()=>
+                {
+                    this.addBallOnGround(obj['endRound'] - this._step, obj['stopFact'], obj['endFact'], fun);
+                }
+            );
+        }
+        else
+        {
+            this.ballNode.passPos(this.data['homePlayerInfo'][obj['passCid']].match[this._step].dir, -100, obj['startFact'], obj['stopFact'], (obj['endRound'] - this._step)/2, 
+                ()=>
+                {
+                    this.addBallOnGround(obj['endRound'] - this._step, obj['stopFact'], obj['endFact'],fun);
+                }
+            );
+        }
+    }
+
+    //传球
+    private processPass(obj:Object, fun:Function):void
+    {
+        if(this.data['matchInfo'][obj['endRound']] && this.data['matchInfo'][obj['endRound']].interuption != 0)
+        {
+            return;
+        }
+        
+        if(this._spePass == 0)
+        {
+            if(obj['passCid'] > 99)
+            {
+                this.ballNode.passPos(this.data['awayPlayerInfo'][obj['passCid']%100].match[this._step].dir, 
+                    this.data['awayPlayerInfo'][obj['getBallCid']%100]['match'][obj['endRound']]['dir'], 
+                    obj['startFact'], obj['endFact'], obj['endRound'] - this._step, fun);
+            }
+            else
+            {
+                this.ballNode.passPos(this.data['homePlayerInfo'][obj['passCid']]['match'][this._step]['dir'], 
+                    this.data['homePlayerInfo'][obj['getBallCid']]['match'][obj['endRound']]['dir'], 
+                    obj['startFact'], obj['endFact'], obj['endRound'] - this._step, fun);
+            }
+        }
+        else
+        {
+            this.ballNode.node.active = true;
+            
+            if(this._spePass == CompetitionView.ground)
+            {
+                this.addBallOnGround(obj['endRound'] - this._step, obj['startFact'], obj['endFact'], 
+                    function():void
+                    {	
+                        this.ballNode.node.active = false;
+                    }
+                )
+                
+                this._spePass = 0;
+            }
+            else
+            {
+                //MovingController.getInstance().curveTo(new Point(obj.startX, obj.startY), new Point(obj.endX, obj.endY), _ball, obj.endRound - _step, false, null, true);
+            }
+        }
+        
+    }
+    
+    //犯规
+    private processFoul(foul:Object):void
+    {	
+        var obj:Object = foul['foul'];
+        
+        //罚球动作做偏移
+        if(this.getEndPoint(obj['shootSide']).x == MatchConfig.LeftNet.x)
+        {
+            obj['shootX'] -= 8;
+        }
+        else
+        {
+            obj['shootX'] += 8;
+        }
+        
+        this.ballNode.node.setPosition(obj['startFact']);
+        
+        this.ballNode.show = true;
+
+        this.ballNode.addComponent(CustomCurving).curveTo(
+            new cc.Vec2(obj['shootX'],obj['shootY'])
+            ,this.getEndPoint(obj['shootSide'])
+            ,obj['endRound'] - this._step
+            ,true
+            ,false
+            ,(point:cc.Vec2)=>{
+                //进球
+                if(obj['isGoal'] != 0)
+                {	
+                    SoundManager.play(SoundConfig.COUNT_SHOOT, 1.2, 0, 1);
+
+                    this.ballNode.show = false;
+                    
+                    if(obj['originSide'] == PlayerSide.Home)
+                    {
+                        this.competitionUI.updateScore(obj['score'], 0);
+                    }
+                    else
+                    {
+                        this.competitionUI.updateScore(0, obj['score']);
+                    }
+                    
+                    this.showPlayerInfo(obj);
+                    
+                    var mc;
+                    this._inShoot = true;
+                    if(obj['shootSide'] == PlayerSide.Home)
+                    {
+                        mc = this.right_net;
+                    }
+                    else
+                    {
+                        mc = this.left_net;
+                    }
+                    
+                    this._pauseCompetition = true;
+                    mc.play();
+                    mc.on('stop',()=>{
+                        this._inShoot = false;
+                        this.restart();
+                    });
+                }
+                else
+                {
+                    SoundManager.play(SoundConfig.COUNT_NO_SHOOT, 1.2, 0, 1);
+                    
+                    var tem:Object = this.data['matchInfo'][foul['nextRound']];
+                    
+                    if(tem['type'] == CountPlayerType.reboundFree)
+                    {
+                        //篮板自由球
+                        if((tem['reboundFreeBall']['endRound'] - this._step) <= 3)
+                        {
+                            this.ballNode.node.runAction(cc.sequence(
+                                cc.moveTo(MatchConfig.Living * (tem['reboundFreeBall']['endRound'] - this._step),tem['reboundFreeBall']['endFact'])
+                                ,cc.callFunc(()=>{
+                                    this.ballNode.show = false;
+                                })
+                            ));
+                        }
+                        else
+                        {
+                            this.ballNode.addComponent(CustomCurveTo).curveTo(
+                                point,
+                                new cc.Vec2(tem['reboundFreeBall']['endX'],tem['reboundFreeBall']['endY']),
+                                tem['reboundFreeBall']['endRound'] - this._step - 1,
+                                ()=>{
+                                    this.ballNode.show = false;
+                                }
+                            )
+                        }
+                    }
+                    else if(tem['type'] == CountPlayerType.rebound)
+                    {
+                        //抢篮板回合rebounds_noBall
+                        this.ballNode.addComponent(CustomCurveTo).curveTo(
+                            point,
+                            new cc.Vec2(tem['rebound']['targetX'], tem['rebound']['targetY']),
+                            tem['rebound']['reboundEndRound'] - this._step + 2,
+                            ()=>{
+                                this.ballNode.show = false;
+                            }
+                        );
+                    }
+                    else if(tem['type'] == CountPlayerType.foulShoot)
+                    {
+                        this.ballNode.addComponent(CustomCurveTo).curveTo(
+                            point,
+                            new cc.Vec2(tem['foul']['shootX'], tem['foul']['shootY']),
+                            5,
+                            ()=>{
+                                this.ballNode.show = false;
+                            }
+                        );
+                    }
+                    
+                }
+            }
+        );
+    }
+
+    private clearOjb():void
+    {
+        this._obj = null;
+        this._speStep = 0;
     }
 
     /** 当正在投篮的时候无法立即结束比赛，延迟10秒等投篮结束再结束 */
@@ -184,13 +841,13 @@ export default class CompetitionView extends cc.Component {
             }
         }
         
-        //SoundManager.play(SoundConfig.COUNT_END_QUALTER, 1, 0, 1);
+        SoundManager.play(SoundConfig.COUNT_END_QUALTER, 1, 0, 1);
         
         this.node.pauseAllActions();
         
         this._score = null;
         
-        //SoundManager.stopAll();
+        SoundManager.stopAll();
         
         this._inPause = false;
         
@@ -230,7 +887,7 @@ export default class CompetitionView extends cc.Component {
         }
         
         //计算球场镜头位置
-        //CameraController.getInstance().speMove(_step, _playerList);
+        this.competitionMap.speMove(this._step, this.playerList);
         
         this.updatePlayerList();
         
@@ -247,6 +904,7 @@ export default class CompetitionView extends cc.Component {
         //     //处理天赋
         //     CountComposeController.instace.showCompose(_match, _curQuater, _playerList, restart);
         // }
+        this.restart();
     }
 
     /**
@@ -255,7 +913,7 @@ export default class CompetitionView extends cc.Component {
     private processRoundInfo():void
     {	
         /** 移动摄像头 */
-        //CameraController.getInstance().move(_step, _playerList);
+        this.competitionMap.move(this._step, this.playerList);
         
         var i:number;
         
@@ -269,6 +927,10 @@ export default class CompetitionView extends cc.Component {
         //过节比赛
         if(this.data['matchInfo'][this._step] && this.data['matchInfo'][this._step]['interuption'] != 0)
         {
+            this._pauseCompetition = true;
+
+            SoundManager.play(SoundConfig.COUNT_END_QUALTER, 1, 0, 1);
+
             this.ballNode.node.active = false;
             
             this.playerList.forEach( player => {
@@ -280,6 +942,7 @@ export default class CompetitionView extends cc.Component {
                 ()=>
                 {
                     this._curQuater++;
+                    cc.log('this._curQuater++ this._curQuater = ' + this._curQuater)
                     this.updatePlayer();
                     this._step++;
                 }
@@ -463,8 +1126,10 @@ export default class CompetitionView extends cc.Component {
 
     /** 比赛结束 清理数据 */
     public endMatch():void
-    {	
+    {
         cc.log('比赛结束，清理数据！');
+        this._pauseCompetition = true;
+        //this.node.destroy();
         // if(MatchConfig.EndMatch != null)
         // {
         //     MatchConfig.EndMatch(MatchConfig.MatchCount);
@@ -555,7 +1220,7 @@ export default class CompetitionView extends cc.Component {
             }
         });
         
-        // this.competitionUI.ListInfo(home, away, _score, _inShowUi);
+        this.competitionUI.ListInfo(home, away, this._score);
     }
 
     /**
@@ -564,7 +1229,7 @@ export default class CompetitionView extends cc.Component {
     private initRound():void
     {
         this.playerList.forEach(player => {
-            player.node.position = cc.Vec2.ZERO;
+            player.setPos(0, false);
             player.doAction(-1);
         });
     }
@@ -725,14 +1390,14 @@ export default class CompetitionView extends cc.Component {
                 
                 if(obj['isFoul'] != 0)
                 {
-                    //pause();
+                    this._pauseCompetition = true;
                     
-                    this.competitionUI.showFoul(this.restart);
+                    this.competitionUI.showFoul(this.restart.bind(this));
                 }
                 
                 if(obj['isGoal'] != 0)
                 {
-                    //SoundManager.play(SoundConfig.COUNT_SLAMDUNK, 1.2, 0, 1);
+                    SoundManager.play(SoundConfig.COUNT_SLAMDUNK, 1.2, 0, 1);
                     
                     data['shoot'] = 1;
                     
@@ -766,33 +1431,36 @@ export default class CompetitionView extends cc.Component {
                     
                     this.competitionUI.showScore(MatchConfig.PlayerInfo[obj['shootCid']], obj);
                     
-                    //pause();
+                    this._pauseCompetition = true;
                     
-                    //TODO: 播放灌篮动画
-                    // var mc
-                    // if(obj['isBlock'] == PlayerSide.Home)
-                    // {
-                    //     mc = this._rightNet;
-                    // }
-                    // else
-                    // {
-                    //     mc = this._leftNet;
-                    // }
-                    
-                    // //SoundManager.play(SoundConfig.COUNT_SHOOT, 1.2, 0, 1);
-                    
-                    // mc.addEventListener(Event.ENTER_FRAME, ballFallFrame);
-                    // mc.gotoAndPlay(1);
+                    // 播放灌篮动画
+                    var mc
+                    if(obj['isBlock'] == PlayerSide.Home)
+                    {
+                        mc = this.right_net;
+                    }
+                    else
+                    {
+                        mc = this.left_net;
+                    }
+                    this._pauseCompetition = true;
+                    mc.play();
+                    mc.on('stop',()=>{
+                        this._inShoot = false;
+                        this.restart();
+                    });
+
+                    SoundManager.play(SoundConfig.COUNT_SHOOT, 1.2, 0, 1);
                 }
                 else
                 {
                     this._inShoot = false;
                     
-                    //SoundManager.play(SoundConfig.COUNT_NO_SLAMDUNK, 1.2, 0, 1);
+                    SoundManager.play(SoundConfig.COUNT_NO_SLAMDUNK, 1.2, 0, 1);
                     
                     data['shoot'] = 0;
                     
-                    //CountUiController.getInstance().updateSingleInfo(data);
+                    this.competitionUI.updateSingleInfo(data);
                     
                     if(this._messagetype == CountMessageType.noSkillSlamdunk)
                     {
@@ -862,19 +1530,6 @@ export default class CompetitionView extends cc.Component {
 
         );
         //被盖帽的话球不需要做处理
-    }
-
-    public restart(e:Event=null):void
-    {
-        // if(_timer && _timer.running == false)
-        // {
-        //     _timer.start();
-        // }
-        
-        // for each(var player:Player in _playerList)
-        // {
-        //     player.restart();
-        // }
     }
     
 }

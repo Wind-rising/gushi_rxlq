@@ -589,3 +589,5 @@ export default class ManagerData extends Singleton {
         this._sid = value;
     }
 }
+
+ManagerData.getInstance();

@@ -85,3 +85,5 @@ export default class GridController extends Singleton {
         return this._pp;
     }
 }
+
+GridController.getInstance();

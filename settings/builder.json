@@ -19,7 +19,7 @@
   "fb-instant-games": {},
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
-  "inlineSpriteFrames_native": true,
+  "inlineSpriteFrames_native": false,
   "md5Cache": false,
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
@@ -35,7 +35,7 @@
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "21602d0e-0eb1-4464-a692-f97a5fae4127",
+  "startScene": "45f8719d-149a-4c3f-a3ec-d79c59341852",
   "title": "client",
   "webOrientation": "auto",
   "wechatgame": {
