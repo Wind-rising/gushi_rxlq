@@ -21,6 +21,8 @@ export default class GameHud extends cc.Component {
     private btn_Player_Strengthen = null;
     @property(cc.Node)
     private btn_Science = null;
+    @property(cc.Button)
+    private btn_Bag = null;
 
     onLoad () {
         Events.getInstance().addListener(EventConst.SHOW_MSG, this.onShowMsg,this,this.EventListenerTag);
@@ -55,6 +57,10 @@ export default class GameHud extends cc.Component {
         this.btn_Science.getComponent(cc.Button).clickEvents.push(
             Utils.bindBtnEvent(this.node,"GameHud","onShowScienceView")
         );
+        
+        this.btn_Bag.clickEvents.push(
+            Utils.bindBtnEvent(this.node,"GameHud","onShowBag")
+        );
     }
 
     /**
@@ -65,6 +71,9 @@ export default class GameHud extends cc.Component {
         //
     }
 
+    public onShowBag(){
+        Utils.showDialog('bag/Bag');
+    }
     public onShowPlayerStrengthenView():void{
         Utils.showDialog('StrengthenView');
     }

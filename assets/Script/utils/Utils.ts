@@ -50,6 +50,7 @@ export default class Utils extends cc.Component {
      * @param function onCancel
      */
     public static alert (content:String,onOk?:Function,args?:any):void {
+        console.log(args,11111111111)
         this.showConfirm(content,onOk,args);
     };
     /**
@@ -87,6 +88,8 @@ export default class Utils extends cc.Component {
                     return;
                 }
                 var alert = cc.instantiate(prefab);
+                console.log(33333333)
+                console.log(args,2222222222)
                 alert.parent = args['parent']||cc.director.getScene();
                 //处理参数
                 alert.getComponent("Alert").confirm(content,onOk,args);
