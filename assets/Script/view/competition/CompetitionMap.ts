@@ -39,6 +39,11 @@ export default class CompetitionMap extends cc.Component {
             }
             this.mapBg.spriteFrame = spriteFrame;
         });
+        /** 两个篮网的位置 */
+        // let pos1 = GridController.getInstance().getScenePosition(new cc.Vec3(10,50,MatchConfig.NetHeight));
+        // let pos2 = GridController.getInstance().getScenePosition(new cc.Vec3(180,50,MatchConfig.NetHeight))
+        // this.node.getChildByName('test1').setPosition(pos1)
+        // this.node.getChildByName('test2').setPosition(pos2)
     }
 
     onDestroy () {

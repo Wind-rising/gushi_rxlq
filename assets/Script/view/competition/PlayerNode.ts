@@ -10,8 +10,13 @@ import Events from "../../signal/Events";
 import MatchConfig from "../../config/MatchConfig";
 import CountSkillType from "../../data/CountSkillType";
 import CountController from "../../controllor/CountController";
+import CompetitionView from "./CompetitionView";
+import SoundManager from "../../manager/SoundManager";
+import SoundConfig from "../../config/SoundConfig";
 @ccclass
 export default class PlayerNode extends cc.Component {
+    private _competitionView:CompetitionView = null;
+
     /** 球员配置数据 */
     private _data:Object = 0;
     /** 球员比赛数据 */
@@ -35,7 +40,24 @@ export default class PlayerNode extends cc.Component {
     protected _direction:number;
 
     /** 实际的球员朝向 */
-	private _factDir:number;
+    private _factDir:number;
+
+    private _dunkStep:number;
+    private DunkRound:number = 6;
+
+    private _filterStep:number;
+
+    private _inActionFrame:boolean = false;
+
+    /** 用于暂时模拟帧动画 */
+    private _skin:Object = {
+        player:{
+            currentFrame:0,
+            totalFrames:20
+        }
+    };
+    /** doaction的回调函数 */
+    private _actionFun:Function;
 
     private _inReboundAction:number;
     private _dunkEndRound:number;
@@ -80,12 +102,22 @@ export default class PlayerNode extends cc.Component {
     start () {
     }
 
-    update (dt) {}
+    update (dt) {
+        if(this._skin['player']['currentFrame'] < this._skin['player']['totalFrames']){
+            this._skin['player']['currentFrame']++;
+        }
+
+        if(this._inActionFrame){
+            this.playerMove();
+        }
+
+    }
 
     /**
      * 初始化数据
      */
-    public init(info:Object,side:number,cloth:number,matchType:number,showId:number){
+    public init(view:CompetitionView,info:Object,side:number,cloth:number,matchType:number,showId:number){
+        this._competitionView = view;
         this._info = info;
         this._side = side;
         this._cloth = cloth;
@@ -111,16 +143,17 @@ export default class PlayerNode extends cc.Component {
         {
             return;
         }
-        
+
+        let endPos = this._info['match'][round]['playerPoint'];
         if(move == true)
         {
             this.node.stopAllActions();
-            this.node.runAction(cc.moveTo(MatchConfig.MoveLive,this._info['match'][round]['playerPoint']));
+            this.node.runAction(cc.moveTo(MatchConfig.MoveLive,endPos.x,endPos.y));
         }
         else
         {
-            this.node.x = this._info['match'][round]['playerPoint'].x;
-            this.node.y = this._info['match'][round]['playerPoint'].y;
+            this.node.x = endPos.x;
+            this.node.y = endPos.y;
         }
     }
 
@@ -128,13 +161,14 @@ export default class PlayerNode extends cc.Component {
      * 
      * @param round 某一节比赛开始
      */
-    public doAction (round:number){
+    public doAction (round:number,fun:Function = null){
         if((this._info['match'][round] && this._info['match'][round].hasModel != 0) || (this._info['skillRes'] && this._info['skillRes'][round]))
         {
             this._direction = this._info['match'][round].dir;
             
             if(this._info['match'][round]['hasModel'] != 0)
             {	
+                /** 获取技能动画并且播放 */
                 // var mc;
                 // if(this._info['match'][round]['model'] >= 191 && this._info['match'][round]['model'] <= 215)
                 // {
@@ -149,6 +183,7 @@ export default class PlayerNode extends cc.Component {
                 // {
                 //     this.processModel(this._info['match'][round]['model'], this._info['match'][round]['dir']);
                 // }
+                this.processModel(this._info['match'][round]['model'], this._info['match'][round]['dir']);
                 
             }
             else
@@ -181,8 +216,8 @@ export default class PlayerNode extends cc.Component {
                             
                             if(array != null && array[0] != null)
                             {
-                                //TODO: 
-                                //CountController.getInstance().processSkill(this._info['skillRes'][round][1], this._info['skillRes'][round][0]);
+                                /** 球星技能，会影响其他球员 */
+                                this._competitionView.processSkill(this._info['skillRes'][round][1], this._info['skillRes'][round][0]);
                             }
                             
                             
@@ -192,6 +227,11 @@ export default class PlayerNode extends cc.Component {
                     return;
                 }
             }
+        }
+
+        if(fun != null)
+        {
+            this._actionFun = fun;
         }
         
         if(this._inAction == true)
@@ -248,36 +288,6 @@ export default class PlayerNode extends cc.Component {
         }
         
         //this.processMcPos(_mc);
-        
-        // if(_shadow)
-        // {
-        //     _shadow.scaleX = _scaleX;
-        //     _shadow.x = _mc.x;
-        //     _shadow.y = _mc.y;
-            
-        //     _shadow.txtPlayerName.scaleX = _scaleX;
-        //     if(_scaleX == -1)
-        //     {
-        //         _shadow.txtPlayerName.x = _mc.width/2 + _shadow.txtPlayerName.width/2;
-                
-        //         //_shadow.cardLevel.x = _shadow.txtPlayerName.width-28;
-        //     }
-        //     else
-        //     {
-        //         _shadow.txtPlayerName.x = 0;
-                
-        //         //_shadow.cardLevel.x = 16;
-        //     }
-            
-        //     if(_action == PlayerActionType.rebounds_noBall)
-        //     {
-        //         _shadow.doAction(PlayerActionType.getActionName(PlayerActionType.attack_rebounds) + _direction);
-        //     }
-        //     else
-        //     {
-        //         _shadow.doAction(_actionName + _direction);
-        //     }
-        // }
         
         //篮板球判断
         if(this._info['match'][round] && this._info['match'][round].state == PlayerActionType.rebounds_noBall)
@@ -355,63 +365,283 @@ export default class PlayerNode extends cc.Component {
     {	
         this._inAction = true;
         
-        // if(this._action == PlayerActionType.jump_ball)
-        // {
-        //     this._inJump = true;
-        // }
-        // else if(this._action == PlayerActionType.slam_dunk || this._action == PlayerActionType.shot || this._action == PlayerActionType.three_point)
-        // {
-        //     this._dunkStep = 0;
+        if(this._action == PlayerActionType.slam_dunk || this._action == PlayerActionType.shot || this._action == PlayerActionType.three_point)
+        {
+            this._dunkStep = 0;
             
-        //     this._filterStep = 0;
-        //     this.removeChild(_mc);
-        //     this._mc.filters = CoolEffect.playerFilter;
-        //     this.addChild(this._mc);
-        // }
-        // else if(this._action == PlayerActionType.outside_ball)
-        // {
-        //     CountController.getInstance().removeNetFrame();
-        // }
-        // else if(this._action == -1 && this._actionName == "rebounds_")
-        // {
-        //     this._filterStep = 0;
-        //     this.removeChild(_mc);
-        //     _mc.filters = CoolEffect.playerFilter;
-        //     this.addChild(_mc);
-        // }
-        // else if(this._action == PlayerActionType.take_ball)
-        // {
-        //     SoundManager.play(SoundConfig.COUNT_GET_BALL, 1, 0, 1);
-        // }
-        // else if(this._action == PlayerActionType.idle_pass || this._action == PlayerActionType.run_pass)
-        // {
-        //     SoundManager.play(SoundConfig.COUNT_PASS_BALL, 1, 0, 1);
-        // }
-        // else if(this._action == PlayerActionType.steal || this._action == PlayerActionType.intercept)
-        // {
-        //     var data:Object = {};
-        //     data.steal = 1;
-        //     data.cid = _info.cid;
-        //     data.pid = _info.pid;
-        //     data.side = _side;
+            this._filterStep = 0;
+        }
+        else if(this._action == PlayerActionType.outside_ball)
+        {
+            //CountController.getInstance().removeNetFrame();
+        }
+        else if(this._action == -1 && this._actionName == "rebounds_")
+        {
+            this._filterStep = 0;
+        }
+        else if(this._action == PlayerActionType.take_ball)
+        {
+            SoundManager.play(SoundConfig.COUNT_GET_BALL, 1, 0, 1);
+        }
+        else if(this._action == PlayerActionType.idle_pass || this._action == PlayerActionType.run_pass)
+        {
+            SoundManager.play(SoundConfig.COUNT_PASS_BALL, 1, 0, 1);
+        }
+        else if(this._action == PlayerActionType.steal || this._action == PlayerActionType.intercept)
+        {
+            var data:Object = {};
+            data['steal'] = 1;
+            data['cid'] = this._info['cid'];
+            data['pid'] = this._info['pid'];
+            data['side'] = this._side;
             
-        //     CountUiController.getInstance().updateSingleInfo(data);
-        // }
+            this._competitionView.updateSingleInfo(data);
+        }
         
-        // if(this._skin == null)
-        // {
-        //     return;
-        // }
-        
-        // //_skin.removeEventListener(Event.ENTER_FRAME, playerMove);
-        // if(this._inActionFrame == false)
-        // {
-        //     this._inActionFrame = true;
-        //     this._skin.addEventListener(Event.ENTER_FRAME, playerMove);
-        // }
+        if(this._inActionFrame == false)
+        {
+            this._inActionFrame = true;
+        }
     }
 
-    private processMcPos(mc):void
+    private playerMove () {
+        /** 更换球员皮肤 */
+        // if((this._action == PlayerActionType.shot || (this._action == -1 && this._actionName == "rebounds_") 
+        //     || this._action == PlayerActionType.slam_dunk || this._action == PlayerActionType.three_point) 
+        //     && _skin.player.currentFrame %3 == 0)
+        // {
+        //     this._filterStep++;
+            
+        //     if(this._filterStep%2 == 1)
+        //     {
+        //         this.removeChild(_mc);
+        //         _mc.filters = null;
+        //         this.addChild(_mc);
+        //     }
+        //     else
+        //     {
+        //         this.removeChild(_mc);
+        //         _mc.filters = CoolEffect.playerFilter;
+        //         this.addChild(_mc);
+        //     }
+        // }
+        
+        
+        //灌篮动作特殊处理
+        if(this._action == PlayerActionType.slam_dunk)
+        {
+            if(this._skin['player']['currentFrame'] == 9)
+            {
+                this._dunkStep++;
+                if(this._dunkStep >= this.DunkRound)
+                {
+                    // _head.player.play();
+                    // _cloth.player.play();
+                    // _skin.player.play();
+                }
+            }
+            else if(this._skin['player']['currentFrame'] == 10)
+            {
+                /** 播放画面抖动 */
+                this._competitionView.moveUpAndDown();
+            }
+            else if(this._skin['player']['currentFrame'] == 13)
+            {
+                this.addDunkEffect();
+            }
+            else if(this._skin['player']['currentFrame'] == 14)
+            {
+                this._dunkStep == 0;
+                
+                // _head.player.stop();
+                // _cloth.player.stop();
+                // _skin.player.stop();
+                
+                this._dunkStep++;
+                if(this._dunkStep >= 3)
+                {
+                    // _head.player.play();
+                    // _cloth.player.play();
+                    // _skin.player.play();
+                }
+            }
+            else if(this._skin['player']['currentFrame'] == 15)
+            {
+                this._dunkStep == 0;
+                
+                // _head.player.stop();
+                // _cloth.player.stop();
+                // _skin.player.stop();
+                
+                this._dunkStep++;
+                if(this._dunkStep >= 12)
+                {
+                    // _head.player.play();
+                    // _cloth.player.play();
+                    // _skin.player.play();
+                    this.node.stopAllActions();
+                    this.node.runAction(cc.moveTo(MatchConfig.Living,this._info['match'][this._dunkEndRound]['playerPoint']));
+                }
+                
+                this.stopAction();
+            }
+        }
+        
+        if(this._action == PlayerActionType.shot || this._action == PlayerActionType.three_point)
+        {
+            if(this._skin['player']['currentFrame'] == 12)
+            {
+                // this.addChild(MatchConfig.MatchResource[ResourceType.shootEffect]);
+                
+                // MatchConfig.MatchResource[ResourceType.shootEffect].gotoAndPlay(1);
+                
+                if(this._factDir == 0)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = 20;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -120;
+                }
+                else if(this._factDir == 1)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = 20;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -120;
+                }
+                else if(this._factDir == 2)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = 7;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -120;
+                }
+                else if(this._factDir == 3)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = -20;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -120;
+                }
+                else if(this._factDir == 4)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = -20;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -120;
+                }
+                else if(this._factDir == 5)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = -2;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -130;
+                }
+                else if(this._factDir == 6)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = -3;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -130;
+                }
+                else if(this._factDir == 7)
+                {
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].x = 2;
+                    
+                    // MatchConfig.MatchResource[ResourceType.shootEffect].y = -130;
+                }
+            }
+            else if(this._skin['player']['currentFrame'] == 13)
+            {
+                // _head.player.stop();
+                // _cloth.player.stop();
+                // _skin.player.stop();
+                
+                this._dunkStep++;
+                
+                if(this._dunkStep == 4)
+                {
+                    // _head.player.play();
+                    // _cloth.player.play();
+                    // _skin.player.play();
+                }
+            }
+        }
+        
+        if(this._action == PlayerActionType.rebounds_noBall || this._action == PlayerActionType.attack_rebounds || this._action == PlayerActionType.defend_rebound)
+        {
+            if(this._skin['player']['currentFrame'] == 6)
+            {
+                this._competitionView.stopBall();
+                // MoveToController.getInstance().stop();
+                
+                // if(_rebEffect && !this.contains(_rebEffect))
+                // {
+                //     _rebEffect.mc.gotoAndPlay(1);
+                    
+                //     this.addChild(_rebEffect);
+                    
+                //     _rebEffect.y = -130;
+                // }
+            }
+        }
+        
+        // if(this._rebEffect)
+        // {
+        //     if(_rebEffect.mc.currentFrame == _rebEffect.mc.totalFrames)
+        //     {
+        //         if(this.contains(_rebEffect))
+        //         {
+        //             this.removeChild(_rebEffect);
+                    
+        //             _rebEffect.mc.gotoAndStop(1);
+        //         }
+                
+        //         _rebEffect = null;
+        //     }
+        // }
+        
+        if(this._skin['player']['currentFrame'] == this._skin['player']['totalFrames'] - 12)
+        {
+            if(this._actionFun != null)
+            {
+                this._actionFun();
+                
+                this._actionFun = null;
+            }
+        }
+        
+        if(this._skin['player']['currentFrame'] == this._skin['player']['totalFrames'])
+        {	
+            this._inActionFrame = false;
+            
+            // if(this.contains(MatchConfig.MatchResource[ResourceType.shootEffect]))
+            // {
+            //     this.removeChild(MatchConfig.MatchResource[ResourceType.shootEffect]);
+            // }
+            
+            this._inActionFrame = false;
+
+            this.stopAction();
+            
+            this.processDir();
+            
+            this.excuteAction(PlayerActionType.getActionName(PlayerActionType.attack_wait) + this._direction);
+            
+            this._inAction = false;
+        }
+    }
+
+    /**
+     * 添加灌篮效果
+     */
+    private addDunkEffect():void
+    {
+        // var mc:MovieClip = MatchConfig.MatchResource[ResourceType.dunkEffect];
+        
+        // this.addChild(mc);
+        
+        // mc.y = -150
+        
+        // mc.gotoAndPlay(1);
+        
+        // mc.addEventListener(Event.ENTER_FRAME, dunkFrame);
+    }
+
+    private processMcPos(mc:cc.Node):void
     {
         // mc.scaleX = this._scaleX;
         
@@ -452,7 +682,7 @@ export default class PlayerNode extends cc.Component {
         //     return;
         // }
         
-        // if(_action == PlayerActionType.rebounds_noBall || _action == PlayerActionType.defend_rebound)
+        // if(this._action == PlayerActionType.rebounds_noBall || this._action == PlayerActionType.defend_rebound)
         // {
         //     _head.gotoAndStop(PlayerActionType.getActionName(PlayerActionType.attack_rebounds) + _direction);
         // }
@@ -461,6 +691,7 @@ export default class PlayerNode extends cc.Component {
         //     _head.gotoAndStop(value);
         // }
         
+        this._skin['player']['currentFrame'] = 1;
         // _head.player.gotoAndPlay(1);
         // _skin.gotoAndStop(value);
         // _skin.player.gotoAndPlay(1);
@@ -473,132 +704,134 @@ export default class PlayerNode extends cc.Component {
      */
     private processModel(skillId:number, dir:number):void
     {	
-//         if(this._skillId == -1)
-//         {
-//             this._skillId = skillId;
-//         }
-//         else
-//         {
-//             if(this._skillId == skillId)
-//             {
-//                 return;
-//             }
-//             else
-//             {
-//                 if(_skillMc &&　this.contains(_skillMc))
-//                 {	
-//                     this.removeChild(_skillMc);
+        if(this._skillId == -1)
+        {
+            this._skillId = skillId;
+        }
+        else
+        {
+            if(this._skillId == skillId)
+            {
+                return;
+            }
+            else
+            {
+                // if(_skillMc &&　this.contains(_skillMc))
+                // {	
+                //     this.removeChild(_skillMc);
                     
-//                     _skillMc.removeEventListener(Event.ENTER_FRAME, modeFrame);
+                //     _skillMc.removeEventListener(Event.ENTER_FRAME, modeFrame);
                     
-//                     _skillMc.player.gotoAndStop(1);
+                //     _skillMc.player.gotoAndStop(1);
                     
-//                     _skillMc = null;
-//                 }
+                //     _skillMc = null;
+                // }
                 
-//                 _skillId = skillId;
-//             }
-//         }
+                this._skillId = skillId;
+            }
+        }
         
-//         _skillStep = 0;
         
-//         _mc.visible = false;
+        //_mc.visible = false;
         
-//         if(skillId >= 191 && _skillId <= 215)
-//         {
-//             _skillMc = MatchConfig.MatchResource[getSkill(skillId) + "_" + _showId];
-//         }
-//         else
-//         {
-//             _skillMc = MatchConfig.MatchResource[getSkill(skillId) + "_0"];
-//         }
+        // if(skillId >= 191 && this._skillId <= 215)
+        // {
+        //     _skillMc = MatchConfig.MatchResource[getSkill(skillId) + "_" + _showId];
+        // }
+        // else
+        // {
+        //     _skillMc = MatchConfig.MatchResource[getSkill(skillId) + "_0"];
+        // }
         
-//         _remind = MatchConfig.MatchResource[ResourceType.skillRemid + "_" + _showId];
+        // _remind = MatchConfig.MatchResource[ResourceType.skillRemid + "_" + _showId];
         
-//         this.addChild(_remind);
+        // this.addChild(_remind);
         
-//         _remind.x = -30;
-//         _remind.y = -150;
+        // _remind.x = -30;
+        // _remind.y = -150;
         
-//         _remind.moveMc.word.gotoAndStop(int((_skillId-1)/5)+1);
-//         _remind.moveMc.lv.gotoAndStop((_skillId - 1)%5+1);
+        // _remind.moveMc.word.gotoAndStop(int((_skillId-1)/5)+1);
+        // _remind.moveMc.lv.gotoAndStop((_skillId - 1)%5+1);
                 
-//         _direction = dir;
+        this._direction = dir;
         
-//         processDir();
+        this.processDir();
         
-//         processMcPos(_skillMc);
+        //this.processMcPos(_skillMc);
         
-//         if(CountSkillType.getInstance().getModeResId(skillId) == "421281")
-//         {
-//             _skillMc.y = -130
-//         }
+        // if(CountSkillType.getInstance().getModeResId(skillId) == "421281")
+        // {
+        //     _skillMc.y = -130
+        // }
         
-//         this.addChild(_skillMc);
+        // this.addChild(_skillMc);
         
-//         if(((_skillId >= 1 && _skillId <= 50) || (_skillId >= 81 && _skillId <= 85)) && CountSkillType.getInstance().getLast(_skillId) != 0)
-//         {
-//             //处理抢挡篮板
-//             CountController.getInstance().pause2();
-//         }
+        if(((this._skillId >= 1 && this._skillId <= 50) || (this._skillId >= 81 && this._skillId <= 85)) && CountSkillType.getInstance().getLast(this._skillId) != 0)
+        {
+            //处理抢挡篮板
+            this._competitionView.pause2();
+        }
         
-//         if(_skillId >= 51 && _skillId <= 75)
-//         {
-//             _moveMatch = true;
-//         }
-//         else if(_skillId >= 81 && _skillId <= 85)
-//         {
-//             CountController.getInstance()._inPause = true;
-//         }
-//         else if(_skillId >= 141 && _skillId <= 145)
-//         {
-//             _pauseMatch = true;
-//             _skillNum = 0;
-//             _skillTotal = 0;
-//         }
-//         else if(_skillId >= 146 && _skillId <= 150)
-//         {
-//             _pauseMatch = true;
-//             _skillNum = 0;
-//             _skillTotal = 0;
-//             CountController.getInstance()._spePass = CountController.curve;
-//         }
-//         else if(_skillId >= 151 && _skillId <= 155)
-//         {
-//             _pauseMatch = true;
-//             _skillNum = 0;
-//             _skillTotal = 0;
-//             CountController.getInstance()._spePass = CountController.ground;
-//         }
-//         else if(_skillId >= 156 && _skillId <= 165)
-//         {
-//             _pauseMatch = true;
-//             _skillNum = 0;
-//             _skillTotal = 0;
-//         }
-// //			else if(_skillId >= 166 && _skillId <= 190)
-// //			{
-// //				_skillNum = 0;
-// //				_skillTotal = 1;
-// //				_pauseMatch = true;
-// //				CountController.getInstance().pause();
-// //			}
-//         else if((_skillId >= 191 && _skillId <= 205) || (_skillId >= 211))
-//         {
-//             _skillNum = 0;
-//             _skillTotal = 0;
-//             _pauseMatch = true;
-//             CountController.getInstance().pause();
-//         }
+        if(this._skillId >= 51 && this._skillId <= 75)
+        {
+            // this._moveMatch = true;
+        }
+        else if(this._skillId >= 81 && this._skillId <= 85)
+        {
+            this._competitionView.pause();
+        }
+        else if(this._skillId >= 141 && this._skillId <= 145)
+        {
+            // this._pauseMatch = true;
+            // this._skillNum = 0;
+            // this._skillTotal = 0;
+        }
+        else if(this._skillId >= 146 && this._skillId <= 150)
+        {
+            // this._pauseMatch = true;
+            // this._skillNum = 0;
+            // this._skillTotal = 0;
+            this._competitionView._spePass = CompetitionView.curve;
+        }
+        else if(this._skillId >= 151 && this._skillId <= 155)
+        {
+            // this._pauseMatch = true;
+            // this._skillNum = 0;
+            // this._skillTotal = 0;
+            this._competitionView._spePass = CompetitionView.ground;
+        }
+        else if(this._skillId >= 156 && this._skillId <= 165)
+        {
+            // this._pauseMatch = true;
+            // this._skillNum = 0;
+            // this._skillTotal = 0;
+        }
+//			else if(_skillId >= 166 && _skillId <= 190)
+//			{
+//				_skillNum = 0;
+//				_skillTotal = 1;
+//				_pauseMatch = true;
+//				CountController.getInstance().pause();
+//			}
+        else if((this._skillId >= 191 && this._skillId <= 205) || (this._skillId >= 211))
+        {
+            // this._skillNum = 0;
+            // this._skillTotal = 0;
+            // this._pauseMatch = true;
+            this._competitionView.pause();
+        }
         
-//         _skillMc.addEventListener(Event.ENTER_FRAME, modeFrame);
-//         _remind.addEventListener(Event.ENTER_FRAME, remindModelFrame);
+        this.scheduleOnce(()=>{
+            this._competitionView.restart();
+        },1);
+        // _skillMc.addEventListener(Event.ENTER_FRAME, modeFrame);
+        // _remind.addEventListener(Event.ENTER_FRAME, remindModelFrame);
         
-//         _skillMc.gotoAndStop("c" + _direction);
-//         _skillMc.player.gotoAndPlay(1);
+        // _skillMc.gotoAndStop("c" + _direction);
+        // _skillMc.player.gotoAndPlay(1);
         
-//         _remind.gotoAndPlay(1);
-//         _remind.moveMc.gotoAndPlay(1);
+        // _remind.gotoAndPlay(1);
+        // _remind.moveMc.gotoAndPlay(1);
     }
 
     private getSkill(value:number):string
@@ -618,7 +851,7 @@ export default class PlayerNode extends cc.Component {
      */
     public processSkill(skillId:number):void
     {
-        //SoundManager.play(SoundConfig.COUNT_SKILL, 1, 0, 1);
+        SoundManager.play(SoundConfig.COUNT_SKILL, 1, 0, 1);
         
         if(this._skillId == -1)
         {
@@ -645,13 +878,11 @@ export default class PlayerNode extends cc.Component {
             }
         }
         
-        //CountController.getInstance().pause();
+        this._competitionView.pause();
         
         // var array:Array = MatchConfig.MatchResource[getSkill(_skillId)]
         
         // _skillMc = array[0];
-        
-        // CountController.getInstance()._inPause = true;
         
         // this.addChild(_skillMc);
 
@@ -708,5 +939,9 @@ export default class PlayerNode extends cc.Component {
         //     }
         // }
         // _shadow.start();
+    }
+
+    public stopAction(){
+        this.node.stopAllActions();
     }
 }

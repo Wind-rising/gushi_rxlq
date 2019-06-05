@@ -59,13 +59,13 @@ export default class prefab_Equip extends cc.Component{
         this._data = data;
         this.index = i;
         if(data.hasOwnProperty('Ruby')){
-            IconManager.getIcon('1.png',IconManager.ITEM_ICON,(spriteFrame)=>{
+            IconManager.getIcon('1',IconManager.ITEM_ICON,(spriteFrame)=>{
                 this.pic.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
             this._itemData = EquipData.getRingPro(data.Type);
             this.EName.getComponent(cc.RichText).string =  `<color=${ItemData.getEquipColor(8)}>总冠军戒指</c>`
         }else{
-            IconManager.getIcon(data.Type+(data.Pair+'.png'),IconManager.EQUP_ICON,(spriteFrame)=>{
+            IconManager.getIcon(data.Type+(data.Pair),IconManager.EQUP_ICON,(spriteFrame)=>{
                 this.pic.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
             this._itemData = ItemData.getEquipInfo(data.Type+String(data.Pair));

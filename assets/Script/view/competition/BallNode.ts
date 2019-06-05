@@ -113,4 +113,12 @@ export default class BallNode extends cc.Component {
         
         return point;
     }
+
+    setPosition (point:cc.Vec2){
+        this.node.position = new cc.Vec2(point.x,cc.winSize.height-point.y);
+    }
+    runAction(action: cc.Action): cc.Action
+    {
+        return this.node.runAction(action);
+    }
 }
