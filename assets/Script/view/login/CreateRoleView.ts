@@ -196,9 +196,9 @@ export default class CreateRoleView extends cc.Component {
     private formatLogo():void{
         var url:string = IconManager.preURL+IconManager.BIG_LOGO
         if(this._logo<10){
-            url = url +"img_0"+this._logo+".png"
+            url = url +"img_0"+this._logo
         }else{
-            url = url +"img_"+this._logo+".png"
+            url = url +"img_"+this._logo
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteFrame)=>{
             if(err){
@@ -261,7 +261,7 @@ export default class CreateRoleView extends cc.Component {
                     mc.getChildByName('lbl_name').getComponent(cc.RichText).string = "<font color='"+ItemData.getCardColor(info.CardLevel)+"'>"+info.ShowName+"</font>";
                 }
                 mc.getComponent(cc.Sprite).spriteFrame = this.iconBgFrame[info.CardLevel]
-                var url:string = IconManager.preURL+IconManager.PLAYER_HEAD+info.HeadStyle+".png"
+                var url:string = IconManager.preURL+IconManager.PLAYER_HEAD+info.HeadStyle;
                 cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteFrame)=>{
                     if(err){
                         Utils.fadeErrorInfo('图片加载错误！ url = ' + url);

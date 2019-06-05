@@ -85,7 +85,7 @@ export default class CompetitionView extends cc.Component {
     private _timeInterval = 0;
 
     /** 比赛继续情况 */
-    private _pauseCompetition:boolean = false;
+    private _pauseCompetition:boolean = true;
 
     /** 获取当前节己方球员数据 */
     public get enterHomePlayer () {
@@ -101,6 +101,18 @@ export default class CompetitionView extends cc.Component {
         return this.controller.data;
     }
 
+    /** 暂停 */
+    public pause(){
+        this._pauseCompetition = true;
+    }
+    public pause2():void
+    {
+        this._pauseCompetition = true;
+        
+        for(var i = 0;i<this.playerList.length;i++){
+            this.playerList[i].stopAction();
+        }
+    }
 
     onLoad () {
         this.controller.init();
@@ -182,18 +194,55 @@ export default class CompetitionView extends cc.Component {
     initPlayer(){
         /** 创建篮球节点 */
         let ball = cc.instantiate(this.controller.getPrefabInstance(UIConfig.countBall));
-        ball.parent = this.node.getChildByName('count_map');;
+        ball.parent = this.node.getChildByName('count_map');
+        ball.setPosition(0,-60);
 
         this.ballNode = ball.getComponent(BallNode);
         this.ballNode.init();
+
+        this._step = 0;
 
         this.initCountPlayer();
 
         this.competitionUI.showTime(this.data['homeName'], this.data['awayName'], this.data['homeLogo'], this.data['awayLogo']);
 
         this.updatePlayerList();
+
+        this.startGame();
     }
 
+    private startGame() {
+        let showStartUi = false;
+        for(let i = 0; i < this.playerList.length;i++)
+        {
+            this.playerList[i].doAction(0, ()=>{
+                if(!showStartUi){
+                    /** 播放开场UI动画 */
+                    showStartUi = true;
+                    //跳球
+                    this.excuteJump(()=>{
+                        this._pauseCompetition = false;
+                    });
+                    
+                }
+            });
+        }	
+    }
+
+    /**
+     * 跳球动画
+     */
+    public excuteJump(callback:Function):void
+    {
+        this.ballNode.runAction(cc.sequence(
+            cc.delayTime(0.8),
+            cc.moveBy(1,new cc.Vec2(0,170)),
+            cc.callFunc(()=>{
+                callback();
+            })
+        ));
+    }
+    
     //根据当前的状态处理动作
     private roundChange():void
     {
@@ -258,8 +307,8 @@ export default class CompetitionView extends cc.Component {
     {
         this.ballNode.show = true;
         
-        this.ballNode.node.setPosition(obj['startFact']);
-        this.ballNode.node.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
+        this.ballNode.setPosition(obj['startFact']);
+        this.ballNode.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
             ()=>{
                 this.ballNode.show = false;
             }
@@ -271,9 +320,9 @@ export default class CompetitionView extends cc.Component {
     {
         this.ballNode.show = true;
         
-        this.ballNode.node.setPosition(obj['startFact']);
+        this.ballNode.setPosition(obj['startFact']);
 
-        this.ballNode.node.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
+        this.ballNode.runAction(cc.sequence(cc.moveTo(MatchConfig.Living * (obj['endRound'] - this._step),obj['endFact']),cc.callFunc(
             ()=>{
                 this.ballNode.show = false;
 
@@ -319,7 +368,7 @@ export default class CompetitionView extends cc.Component {
         
         this.ballNode.show = true;
 
-        this.ballNode.node.setPosition(GridController.getInstance().getScenePosition(new cc.Vec3(obj['shootX'], obj['shootY'])));
+        this.ballNode.setPosition(GridController.getInstance().getScenePosition(new cc.Vec3(obj['shootX'], obj['shootY'])));
         
         //说明被盖帽
         if(obj['isGoal'] == 0 && obj['isBlock'] != 0)
@@ -495,7 +544,7 @@ export default class CompetitionView extends cc.Component {
                         //篮板自由球
                         if((tem['reboundFreeBall']['endRound'] - this._step) <= 3)
                         {
-                            this.ballNode.node.runAction(cc.sequence(
+                            this.ballNode.runAction(cc.sequence(
                                 cc.moveTo(MatchConfig.Living * (tem['reboundFreeBall']['endRound'] - this._step),tem['reboundFreeBall']['endFact']),
                                 cc.callFunc(()=>{
                                     this.ballNode.show = false;
@@ -579,9 +628,9 @@ export default class CompetitionView extends cc.Component {
             }
         }
         
-        this.ballNode.node.active = true;
+        this.ballNode.show = true;
         
-        this.ballNode.node.setPosition(obj['stealFact']);
+        this.ballNode.setPosition(obj['stealFact']);
         
         this.addBallOnGround(obj['endRound'] - this._step, obj['stealFact'], obj['endFact'], fun);
     }
@@ -673,14 +722,14 @@ export default class CompetitionView extends cc.Component {
         }
         else
         {
-            this.ballNode.node.active = true;
+            this.ballNode.show = true;
             
             if(this._spePass == CompetitionView.ground)
             {
                 this.addBallOnGround(obj['endRound'] - this._step, obj['startFact'], obj['endFact'], 
                     function():void
                     {	
-                        this.ballNode.node.active = false;
+                        this.ballNode.show = false;
                     }
                 )
                 
@@ -688,7 +737,12 @@ export default class CompetitionView extends cc.Component {
             }
             else
             {
-                //MovingController.getInstance().curveTo(new Point(obj.startX, obj.startY), new Point(obj.endX, obj.endY), _ball, obj.endRound - _step, false, null, true);
+                this.ballNode.addComponent(CustomCurving).curveTo(
+                    new cc.Vec2(obj['startX'],obj['startY'])
+                    ,new cc.Vec2(obj['endX'], obj['endY'])
+                    ,obj['endRound'] - this._step
+                    ,true
+                    ,false);
             }
         }
         
@@ -709,7 +763,7 @@ export default class CompetitionView extends cc.Component {
             obj['shootX'] += 8;
         }
         
-        this.ballNode.node.setPosition(obj['startFact']);
+        this.ballNode.setPosition(obj['startFact']);
         
         this.ballNode.show = true;
 
@@ -767,7 +821,7 @@ export default class CompetitionView extends cc.Component {
                         //篮板自由球
                         if((tem['reboundFreeBall']['endRound'] - this._step) <= 3)
                         {
-                            this.ballNode.node.runAction(cc.sequence(
+                            this.ballNode.runAction(cc.sequence(
                                 cc.moveTo(MatchConfig.Living * (tem['reboundFreeBall']['endRound'] - this._step),tem['reboundFreeBall']['endFact'])
                                 ,cc.callFunc(()=>{
                                     this.ballNode.show = false;
@@ -852,7 +906,7 @@ export default class CompetitionView extends cc.Component {
         this._inPause = false;
         
         let data = this.data;
-        this.competitionUI.showEnd([data['homeManagerId'], data['awayManagerId']], [data['homeScore'], data['awayScore']],this.endMatch);
+        this.competitionUI.showEnd([data['homeManagerId'], data['awayManagerId']], [data['homeScore'], data['awayScore']],this.endMatch.bind(this));
     }
 
     //更新球员信息
@@ -931,7 +985,7 @@ export default class CompetitionView extends cc.Component {
 
             SoundManager.play(SoundConfig.COUNT_END_QUALTER, 1, 0, 1);
 
-            this.ballNode.node.active = false;
+            this.ballNode.show = false;
             
             this.playerList.forEach( player => {
                 player.stop();
@@ -976,7 +1030,7 @@ export default class CompetitionView extends cc.Component {
             }
             else if(this.playerList[i].info['match'][this._step] && (this.playerList[i].info['match'][this._step].state == PlayerActionType.take_ball || this.playerList[i].info['match'][this._step].state == PlayerActionType.idle_ball))
             {
-                this.ballNode.node.active = false;
+                this.ballNode.show = false;
             }
         }
         
@@ -1156,14 +1210,15 @@ export default class CompetitionView extends cc.Component {
 
         /** 创建己方球员节点 */
         let enterHomePlayer = data['enterHomePlayer'][this._curQuater];
+        let count_map = this.node.getChildByName('count_map');
         for(let i=0;i<enterHomePlayer.length;i++)
         {
             let node = cc.instantiate(controller.getPrefabInstance(UIConfig.countPlayer));
-            node.parent = this.node.getChildByName('count_map');
+            node.parent = count_map;
             let player:PlayerNode = node.getComponent(PlayerNode);
             this.playerList.push(player);
 
-            player.init(data['homePlayerInfo'][data['enterHomePlayer'][this._curQuater][i][0]],
+            player.init(this,data['homePlayerInfo'][data['enterHomePlayer'][this._curQuater][i][0]],
                 PlayerSide.Home,
                 data['homeCloth'],
                 data['matchType'],
@@ -1174,12 +1229,12 @@ export default class CompetitionView extends cc.Component {
         for(let i=0;i<enterAwayPlayer.length;i++)
         {
             let node = cc.instantiate(controller.getPrefabInstance(UIConfig.countPlayer));
-            node.parent = this.node.getChildByName('count_map');
+            node.parent = count_map;
             let player:PlayerNode = node.getComponent(PlayerNode);
             this.playerList.push(player);
 
-            player.init(data['awayPlayerInfo'][data['enterAwayPlayer'][this._curQuater][i][0]],
-                PlayerSide.Home,
+            player.init(this,data['awayPlayerInfo'][data['enterAwayPlayer'][this._curQuater][i][0]],
+                PlayerSide.Away,
                 data['awayCloth'],
                 data['matchType'],
                 i);
@@ -1264,6 +1319,25 @@ export default class CompetitionView extends cc.Component {
         }
         
         return null;
+    }
+
+    //处理球星技能
+    public processSkill(array:Array<any>, skillId:number):void
+    {
+        this._pauseCompetition = true;;
+        
+        for(var i = 0;i<array.length;i++)
+        {
+            for(let i = 0;i<this.playerList.length;i++){
+                let player = this.playerList[i];
+                if(player.info['cid'] == array[i])
+                {
+                    player.processSkill(skillId);
+                    
+                    break;
+                }
+            }
+        }
     }
 
     //灌篮
@@ -1493,10 +1567,10 @@ export default class CompetitionView extends cc.Component {
                         //篮板自由球
                         if((tem['reboundFreeBall'].endRound - this._step) <= 3)
                         {
-                            this.ballNode.node.runAction(cc.sequence(
+                            this.ballNode.runAction(cc.sequence(
                                 cc.moveTo(MatchConfig.Living * (tem['reboundFreeBall']['endRound'] - this._step),tem['reboundFreeBall']['endFact']['x'], tem['reboundFreeBall']['endFact']['y']),
                                 cc.callFunc(function(){
-                                    this.ballNode.node.active = false;
+                                    this.ballNode.show = false;
                                 },this)
                             ));
                         }
@@ -1507,7 +1581,7 @@ export default class CompetitionView extends cc.Component {
                                 ,tem['reboundFreeBall']['endRound'] - this._step - 1
                                 ,()=>
                                 {
-                                    this.ballNode.node.active = false;
+                                    this.ballNode.show = false;
                                 }
                             );
                         }
@@ -1521,7 +1595,7 @@ export default class CompetitionView extends cc.Component {
                             , tem['rebound']['reboundEndRound'] - this._step + 2, 
                             ()=>
                             {
-                                this.ballNode.node.active = false;
+                                this.ballNode.show = false;
                             }
                         );
                     }
@@ -1530,6 +1604,28 @@ export default class CompetitionView extends cc.Component {
 
         );
         //被盖帽的话球不需要做处理
+    }
+
+    /**
+     * 更新单个球员信息
+     * @param data 球员信息
+     */
+    updateSingleInfo(data:Object){
+        this.competitionUI.updateSingleInfo(data);
+    }
+
+    /**
+     * 画面抖动
+     */
+    moveUpAndDown(){
+        this.node.runAction(cc.sequence(cc.moveBy(0.05,new cc.Vec2(0,-12)),cc.moveBy(0.05,new cc.Vec2(0,12))));
+    }
+
+    /**
+     * 球的运动停止
+     */
+    stopBall(){
+        this.ballNode.show = false;
     }
     
 }

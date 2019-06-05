@@ -193,7 +193,7 @@ export default class ManagerInfoView extends cc.Component {
         //logo
         let img_logo = this.node.getChildByName('img_logo').getComponent(cc.Sprite);
         var pic:string  = parseInt(this.manager.Logo)>9?this.manager.Logo:"0"+this.manager.Logo;
-        pic = "img_"+pic+".png";
+        pic = "img_"+pic;
         function onLoaded(spriteFrame):void{
             img_logo.spriteFrame = spriteFrame;
         }

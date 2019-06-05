@@ -42,6 +42,7 @@ export default class Utils extends cc.Component {
             }
         });
     };
+    
     /**
      * 此方法不再使用，用showAlert 和 showConfirm 替代
      * @param String content 
@@ -87,9 +88,8 @@ export default class Utils extends cc.Component {
                     cc.error('未找到 ' + "prefabs/common/alert")
                     return;
                 }
-                var alert = cc.instantiate(prefab);
-                console.log(33333333)
-                console.log(args,2222222222)
+                let alert:cc.Node = cc.instantiate(prefab);
+                alert.zIndex = 1000;
                 alert.parent = args['parent']||cc.director.getScene();
                 //处理参数
                 alert.getComponent("Alert").confirm(content,onOk,args);
@@ -112,7 +112,8 @@ export default class Utils extends cc.Component {
                     cc.error('未找到 ' + "prefabs/common/loading")
                     return;
                 }
-                var dialog = cc.instantiate(prefab);
+                let dialog:cc.Node = cc.instantiate(prefab);
+                dialog.zIndex = 1001;
                 dialog.parent = cc.director.getScene();
                 //处理参数
                 dialog.getComponent("Loading").show(content);
@@ -144,6 +145,7 @@ export default class Utils extends cc.Component {
         }
         /** 创建RichText节点 */
         let lblNode = new cc.Node();
+        lblNode.zIndex = 1002;
         lblNode.addComponent<cc.RichText>(cc.RichText);
         let lbl = lblNode.getComponent(cc.RichText);
         lbl.fontSize = 28;

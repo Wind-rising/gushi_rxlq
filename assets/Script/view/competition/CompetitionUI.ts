@@ -128,10 +128,10 @@ export default class CompetitionUI extends cc.Component {
     start () {
         this.init();
 
-        /** 默认快速播放 */
+        /** 默认普通速度播放 */
         this.tgl_speedup.check();
-        MatchConfig.Living = 0.1;
-        MatchConfig.MoveLive = 0.2;
+        MatchConfig.Living = 0.2;
+        MatchConfig.MoveLive = 0.4;
     }
 
     // update (dt) {}
@@ -341,7 +341,7 @@ export default class CompetitionUI extends cc.Component {
 
     private playerLogo75(headStyle:String, mc:cc.Sprite):void
     {
-        var url:string = IconManager.preURL+IconManager.PLAYER_PER+headStyle+".png";
+        var url:string = IconManager.preURL+IconManager.PLAYER_PER+headStyle;
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
                 Utils.fadeErrorInfo(err.message);
@@ -353,7 +353,7 @@ export default class CompetitionUI extends cc.Component {
     
     private playerLogo(headStyle:String, mc:cc.Sprite):void
     {
-        var url:string = IconManager.preURL+IconManager.PLAYER_ICON+headStyle+".png"
+        var url:string = IconManager.preURL+IconManager.PLAYER_ICON+headStyle;
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
                 Utils.fadeErrorInfo(err.message);

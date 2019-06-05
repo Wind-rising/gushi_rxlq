@@ -29,19 +29,19 @@ export default class AppConfig {
     public static lan_ConfigURL:string = '';
     /**cookie信息*/
     public static snsInfo: string = '';
-    /** 是否是debug模式*/
-    public static isDebug:number = 1;
+    /** 是否是debug模式 Debug模式登录根据ip绑定 不需登录信息*/
+    public static isDebug:number = 0;
 
     /**事件-常量-系共同初始化完成*/
-    public static SYS_INIT:String = "sys_init";
+    public static SYS_INIT:string = "sys_init";
     /**事件-常量-显示消息*/
-    public static SHOW_MSG:String = "show_msg"; 
+    public static SHOW_MSG:string = "show_msg"; 
     /**事件-系统级错误*/
-    public static SYS_ERR:String = "sys_err";
+    public static SYS_ERR:string = "sys_err";
     /**事件-总进度-伪造*/
-    public static SYS_PRO:String = "sys_pro"
+    public static SYS_PRO:string = "sys_pro"
     /**事件-显示LOADER*/
-    public static SHOW_LOADER:String = "show_loader";
+    public static SHOW_LOADER:string = "show_loader";
     /**事件-隐藏LOADER*/
-    public static HIDE_LOADER:String = "hide_loader";
+    public static HIDE_LOADER:string = "hide_loader";
 }

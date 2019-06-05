@@ -2,6 +2,7 @@ import ManagerData from "../../data/ManagerData";
 import Events from "../../signal/Events";
 import HttpManager from "../../utils/HttpManager";
 import Utils from "../../utils/Utils";
+import AppConfig from "../../config/AppConfig";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -76,6 +77,10 @@ export default class LoginScene extends cc.Component {
         }
         HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
             if(response.res){
+                //
+                cc.log(response);
+                AppConfig.snsInfo = response['data']['snsinfo'];
+
                 ManagerData.getInstance().refresh();
             }else{
                 Utils.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});

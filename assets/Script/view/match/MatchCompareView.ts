@@ -190,9 +190,9 @@ export default class MatchCompareView extends cc.Component {
         
         var url:string = IconManager.preURL+IconManager.LOGO
         if(data[0].Logo<10){
-            url = url +"img_0"+data[0].Logo+".png"
+            url = url +"img_0"+data[0].Logo;
         }else{
-            url = url +"img_"+data[0].Logo+".png"
+            url = url +"img_"+data[0].Logo;
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
@@ -204,9 +204,9 @@ export default class MatchCompareView extends cc.Component {
         
         url = IconManager.preURL+IconManager.LOGO
         if(data[1].Logo<10){
-            url = url +"img_0"+data[1].Logo+".png"
+            url = url +"img_0"+data[1].Logo;
         }else{
-            url = url +"img_"+data[1].Logo+".png"
+            url = url +"img_"+data[1].Logo;
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err, spriteframe)=>{
             if(err){

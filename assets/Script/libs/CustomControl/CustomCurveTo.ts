@@ -83,6 +83,7 @@ export default class CustomCurveTo extends cc.Component {
     private moveUpAndDown(start:cc.Vec2, end:cc.Vec2):void
     {
         let pos:cc.Vec2 = GridController.getInstance().getScenePosition(new cc.Vec3(end.x, end.y));
+        //this.node.stopAllActions();
         this.node.runAction(cc.sequence(
             cc.moveTo(MatchConfig.Living*2,this.node.x,this.node.y-20)
             ,cc.moveTo(MatchConfig.Living*3,pos.x,pos.y-10)

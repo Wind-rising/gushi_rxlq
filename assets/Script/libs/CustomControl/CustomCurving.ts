@@ -55,8 +55,8 @@ export default class CustomCurving extends cc.Component {
     
     // public curveMore( start:cc.Vec2, end:cc.Vec2, round:number, fun:Function):void
     // {
-    //     this._vx = (end.x - start.x)/round/(cc.game.getFrameRate() * MatchConfig.Living);
-    //     this._vy = (end.y - start.y)/round/(cc.game.getFrameRate() * MatchConfig.Living);
+    //     this._vx = (end.x - start.x)/round/Math.floor()(cc.game.getFrameRate() * MatchConfig.Living);
+    //     this._vy = (end.y - start.y)/round/Math.floor()(cc.game.getFrameRate() * MatchConfig.Living);
         
     //     this._angle = 0;
         
@@ -94,7 +94,7 @@ export default class CustomCurving extends cc.Component {
     //     })
     // }
     
-    public curveTo(start:cc.Vec2, end:cc.Vec2, totalRound:number, isBall:boolean, isShoot:boolean, callback:Function, high:boolean=false):void
+    public curveTo(start:cc.Vec2, end:cc.Vec2, totalRound:number, isBall:boolean, isShoot:boolean, callback:Function = null, high:boolean=false):void
     {
         this._startPoint = this._ballPoint = start;
         
@@ -131,10 +131,10 @@ export default class CustomCurving extends cc.Component {
         this._dis = Math.sqrt(Math.pow(start.x - end.x, 2) + Math.pow(start.y - end.y, 2))/2;
         
         //每一帧的角度
-        this._perAngle = this._angleLimit/(this._total*cc.game.getFrameRate() * MatchConfig.Living);
+        this._perAngle = this._angleLimit/(this._total*Math.floor(cc.game.getFrameRate() * MatchConfig.Living));
         
-        this._vx = (this._endPoint.x - this._startPoint.x)/(this._total*cc.game.getFrameRate() * MatchConfig.Living);
-        this._vy = (this._endPoint.y - this._startPoint.y)/(this._total*cc.game.getFrameRate() * MatchConfig.Living);
+        this._vx = (this._endPoint.x - this._startPoint.x)/(this._total*Math.floor(cc.game.getFrameRate() * MatchConfig.Living));
+        this._vy = (this._endPoint.y - this._startPoint.y)/(this._total*Math.floor(cc.game.getFrameRate() * MatchConfig.Living));
 
         this._active = true;
     }
@@ -161,22 +161,24 @@ export default class CustomCurving extends cc.Component {
             this._vz = -Math.sin(this._angle*Math.PI/180)*this._dis*4 - 35;
         }
         
-        this. _ballPoint.x += this._vx;
+        this._ballPoint.x += this._vx;
         this._ballPoint.y += this._vy;
         this._angle += this._perAngle;
         
-        var point:cc.Vec2 = GridController.getInstance().getScenePosition(new cc.Vec3(this._ballPoint.x, this._ballPoint.y, this._vz));
+        var point:cc.Vec2 = GridController.getInstance().getScenePosition(new cc.Vec3(this._ballPoint.x, this._ballPoint.y, -this._vz));
         
         if(this._dis > 40 && this._angle > 140)
         {
+            /** 获得篮网坐标 */
             if(this._endPoint.x > 50)
             {
-                point = GridController.getInstance().getScenePosition(new cc.Vec3(MatchConfig.RightNet.x, MatchConfig.RightNet.y, -180));
+                point = GridController.getInstance().getScenePosition(new cc.Vec3(MatchConfig.RightNet.x, MatchConfig.RightNet.y, MatchConfig.NetHeight));
             }
             else
             {
-                point = GridController.getInstance().getScenePosition(new cc.Vec3(MatchConfig.LeftNet.x, MatchConfig.LeftNet.y, -180));
+                point = GridController.getInstance().getScenePosition(new cc.Vec3(MatchConfig.LeftNet.x, MatchConfig.LeftNet.y, MatchConfig.NetHeight));
             }
+            this.node.stopAllActions();
             this.node.runAction(cc.sequence(cc.moveTo(0.15,point),cc.callFunc(()=>{
                 this.clear();
             })));

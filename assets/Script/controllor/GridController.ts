@@ -30,7 +30,7 @@ export default class GridController extends Singleton {
     }
     
     /**
-     * 通过对应格子坐标计算出屏幕上的绝对坐标
+     * 通过对应格子坐标计算出相对于地图中心点的相对坐标
      * @param vec 分别横纵高坐标
      * @6.3:缩放比率
      */		
@@ -55,15 +55,41 @@ export default class GridController extends Singleton {
         
         tar.x = tar.x + this._delX;
         tar.y = tar.y + this._delY;
-
+        tar.x *= 640/700;
+        tar.y *= 640/700;//锚点问题 要减去30
+        tar.y -= 30;
         return tar;
     }
 
-    private local3DToGlobal (p:cc.Vec3):cc.Vec2 {
-        let ret = new cc.Vec2();
-        ret.x = p.x * 7;
-        ret.y = p.y * 7;
-        return ret;
+    public local3DToGlobal(localPoint:cc.Vec3):cc.Vec2
+    {
+        return new cc.Vec2(localPoint.x,localPoint.y);
+        // let a = -163.9468;
+        // let b = 9.09412;
+        // let c = -1.6127271;
+        // let d = -0.000074560364;
+        // let e = 0.00000051033208;
+        // let f = 0.00000011368101;
+        // let g = -0.0023050377;
+        // let h = -0.00000008865188;
+        // let i = 0.00000000062307369;
+        // let x = localPoint.x;
+        // let y = localPoint.y;
+        // let rx = (a+b*x+c*y+d*Math.pow(y,2)+e*Math.pow(y,3))/(1+f*x+g*y+h*Math.pow(y,2)+i*Math.pow(y,3));
+
+        // a = 183.1195025;
+        // b = 0.00000286468;
+        // c = -0.00000019425;
+        // d = 0.00000000425708;
+        // e = -0.000000000036961;
+        // f = 0.00000000000011033;
+        // g = 2.952245092;
+        // h = 0.006875264;
+        // i = 0.0000133373;
+        // let j = 0.0000000648097;
+        // let ry = a+b*x+c*Math.pow(x,2)+d*Math.pow(x,3)+e*Math.pow(x,4)+f*Math.pow(x,5)+g*y+h*Math.pow(y,2)+i*Math.pow(y,3)+j*Math.pow(y,4);
+        
+        // return new cc.Vec2(rx,ry);
     }
     
     /**

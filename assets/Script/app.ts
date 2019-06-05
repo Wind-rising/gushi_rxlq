@@ -47,6 +47,9 @@ export default class app extends cc.Component {
 
     onLoad () {
         cc.game.addPersistRootNode(this.node);
+
+        /** 游戏设置为30帧 */
+        cc.game.setFrameRate(24);
     }
 
     start () {
