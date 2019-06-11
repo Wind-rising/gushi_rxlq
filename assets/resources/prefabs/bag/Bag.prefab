@@ -466,7 +466,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "switch_head",
+    "_name": "nav_head",
     "_objFlags": 0,
     "_parent": {
       "__id__": 7
@@ -534,7 +534,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "switch_nav_upgrade",
+    "_name": "nav_upgrade",
     "_objFlags": 0,
     "_parent": {
       "__id__": 11
@@ -830,7 +830,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "switch_nav_reform",
+    "_name": "nav_reform",
     "_objFlags": 0,
     "_parent": {
       "__id__": 11
@@ -1126,7 +1126,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "switch_nav_changeAttr",
+    "_name": "nav_changeAttr",
     "_objFlags": 0,
     "_parent": {
       "__id__": 11
@@ -1565,7 +1565,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "content",
+    "_name": "nav_content",
     "_objFlags": 0,
     "_parent": {
       "__id__": 38
@@ -3646,7 +3646,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "button_close",
+    "_name": "btn_close",
     "_objFlags": 0,
     "_parent": {
       "__id__": 7
@@ -4178,10 +4178,7 @@
       "__id__": 7
     },
     "_enabled": true,
-    "btnClose": {
-      "__id__": 98
-    },
-    "switch_head": [
+    "nav_head": [
       {
         "__id__": 12
       },
@@ -4192,31 +4189,34 @@
         "__id__": 28
       }
     ],
-    "switch_content": {
+    "nav_content": {
       "__id__": 39
     },
-    "switch_pageNum": {
+    "page_num": {
       "__id__": 51
     },
-    "bagPrev": {
+    "page_prev": {
       "__id__": 59
     },
-    "bagNext": {
+    "page_next": {
       "__id__": 55
     },
-    "expansionButton": {
+    "btn_close": {
+      "__id__": 98
+    },
+    "btn_expansion": {
       "__id__": 88
     },
-    "arrangeButton": {
+    "btn_arrange": {
       "__id__": 84
     },
-    "goodsUI": {
+    "ctnr_goods": {
       "__id__": 101
     },
-    "buttonUI": {
+    "ctnr_operation": {
       "__id__": 104
     },
-    "infoProp": {
+    "ctnr_info": {
       "__id__": 100
     },
     "_id": ""

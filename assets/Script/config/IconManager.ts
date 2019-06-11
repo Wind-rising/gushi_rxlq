@@ -67,6 +67,8 @@ export default class IconManager extends cc.Component {
 		public static DRAFT_IMAGE:string = "draftpng/";
 		/** 日常活动图片 */
 		public static COMMONACTIVITY_ICON:string = "CommonActivity/";
+		/** 球员背包模块相关图片*/
+		public static PLAYER_ITEM_ICON:string = "playItem/";
 		
 		/**公会技能图片*/
 		public static UNION_SKILL:string = "unionSkill/";

@@ -106,7 +106,8 @@ export default class ItemData extends Singleton {
     };
     /**根据位置获取标签*/
     public static getLabel(pos:number):string
-    {
+    {   
+
         switch(pos){
             case 1:
                 return "PF";

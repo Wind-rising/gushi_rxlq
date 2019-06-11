@@ -2,10 +2,7 @@ import Utils from "../../utils/Utils";
 import BagData from "./BagData";
 import Events from "../../signal/Events";
 import ItemData from "../../data/ItemData";
-import EquipData from "../../data/EquipData";
-import Bag from "./Bag";
 import IconManager from "../../config/IconManager";
-import data_science from "../science/data_science";
 
 const {ccclass,property} = cc._decorator;
 
@@ -13,10 +10,15 @@ const {ccclass,property} = cc._decorator;
 @ccclass
 export default class BagItem extends cc.Component{
     @property(cc.Node)//关闭界面
-    private goodsItem:cc.Node;
+    private goodsItem:cc.Node = null;
     @property(cc.Node)//关闭界面
-    private unlock:cc.Node;
+    private unlock:cc.Node= null;
+    @property(cc.Label)//关闭界面
+    private numUI:cc.Label= null;
+    @property(cc.Sprite)//关闭界面
+    private playerNum:cc.Sprite= null;
     public ItemCode:string;
+    public _isLocked = false;
     public _data = null;
     /**道具Uuid，唯一索引*/
     public  Uuid;
@@ -78,6 +80,7 @@ export default class BagItem extends cc.Component{
     public static  TYPE_EQUIPSTONE = "EquipStone"
     /**常量-类型-图纸*/
     public static  TYPE_MAP = "15"; 
+    public _info;
     start(){
         this.goodsItem.getComponent(cc.Button).clickEvents.push(
             Utils.bindBtnEvent(this.node,'BagItem','onClick')
@@ -88,6 +91,7 @@ export default class BagItem extends cc.Component{
     }
     //data
     public init(data = null){
+        this._data = data;
         this.initData();
         if(data == 0){
             this.goodsItem.getComponent(cc.Button).interactable = false;
@@ -100,7 +104,7 @@ export default class BagItem extends cc.Component{
             this.setValue(data);
             if(data.ItemCode){
                 let info = ItemData.getItemInfo(data.ItemCode);
-                
+                this._info = info;
                 if(this.ItemType == BagItem.TYPE_EQUIP){
                     info = ItemData.getEquipInfo(this.Equip.Type + "" + this.Equip.Pair);
                     if(info){
@@ -112,7 +116,6 @@ export default class BagItem extends cc.Component{
 					//info = EquipData.getRingPro(data.Ring.Type);
 				}else{
 					if(info){
-                        console.log(info,"info")
 						this.isOutBag  = (parseInt(info.UseFlag) != 0);
 						if(info.Type){
 							this._itemType = info.Type;
@@ -144,12 +147,16 @@ export default class BagItem extends cc.Component{
                 this.goodsItem.getComponent(cc.Button).enabled = true;
                 this.unlock.active = false;
                 this.createIcon();
+                this.createNum();
             }
         }
     }
     public initData(){
         this.goodsItem.getComponent(cc.Sprite).spriteFrame = null;
+        this.numUI.enabled = false;
         this.unlock.active = true;
+        this.isLock = false;
+        this.playerNum.enabled = false;
     }
     public onClick(){
         BagData.getInstance().nowItems = this;
@@ -158,7 +165,16 @@ export default class BagItem extends cc.Component{
 
     private createIcon(){
         if(this.ItemType == BagItem.TYPE_PLAYER){
-            IconManager.getPlayerIcon(this._data)
+            let pos = ItemData.getLabel(this._info.Position - 0);
+            IconManager.getIcon(`img_${this._info.CardLevel}${pos}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
+                this.goodsItem.active = true;
+                this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                IconManager.getIcon(`img_${this._data.Str}${this._info.CardLevel}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
+                    this.playerNum.enabled = true;
+                    this.playerNum.spriteFrame = spriteFrame;
+                    console.log(this.playerNum.spriteFrame)
+                })
+            })
         }else if(this.ItemType == BagItem.TYPE_EQUIP){
              IconManager.getIcon(this.Equip.Type + (this.Equip.Pair+'.png'),IconManager.EQUP_ICON,(spriteFrame)=>{
                 this.goodsItem.active = true;
@@ -170,13 +186,20 @@ export default class BagItem extends cc.Component{
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
         }else{
-            console.log(this.Image)
             IconManager.getIcon(this.Image+'.png',IconManager.ITEM_ICON,(spriteFrame)=>{
                 this.goodsItem.active = true;
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
         }
+        // this.updateWillIcon();
     }
+    private createNum(){
+        if(this._data.Num>1){
+            this.numUI.enabled = true;
+            this.numUI.string = this._data.Num+"";
+        }
+    }
+
     public setValue(data){
         this._data = data;
         if(this._data){
@@ -218,5 +241,17 @@ export default class BagItem extends cc.Component{
             type = BagItem.TYPE_EQUIPSTONE;
         }
         return type;
+    }
+
+    public set isLock(e){
+        if(this._data == 0 || this._data == -1)return;
+        if(this._isLocked != e){
+            this._isLocked = e;
+            if(this._isLocked){
+                this.goodsItem.getComponent(cc.Button).interactable = false;
+            }else{
+                this.goodsItem.getComponent(cc.Button).interactable = true;
+            }
+        }
     }
 }

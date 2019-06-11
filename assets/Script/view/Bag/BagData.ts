@@ -1,5 +1,4 @@
 
-import { callbackify, types } from "util";
 import URLConfig from "../../config/URLConfig";
 import HttpManager from "../../utils/HttpManager";
 import Singleton from "../../Utils/Singleton";
@@ -15,24 +14,35 @@ export default class BagData extends Singleton{
     private _needFresh = true;
     private _funList = [];
     private _dataFunMap = {};
+    public nowType = [];
+    public bag = null;
     public INum;
     public nowItems = null;
-    public bagItemPrefabUrl = "bag/Bagitem"
-    public bagItemComponent = "BagItem"
-    public equipPrefabUrl = "bag/equip_content_Item"
-    public equipItemComponent = "bagInfo_equie"
-    public otherPrefabUrl = "bag/other_content_Item"
-    public otherItemComponent = "bagInfo_other"
-    public equipButtonPrefabUrl = "bag/equip_button_item"
-    public equipButtonItemComponent = "bagEquip_Button"
-    public otherButtonPrefabUrl = "bag/other_button_item"
-    public otherButtonItemComponent = "bagOther_Button"
     public _currentPage = 0;
     public _count = 30;
     public MAX_PAGECOUNT = 120;
+    public MAX_EXENTD_POINT = 120;
     public _data;
     public nowIndex = 0;
 
+    //预制体-资源-背包item
+    public prefabUrlBagItem = "bag/Bagitem"
+    //预制体-脚本-背包item
+    public prefab_script_bag_item = "BagItem"
+    //预制体-资源-信息栏-装备
+    public prefab_url_info_equip = "bag/equip_content_Item"
+    //预制体-脚本-信息栏-装备
+    public prefab_script_info_equip = "BagEquipInfo"
+    public playerPrefabUrl = "bag/player_content_Item"
+    public playerItemComponent = "BagPlayerInfo"
+    public otherPrefabUrl = "bag/other_content_Item"
+    public otherItemComponent = "BagOtherInfo"
+    public equipButtonPrefabUrl = "bag/equip_button_item"
+    public equipButtonItemComponent = "BagEquipOperation"
+    public otherButtonPrefabUrl = "bag/other_button_item"
+    public otherButtonItemComponent = "BagOtherOperation"
+    public playerButtonPrefabUrl = "bag/player_button_item"
+    public playerButtonItemComponent = "BagPlayerOperation"
 
     public init(){
 
@@ -126,9 +136,9 @@ export default class BagData extends Singleton{
         }
     }
     public async createBagItem(data,parent = null){
-        let prefab = await Utils.insertPrefab(this.bagItemPrefabUrl);
-        prefab.sComponent = prefab.getComponent(this.bagItemComponent);
-        prefab.getComponent(this.bagItemComponent).init(data)
+        let prefab = await Utils.insertPrefab(this.prefabUrlBagItem);
+        prefab.sComponent = prefab.getComponent(this.prefab_script_bag_item);
+        prefab.sComponent.init(data)
         if(parent)
             prefab.parent = parent;
         return prefab;
@@ -138,11 +148,11 @@ export default class BagData extends Singleton{
         let component;
         switch(e){
             case BagItem.TYPE_PLAYER:
-                    // prefabUrl = this.equipPrefabUrl;
-                    // component = this.equipItemComponent;
+                    prefabUrl = this.playerPrefabUrl;
+                    component = this.playerItemComponent;
                 break;
             case BagItem.TYPE_EQUIP:
-                    prefabUrl = this.equipPrefabUrl;
+                    prefabUrl = this.prefab_url_info_equip;
                     component = this.equipItemComponent;
                 break;
             case BagItem.TYPE_RING:
@@ -166,8 +176,8 @@ export default class BagData extends Singleton{
         let component;
         switch(e){
             case BagItem.TYPE_PLAYER:
-                    // prefabUrl = this.equipPrefabUrl;
-                    // component = this.equipItemComponent;
+                    prefabUrl = this.playerButtonPrefabUrl;
+                    component = this.playerButtonItemComponent;
                 break;
             case BagItem.TYPE_EQUIP:
                     prefabUrl = this.equipButtonPrefabUrl;
@@ -198,6 +208,32 @@ export default class BagData extends Singleton{
         HttpManager.getInstance().request(srvArgs,callBack,this);
     }
 
+    public sort(callBack){
+        let srvArgs = {
+            action:URLConfig.Post_Pkg_SortItem,
+            args: {}
+        };
+        HttpManager.getInstance().request(srvArgs,callBack,this);
+    }
+
+
+    public useItem(item,callback){
+        console.log(item,"itemitemitemitem")
+        if(item._data.ItemType == BagItem.TYPE_PLAYER && item._data.Str > 1){
+
+        }else if(item._data.ItemCode == "24014" || item._data.ItemCode == "24013"){
+
+        }else{
+            callServerUseItem();
+        }
+        function callServerUseItem(){
+            let srvArgs = {
+                action:URLConfig.Post_Pkg_UseItem,
+                args: {Uuid:item._data.Uuid}
+            };
+            HttpManager.getInstance().request(srvArgs,callback,this);
+        }
+    }
     public get Items(){
         return this._Items;
     }
