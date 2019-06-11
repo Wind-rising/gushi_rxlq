@@ -1,4 +1,4 @@
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagData from "./BagData";
 import Events from "../../signal/Events";
 import ItemData from "../../data/ItemData";
@@ -83,7 +83,7 @@ export default class BagItem extends cc.Component{
     public _info;
     start(){
         this.goodsItem.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,'BagItem','onClick')
+            Utility.bindBtnEvent(this.node,'BagItem','onClick')
         )  
     }
     onDestroy(){

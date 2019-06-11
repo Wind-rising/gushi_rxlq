@@ -1,4 +1,4 @@
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagData from "./BagData";
 import BagItem from "./BagItem";
 import Events from "../../signal/Events";
@@ -22,7 +22,7 @@ export default class BagPlayerOperation extends cc.Component{
 
     start(){
         this.sign.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagPlayerOperation","onSign")
+            Utility.bindBtnEvent(this.node,"BagPlayerOperation","onSign")
         )
     }
     public onSign(){

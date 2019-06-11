@@ -2,7 +2,7 @@ import Singleton from "../Utils/Singleton";
 import HttpManager from "../utils/HttpManager";
 import URLConfig from "../config/URLConfig";
 import ErrMsg from "./ErrMsg";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -91,7 +91,7 @@ export default class UnionMode extends Singleton {
             value = value.replace("${" + j + "}", code["var"][j]);
         }
         
-        Utils.alert(value);
+        Utility.alert(value);
     }
     
 }

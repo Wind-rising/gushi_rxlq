@@ -1,13 +1,6 @@
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
+/**
+ * 页面主控制逻辑
+ */
 const {ccclass, property} = cc._decorator;
 
 import ManagerData from '../data/ManagerData';
@@ -20,10 +13,11 @@ import LimitGiftModel from '../data/LimitGiftModel';
 import FriendModel from '../data/FriendModel';
 import EventConst from '../data/EventConst';
 import UnionMode from '../data/UnionMode';
-import Utils from '../utils/Utils';
+import Utility from '../utils/Utility';
+import Singleton from '../Utils/Singleton';
 
 @ccclass
-export default class MainControllor extends cc.Component {
+export default class MainControllor extends Singleton {
     //是否需要刷新-防止比赛是弹出分享等--------------------------------------------------
     private _needFresh:boolean = false;
     //刷新时间
@@ -57,7 +51,7 @@ export default class MainControllor extends cc.Component {
             cc.director.preloadScene('MainScene',(completedCount, totalCount, item)=>{
             },(error, asset)=>{
                 if(error){
-                    Utils.alert('加载失败,请重试！',this.onInit.bind(this),{title:'提示',showCancel:false});
+                    Utility.alert('加载失败,请重试！',this.onInit.bind(this),{title:'提示',showCancel:false});
                     return;
                 }
                 /**
@@ -66,7 +60,7 @@ export default class MainControllor extends cc.Component {
                 this.startGame();
             });
         }else{//创建球队
-            Utils.showDialog('login/CreateRoleView');
+            Utility.showDialog('login/CreateRoleView');
             
         }
     };
@@ -123,12 +117,12 @@ export default class MainControllor extends cc.Component {
         // }
         //MissionView.getInstance().getData();
         FriendModel.getData(onFreshFriend);
-        Utils.getFeed();
+        Utility.getFeed();
         ManagerData.getInstance().refreshBuff();
         
         ManagerData.getInstance().refresh();
         
-        MainControllor.addUnionSkillBUff();
+        MainControllor.getInstance().addUnionSkillBUff();
         
         UnionMode.getInstance().getManager("", 
             function(obj:Object):void
@@ -137,7 +131,7 @@ export default class MainControllor extends cc.Component {
                 {
                     for(var i=0;i < obj['data']['guildInvite'].length;i++)
                     {
-                        Utils.showConfirm("<font color='#FFCC33'>【" + obj['data']['LidInfo'][obj['data']['guildInvite'][i].Lid] + "】</font>" + "邀请你加入" + 
+                        Utility.showConfirm("<font color='#FFCC33'>【" + obj['data']['LidInfo'][obj['data']['guildInvite'][i].Lid] + "】</font>" + "邀请你加入" + 
                             "<font color='#FF6600'>【" + obj['data']['guildInvite'][i]['Name'] + "】</font>公会！"
                                 , yesFun
                                 , {title:"公会",showCancel:true,onCancel:noFun}
@@ -176,7 +170,7 @@ export default class MainControllor extends cc.Component {
                 var inviteList:Object = data['data'][0].InviteList;
                 for(var i in inviteList){
                     //加好友	
-                    Utils.showConfirm("<font color='#FF6600'>"+inviteList[i]+"</font>已加您为好友，是否加TA为好友？", FriendModel.accept,{
+                    Utility.showConfirm("<font color='#FF6600'>"+inviteList[i]+"</font>已加您为好友，是否加TA为好友？", FriendModel.accept,{
                         title:"好友",
                         showCancel:true,
                         onCancel:FriendModel.refuse
@@ -186,7 +180,7 @@ export default class MainControllor extends cc.Component {
             }
         };
     };
-    public static addUnionSkillBUff():void
+    public addUnionSkillBUff():void
     {
         UnionMode.getInstance().postGuildSkill(
             function(obj:Object):void
@@ -194,40 +188,6 @@ export default class MainControllor extends cc.Component {
                 if(ManagerData.getInstance().gid == 0 || obj['studyedskill'] == null || obj['studyedskill'].length == 0)
                 {
                     Events.getInstance().dispatch(EventConst.REMOVE_UNION_SKILL);
-                }
-                else
-                {
-                    //通过本地代码直接获取 不需要网络加载了
-                    // var url:string = AppConfig.jsonRoot + AppConfig.jsonURL+ "Dic_guildskill_chs.jpg";
-                    
-                    // DataLoader.getData(url, function(data:Object):void
-                    // {
-                    //     if((data as ByteArray).bytesAvailable > 0)
-                    //     {
-                    //         (data as ByteArray).uncompress();
-                    //         var str:String = (data as ByteArray).readUTFBytes((data as ByteArray).bytesAvailable);
-                    //         _res = JSON.parse(str);
-                            
-                    //         var value:String = "";
-                    //         for(var o:String in obj.studyedskill)
-                    //         {
-                    //             if(int(o.split("_")[1]) > 1)
-                    //             {
-                    //                 var b:Object = _res[o.split("_")[0] + "_" + (int(o.split("_")[1]) - 1)];
-                                    
-                    //                 value += b.Gsname + " " +b.Gseffect + "\n";
-                    //             }
-                    //         }
-                            
-                    //         Events.getInstance().dispatch(EventConst.ADD_UNION_SKILL, [value]);
-                    //     }
-                    //     else
-                    //     {
-                    //         //错误
-                    //         Utils.alert(LanConfig.allStarDataErr);
-                    //     }
-                    // }
-                    //     , null, null, null, onError, URLRequestMethod.GET, URLLoaderDataFormat.BINARY)
                 }
             }
         );

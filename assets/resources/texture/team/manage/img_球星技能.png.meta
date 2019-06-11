@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "2b242c04-7f7a-4e29-8d5a-ce0abc8e5784",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_球星技能": {
+      "ver": "1.0.3",
+      "uuid": "18f0a715-bceb-4907-b36d-efe0cb333252",
+      "rawTextureUuid": "2b242c04-7f7a-4e29-8d5a-ce0abc8e5784",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 53,
+      "height": 15,
+      "rawWidth": 53,
+      "rawHeight": 15,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

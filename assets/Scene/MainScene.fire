@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5626953125,
-      "y": 0.5626953125,
+      "x": 0.8758802816901408,
+      "y": 0.8758802816901408,
       "z": 1
     },
     "_quat": {
@@ -3290,7 +3290,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 39.37,
+      "width": 41,
       "height": 12
     },
     "_anchorPoint": {
@@ -4363,7 +4363,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.81,
+      "width": 30,
       "height": 12
     },
     "_anchorPoint": {
@@ -4536,7 +4536,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.81,
+      "width": 30,
       "height": 12
     },
     "_anchorPoint": {
@@ -6839,7 +6839,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "button1",
+    "_name": "btn_player",
     "_objFlags": 0,
     "_parent": {
       "__id__": 115

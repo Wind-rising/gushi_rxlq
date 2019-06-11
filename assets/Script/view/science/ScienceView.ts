@@ -1,6 +1,6 @@
 
 import ScienceData from "./ScienceData"
-import Utils from "../../utils/Utils"
+import Utility from "../../utils/Utility"
 import Event from "../../signal/Events"
 import switchPage from "../public/switch_page"
 import ManagerData from "../../data/ManagerData";
@@ -88,7 +88,7 @@ export default class main_science_dialog extends cc.Component{
         ScienceData.playerEquip = null;
         ScienceData.index = 0;
         this.btn_close.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"main_science_dialog","close")
+            Utility.bindBtnEvent(this.node,"main_science_dialog","close")
         )
         this.navChange(0,false);
         //初始化球员信息
@@ -219,16 +219,16 @@ export default class main_science_dialog extends cc.Component{
         let prefab = null
         switch(state){
             case 1:
-                prefab = await Utils.insertPrefab(this.PlayerItemPrefabUrl);
+                prefab = await Utility.insertPrefab(this.PlayerItemPrefabUrl);
                 prefab.getComponent(this.PlayerItemPrefabComponent).change(data)
                 prefab.parent = this.PlayerListUI;
                 break;
             case 2:
-                prefab = await Utils.insertPrefab(this.PackageItemrefabUrl);
+                prefab = await Utility.insertPrefab(this.PackageItemrefabUrl);
                 prefab.parent = this.PlayerListUI;
                 break;
             case 3:
-                prefab = await Utils.insertPrefab(this.EquipItemrefabUrl);
+                prefab = await Utility.insertPrefab(this.EquipItemrefabUrl);
                 prefab.getComponent(this.EquipItemPrefabComponent).change(data,i)
                 prefab.parent = this.EquipListUI;
                 break;

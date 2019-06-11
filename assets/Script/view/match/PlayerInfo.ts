@@ -2,7 +2,7 @@ import ItemData from "../../data/ItemData";
 import ManagerData from "../../data/ManagerData";
 import PlayerUtil from "../../utils/PlayerUtil";
 import IconManager from "../../config/IconManager";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 
 /**
  * 球员信息
@@ -141,14 +141,14 @@ export default class PlayerInfo extends cc.Component {
                 var url:string = IconManager.preURL+IconManager.PLAYER_PER+info['HeadStyle']
                 cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteFrame)=>{
                     if(err){
-                        Utils.fadeErrorInfo(err.message);
+                        Utility.fadeErrorInfo(err.message);
                         return;
                     }
                     this.img_icon.spriteFrame = spriteFrame;
                 });
             }
 
-            var stamina:number = Utils.getStamina(pid, teamInfo, section);
+            var stamina:number = Utility.getStamina(pid, teamInfo, section);
             this.prg_spirit.progress = stamina/100;
         }else{
             this.srcData = null;

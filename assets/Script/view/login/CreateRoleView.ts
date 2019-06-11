@@ -1,6 +1,6 @@
 import URLConfig from "../../config/URLConfig";
 import HttpManager from "../../utils/HttpManager";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import ErrMsg from "../../data/ErrMsg";
 import ItemData from "../../data/ItemData";
 import IconManager from "../../config/IconManager";
@@ -105,13 +105,13 @@ export default class CreateRoleView extends cc.Component {
         this.edt_name = this.node.getChildByName('edt_name').getComponent(cc.EditBox);
 
         /** 绑定按钮事件 */
-        this.btn_change.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnChange'));
-        this.btn_left.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnLeft'));
-        this.btn_right.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnRight'));
-        this.btn_pos_left.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnPosLeft'));
-        this.btn_pos_right.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnPosRight'));
-        this.btn_random.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnRandom'));
-        this.btn_enter.clickEvents.push(Utils.bindBtnEvent(this.node,'CreateRoleView','onBtnEnter'));
+        this.btn_change.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnChange'));
+        this.btn_left.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnLeft'));
+        this.btn_right.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnRight'));
+        this.btn_pos_left.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnPosLeft'));
+        this.btn_pos_right.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnPosRight'));
+        this.btn_random.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnRandom'));
+        this.btn_enter.clickEvents.push(Utility.bindBtnEvent(this.node,'CreateRoleView','onBtnEnter'));
 
         this._logo = 1;
         this._posIndex = 0;
@@ -202,7 +202,7 @@ export default class CreateRoleView extends cc.Component {
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteFrame)=>{
             if(err){
-                Utils.fadeErrorInfo('图片加载失败 url = ' + url + '  err.message = ' + err.message);
+                Utility.fadeErrorInfo('图片加载失败 url = ' + url + '  err.message = ' + err.message);
             }
             this.img_logo.spriteFrame = spriteFrame;
         })
@@ -211,12 +211,12 @@ export default class CreateRoleView extends cc.Component {
     /** 创建球队回调 */
     private onManager(data:Object):void{
         if(data['res']){
-            Utils.fadeInfo("球队已经创建成功，现在就开始您的热血NBA之旅吧")
+            Utility.fadeInfo("球队已经创建成功，现在就开始您的热血NBA之旅吧")
             ManagerData.getInstance().refresh();
             //Events.getInstance().dispatch(new Event(AppConfig.SHOW_LOADER));
             this.node.destroy();
         }else{
-            Utils.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']))
+            Utility.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']))
         }
     }
 
@@ -264,7 +264,7 @@ export default class CreateRoleView extends cc.Component {
                 var url:string = IconManager.preURL+IconManager.PLAYER_HEAD+info.HeadStyle;
                 cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteFrame)=>{
                     if(err){
-                        Utils.fadeErrorInfo('图片加载错误！ url = ' + url);
+                        Utility.fadeErrorInfo('图片加载错误！ url = ' + url);
                     }
                     mc.getChildByName('img_icon').getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 });
@@ -278,7 +278,7 @@ export default class CreateRoleView extends cc.Component {
             this._teamId = data['data']['Post_Manager_RandTeam']['TeamId'];
             this.lbl_kpi.string = '' + parseInt(tempData['KPI']);
         }else{
-            Utils.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
+            Utility.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
         }
     }
 }

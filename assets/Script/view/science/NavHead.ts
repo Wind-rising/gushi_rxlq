@@ -1,7 +1,7 @@
 
 const LEVEL = cc.Enum({IMAGE:0,CCNODE:1})
 const {ccclass,property} = cc._decorator;
-import Utils from "../../utils/Utils"
+import Utility from "../../utils/Utility"
 import Events from "../../signal/Events"
 @ccclass    
 export default class NavHead extends cc.Component{
@@ -37,7 +37,7 @@ export default class NavHead extends cc.Component{
     private index:number = 0;
     start(){
         this.node.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"NavHead","active_on")
+            Utility.bindBtnEvent(this.node,"NavHead","active_on")
         )
     }
     public state = 0;

@@ -10,7 +10,7 @@ import HttpManager from "../utils/HttpManager";
 import MatchConfig from "../config/MatchConfig";
 import AppConfig from "../config/AppConfig";
 import UIConfig from "../config/UIConfig";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 import Events from "../signal/Events";
 import EventConst from "../data/EventConst";
 import Trancelate from "../utils/Trancelate";

@@ -1,7 +1,7 @@
 import ManagerData from "../../data/ManagerData";
 import Events from "../../signal/Events";
 import HttpManager from "../../utils/HttpManager";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import AppConfig from "../../config/AppConfig";
 
 // Learn TypeScript:
@@ -60,7 +60,7 @@ export default class LoginScene extends cc.Component {
                         //this.startLogin();
                         this.node.getChildByName('loginview').active = true;
                     }else{
-                        Utils.alert('配置文件加载失败,请重试！',this.start,{title:'提示',showCancel:false});
+                        Utility.alert('配置文件加载失败,请重试！',this.start,{title:'提示',showCancel:false});
                     }
                 });
             }
@@ -72,7 +72,7 @@ export default class LoginScene extends cc.Component {
      */
     startLogin(){
         if(!this.edt_account.string || this.edt_account.string.length<=0){
-            Utils.fadeErrorInfo('请输入账号，比如 test')
+            Utility.fadeErrorInfo('请输入账号，比如 test')
             return;
         }
         HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
@@ -83,7 +83,7 @@ export default class LoginScene extends cc.Component {
 
                 ManagerData.getInstance().refresh();
             }else{
-                Utils.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
+                Utility.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
             }
         },this,'GET','login');
     };

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "2281f19e-94cb-45af-b8bb-4002d6114bf9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_技能": {
+      "ver": "1.0.3",
+      "uuid": "1fdd9c34-2c42-4957-9d61-2a286a6f3aa6",
+      "rawTextureUuid": "2281f19e-94cb-45af-b8bb-4002d6114bf9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 41,
+      "height": 41,
+      "rawWidth": 41,
+      "rawHeight": 41,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

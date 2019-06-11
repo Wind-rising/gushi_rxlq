@@ -1,5 +1,5 @@
 
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import ScienceData from "./ScienceData"
 import ItemData from "../../data/ItemData";
 import URLConfig from "../../config/URLConfig";
@@ -38,11 +38,11 @@ export default class washCom extends SwitchCom{
 
     public onClick(){
         this.washButton.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"washCom","wash")
+            Utility.bindBtnEvent(this.node,"washCom","wash")
         )
         for(let i = 0;i<this.attrButton.length;i++){
             this.attrButton[i].clickEvents.push(
-                Utils.bindBtnEvent(this.node,"washCom","onAttrState",[i])
+                Utility.bindBtnEvent(this.node,"washCom","onAttrState",[i])
             )
         }
     }

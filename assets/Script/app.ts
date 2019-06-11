@@ -53,7 +53,7 @@ export default class app extends cc.Component {
     }
 
     start () {
-        this.mainControllor = new MainControllor();
+        this.mainControllor = MainControllor.getInstance();
     }
 
     update (dt) {

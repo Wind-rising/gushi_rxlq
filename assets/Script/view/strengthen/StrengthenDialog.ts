@@ -11,7 +11,7 @@
 
 const {ccclass, property} = cc._decorator;
 
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 @ccclass
 export default class StrengthenDialog extends cc.Component {
 
@@ -19,7 +19,7 @@ export default class StrengthenDialog extends cc.Component {
     private btn_close:cc.Node = null;
 
     start () {
-        this.btn_close.getComponent(cc.Button).clickEvents.push(Utils.bindBtnEvent(this.node,"StrengthenDialog","onClose")); //增加处理
+        this.btn_close.getComponent(cc.Button).clickEvents.push(Utility.bindBtnEvent(this.node,"StrengthenDialog","onClose")); //增加处理
     }
     public onClose():void{
         this.node.destroy();

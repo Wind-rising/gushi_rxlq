@@ -14,7 +14,7 @@ const {ccclass, property} = cc._decorator;
 
 import Singleton from './../utils/Singleton';
 import ManagerLvData from './ManagerLvData';
-import Utils from './../utils/Utils';
+import Utility from './../utils/Utility';
 import ItemData from './ItemData';
 import ErrMsg from './ErrMsg';
 import Events from '../signal/Events';
@@ -176,7 +176,7 @@ export default class ManagerData extends Singleton {
                 if(!this._data){
                     Events.getInstance().dispatch(AppConfig.SYS_ERR, ErrMsg.getInstance().getErr(data['code']));
                 }
-                Utils.alert(ErrMsg.getInstance().getErr(data['code']),null,{title:"出错啦"});
+                Utility.alert(ErrMsg.getInstance().getErr(data['code']),null,{title:"出错啦"});
             }
         }
     }
@@ -202,14 +202,14 @@ export default class ManagerData extends Singleton {
 
                     //您使用的 尼克斯队服 即将到期，是否续约该队服
                     var altStr:string  = "您使用的<font color='"+color+"'>"+itemObj['Name']+"</font>已经到期，综合实力已降低，是否重新购买该队服？";
-                    Utils.alert(altStr,(itemCode)=>{
+                    Utility.alert(altStr,(itemCode)=>{
                         //cc.log(itemCode);
                         // MallView.getInstance().willBuyItemObj = {itemCode:itemCode,type:2};
                         // MallView.getInstance().show();
-                        Utils.showDialog('MallView');//怎么传参数
+                        Utility.showDialog('MallView');//怎么传参数
                     },{
                         onCancel:function(){
-                            Utils.alert("您的队服已到期消失，综合实力已降低。");
+                            Utility.alert("您的队服已到期消失，综合实力已降低。");
                         },
                         showCancel:true
                     });

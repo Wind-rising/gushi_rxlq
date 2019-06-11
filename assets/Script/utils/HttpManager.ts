@@ -3,7 +3,7 @@
  */
 const {ccclass, property} = cc._decorator;
 import AppConfig from "../config/AppConfig";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 @ccclass
 export default class HttpManager extends cc.Component {
 
@@ -82,7 +82,7 @@ export default class HttpManager extends cc.Component {
         ,method:string = 'GET'
         , headObj:Object = {})
     {
-            Utils.showLoading();
+            Utility.showLoading();
             var xhr = cc.loader.getXMLHttpRequest();
             /*
              "arraybuffer",
@@ -100,7 +100,7 @@ export default class HttpManager extends cc.Component {
             let _this = this;
             xhr.onreadystatechange = function(){
                 if (this.readyState == 4){
-                    Utils.hideLoading();
+                    Utility.hideLoading();
                     if(this.status >= 200 && this.status < 400){
                         let response;
                         switch(this.responseType){
@@ -114,7 +114,7 @@ export default class HttpManager extends cc.Component {
                                 try{
                                     response = JSON.parse(this.responseText);
                                 }catch (error){
-                                    Utils.alert('返回数据格式错误，this.responseText = ' + this.responseText);
+                                    Utility.alert('返回数据格式错误，this.responseText = ' + this.responseText);
                                 }
                                 break;
     
@@ -130,7 +130,7 @@ export default class HttpManager extends cc.Component {
                         }
                     }else{
                         //http请求出错
-                        Utils.showConfirm('服务器未响应，请重试',function(){
+                        Utility.showConfirm('服务器未响应，请重试',function(){
                             //重试
                             HttpManager.getInstance().sendRequest(url,callback,context,responseType,method,headObj)
                         },{

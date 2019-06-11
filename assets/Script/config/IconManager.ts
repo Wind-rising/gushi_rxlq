@@ -1,17 +1,8 @@
-import Utils from "../utils/Utils";
-import AppConfig from "./AppConfig";
-
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
+
+import Utility from "../utils/Utility";
+import AppConfig from "./AppConfig";
 
 @ccclass
 export default class IconManager extends cc.Component {
@@ -86,7 +77,7 @@ export default class IconManager extends cc.Component {
 			url = 'image/'+type+url
 			cc.loader.loadRes(url, cc.SpriteFrame, function (err, spriteFrame) {
                 if (err) {
-                    Utils.fadeErrorInfo(err.message || JSON.stringify(err));
+                    Utility.fadeErrorInfo(err.message || JSON.stringify(err));
                     return;
                 }
                 if(context){

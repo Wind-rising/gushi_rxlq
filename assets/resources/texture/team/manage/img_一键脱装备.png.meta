@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "0ce46cd7-c65d-4414-addb-b66e77504805",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_一键脱装备": {
+      "ver": "1.0.3",
+      "uuid": "1e88b74b-243b-44e4-800d-16805b169bc5",
+      "rawTextureUuid": "0ce46cd7-c65d-4414-addb-b66e77504805",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 61,
+      "height": 17,
+      "rawWidth": 61,
+      "rawHeight": 17,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

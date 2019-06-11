@@ -2,7 +2,7 @@
 import ScienceData from "./ScienceData"
 import ItemData from "../../data/ItemData"
 import ManagerData from "../../data/ManagerData";
-import Utils from "../../utils/Utils"
+import Utility from "../../utils/Utility"
 import URLConfig from "../../config/URLConfig"
 import HttpManager from "../../utils/HttpManager"
 import Events from "../../signal/Events";
@@ -30,10 +30,10 @@ export default class StrengthCom extends SwitchCom{
     }
     public onClick(){
         this.upButton.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"SwitchCom","onClickUp",1)
+            Utility.bindBtnEvent(this.node,"SwitchCom","onClickUp",1)
         )
         this.upFiveButton.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"SwitchCom","onClickUp",5)
+            Utility.bindBtnEvent(this.node,"SwitchCom","onClickUp",5)
         )
     }
     public show(isFresh = false){
@@ -74,7 +74,7 @@ export default class StrengthCom extends SwitchCom{
     private Strength(){
         if(ScienceData.selectEquip.Lvl == ManagerData.getInstance().Level){
             console.log("装备等级不能超过经理等级!")
-            Utils.showAlert("装备等级不能超过经理等级!");
+            Utility.showAlert("装备等级不能超过经理等级!");
             if(this._remainTimes != 0){
                 this._remainTimes = 0;
                 Events.getInstance().dispatch("ScienceUpDate")

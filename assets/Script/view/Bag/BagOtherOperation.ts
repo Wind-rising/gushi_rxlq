@@ -1,4 +1,4 @@
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagData from "./BagData";
 import BagItem from "./BagItem";
 import Events from "../../signal/Events";
@@ -17,19 +17,19 @@ export default class BagOtherOperation extends cc.Component{
 
     start(){
         this.buttonSign.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagOtherOperation","onSign")
+            Utility.bindBtnEvent(this.node,"BagOtherOperation","onSign")
         )
         this.buttonShow.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagOtherOperation","onShow")
+            Utility.bindBtnEvent(this.node,"BagOtherOperation","onShow")
         )
         this.buttonDiscard.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagOtherOperation","onDiscard")
+            Utility.bindBtnEvent(this.node,"BagOtherOperation","onDiscard")
         )
     }
     public onSign(){
         //打开装备界面
         if(!MainData.scienceOpen){
-            Utils.showDialog('Science/ScienceView');
+            Utility.showDialog('Science/ScienceView');
             BagData.getInstance().bag.parent.destroy();
             return;
         }

@@ -1,7 +1,7 @@
 import BagData from "./BagData";
 import switch_page from "../public/switch_page";
 import Events from "../../signal/Events";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagItem from "./BagItem";
 import Alert from "../public/Alert";
 import ErrMsg from "../../data/ErrMsg";
@@ -88,13 +88,13 @@ export default class Bag extends cc.Component{
     //初始化
     public init(){
         this.btn_close.clickEvents.push(
-            Utils.bindBtnEvent(this.node,'Bag','onClose')
+            Utility.bindBtnEvent(this.node,'Bag','onClose')
         )
         this.btn_expansion.clickEvents.push(
-            Utils.bindBtnEvent(this.node,'Bag','onExpansion')
+            Utility.bindBtnEvent(this.node,'Bag','onExpansion')
         )
         this.btn_arrange.clickEvents.push(
-            Utils.bindBtnEvent(this.node,'Bag','onArrange')
+            Utility.bindBtnEvent(this.node,'Bag','onArrange')
         )
         this._pageCom = new switch_page(this.page_prev,this.page_next,this.page_num,"BagPageChange",{
             "main":BagData.getInstance(),
@@ -131,11 +131,11 @@ export default class Bag extends cc.Component{
     //扩充
     public onExpansion(){
         if(BagData.getInstance().INum >= BagData.getInstance().MAX_PAGECOUNT){
-            Utils.showAlert('背包已扩容至最大！')
+            Utility.showAlert('背包已扩容至最大！')
         }else{
             let time = (BagData.getInstance().INum - this.BASIC_BAG_NUM)/6 + 1;
             let extendPoint = Math.min(time*this.BASIC_EXTEND_POINT,BagData.getInstance().MAX_EXENTD_POINT);
-            Utils.alert(`扩展${this.EXTEND_NUM}格背包需要消耗${extendPoint}球票`,()=>{
+            Utility.alert(`扩展${this.EXTEND_NUM}格背包需要消耗${extendPoint}球票`,()=>{
                 BagData.getInstance().extendBag((data)=>{
                     this.onExtend(data);
                 })
@@ -156,7 +156,7 @@ export default class Bag extends cc.Component{
                 ManagerData.getInstance().Point = data.data.SyncData.Point;
             }
         }else{
-            Utils.showAlert(ErrMsg.getInstance().getErr(data.code));
+            Utility.showAlert(ErrMsg.getInstance().getErr(data.code));
         }
     }
     //关闭

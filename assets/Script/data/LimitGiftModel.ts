@@ -3,7 +3,7 @@ import URLConfig from "../config/URLConfig";
 import HttpManager from "../utils/HttpManager";
 import Events from "../signal/Events";
 import EventConst from "./EventConst";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 import ErrMsg from "./ErrMsg";
 
 // Learn TypeScript:
@@ -50,7 +50,7 @@ export default class LimitGiftModel extends Singleton {
                 }
                 else
                 {
-                    Utils.alert(ErrMsg.getInstance().getErr(result.code), null,{title:"出错啦"});
+                    Utility.alert(ErrMsg.getInstance().getErr(result.code), null,{title:"出错啦"});
                 }
             },this);
 		}
@@ -66,7 +66,7 @@ export default class LimitGiftModel extends Singleton {
                 }
                 else
                 {
-                    Utils.alert(ErrMsg.getInstance().getErr(result.code));
+                    Utility.alert(ErrMsg.getInstance().getErr(result.code));
                 }
             },this);
 		}

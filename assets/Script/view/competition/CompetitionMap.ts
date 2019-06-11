@@ -1,7 +1,7 @@
 
 
 const {ccclass, property} = cc._decorator;
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import CountController from "../../controllor/CountController";
 import URLConfig from "../../config/URLConfig";
 import UIConfig from "../../config/UIConfig";
@@ -34,7 +34,7 @@ export default class CompetitionMap extends cc.Component {
         //需要先预加载，然后再进来直接显示出来
         cc.loader.loadRes('image/map/map_1',cc.SpriteFrame,(err,spriteFrame)=>{
             if(err){
-                Utils.fadeErrorInfo(err.message);
+                Utility.fadeErrorInfo(err.message);
                 return;
             }
             this.mapBg.spriteFrame = spriteFrame;

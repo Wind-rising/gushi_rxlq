@@ -4,7 +4,7 @@ import ScienceData from "./ScienceData"
 import EquipData from "../../data/EquipData";
 import ItemData from "../../data/ItemData";
 import Events from "../../signal/Events";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagData from "../Bag/BagData";
 import BagItem from "../Bag/BagItem";
 import IconManager from "../../config/IconManager";
@@ -44,7 +44,7 @@ export default class SignCom extends SwitchCom{
 
     public onBag(){
         BagData.getInstance().nowType = [BagItem.TYPE_SIGNER];
-        Utils.showDialog('bag/Bag');
+        Utility.showDialog('bag/Bag');
     }
     public show(isFresh = false){
         super.show();
@@ -61,10 +61,10 @@ export default class SignCom extends SwitchCom{
         if(!this.isInit){
             this.isInit = !this.isInit;
             this.openBag.clickEvents.push(
-                Utils.bindBtnEvent(this.node,'SignCom','onBag')
+                Utility.bindBtnEvent(this.node,'SignCom','onBag')
             )
             this.signButton.clickEvents.push(
-                Utils.bindBtnEvent(this.node,'SignCom','onSign')
+                Utility.bindBtnEvent(this.node,'SignCom','onSign')
             )
             this.addListener();
         }
@@ -163,9 +163,9 @@ export default class SignCom extends SwitchCom{
     }
     public onSign(){
         if(!this._data){
-            Utils.showAlert('需要签名纸');
+            Utility.showAlert('需要签名纸');
         }else if(!ScienceData.selectEquip){
-            Utils.showAlert('需要装备');
+            Utility.showAlert('需要装备');
         }else{
             console.log(ScienceData.selectEquip,"ScienceData.selectEquip")
             if(ScienceData.selectEquip._data.Sign){
@@ -195,7 +195,7 @@ export default class SignCom extends SwitchCom{
                     }
                     htmlStr += `<color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c>`;
                 }
-                Utils.alert(htmlStr,()=>{
+                Utility.alert(htmlStr,()=>{
                     this.onConfirmSign();
                 });
             }else{

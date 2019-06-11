@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "69e3c05a-b917-4a08-8b5c-c6b85db0443f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "铜PG": {
+      "ver": "1.0.3",
+      "uuid": "7e4837d1-b29d-4715-b164-4edea952c681",
+      "rawTextureUuid": "69e3c05a-b917-4a08-8b5c-c6b85db0443f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 52,
+      "height": 52,
+      "rawWidth": 52,
+      "rawHeight": 52,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

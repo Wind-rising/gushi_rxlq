@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "701fe8f0-7e55-46fc-95e0-5a314a146ec4",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "球员管理": {
+      "ver": "1.0.3",
+      "uuid": "181086d4-efc6-42fc-974d-35d2aee99e48",
+      "rawTextureUuid": "701fe8f0-7e55-46fc-95e0-5a314a146ec4",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 77,
+      "height": 29,
+      "rawWidth": 77,
+      "rawHeight": 29,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

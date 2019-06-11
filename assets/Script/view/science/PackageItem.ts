@@ -1,6 +1,6 @@
 const {ccclass,property} = cc._decorator;
 
-import Utils from "../../utils/Utils"
+import Utility from "../../utils/Utility"
 import ScienceData from "./ScienceData"
 import Events from "../../signal/Events"
 
@@ -25,7 +25,7 @@ export default class PackageItem extends cc.Component{
     }
     public onClick(){
         this.node.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"PackageItem","openEquip")
+            Utility.bindBtnEvent(this.node,"PackageItem","openEquip")
         )
     }
 

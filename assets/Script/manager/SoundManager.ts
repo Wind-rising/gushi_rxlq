@@ -1,4 +1,4 @@
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "4755349f-3164-4a9b-b7e5-a235d0de0034",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "战术研究": {
+      "ver": "1.0.3",
+      "uuid": "ad21e0cc-4277-4d9c-a5c3-460655c6a32f",
+      "rawTextureUuid": "4755349f-3164-4a9b-b7e5-a235d0de0034",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 80,
+      "height": 29,
+      "rawWidth": 80,
+      "rawHeight": 29,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

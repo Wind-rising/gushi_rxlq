@@ -1,6 +1,6 @@
 import HttpManager from "../utils/HttpManager";
 import URLConfig from "../config/URLConfig";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 import ErrMsg from "./ErrMsg";
 
 // Learn TypeScript:
@@ -21,7 +21,7 @@ export default class FriendModel{
     //加好友
 		public static addFriend(name:String, callback:Function=null):void{
             let srvArgs = {args:{Name:name},action:URLConfig.Post_Friend_Apply};
-			Utils.showLoading();
+			Utility.showLoading();
 			if(callback != null){
                 HttpManager.getInstance().request(srvArgs,callback,this);
 			}else{
@@ -29,15 +29,15 @@ export default class FriendModel{
 			}
 			
 			function onAdd(data:Object):void{
-				Utils.hideLoading();
-				Utils.alert(ErrMsg.getInstance().getErr(data['code']));
+				Utility.hideLoading();
+				Utility.alert(ErrMsg.getInstance().getErr(data['code']));
 			}
 		}
 		
 		//显示加好友界面
 		public static showAddFriend(data:Object=null):void{
 			if(data){
-				Utils.alert(ErrMsg.getInstance().getErr(data['code']));
+				Utility.alert(ErrMsg.getInstance().getErr(data['code']));
 			}
 			FriendModel.getData(onFreshFriend);
 			
@@ -47,7 +47,7 @@ export default class FriendModel{
 					var inviteList:Object = data['data'][0].InviteList;
 					for(var i in inviteList){
 						//加好友	
-						Utils.alert("<font color='#FF6600'>"+inviteList[i]+"</font>已加您为好友，是否加TA为好友？", FriendModel.accept, {title:"好友",showCancel:true,onCancel:FriendModel.refuse});
+						Utility.alert("<font color='#FF6600'>"+inviteList[i]+"</font>已加您为好友，是否加TA为好友？", FriendModel.accept, {title:"好友",showCancel:true,onCancel:FriendModel.refuse});
 						break
 					}
 				}

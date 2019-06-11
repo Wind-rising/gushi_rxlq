@@ -1,4 +1,4 @@
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import MainData from "../MainData";
 import BagData from "./BagData";
 
@@ -19,19 +19,19 @@ export default class BagEquipOperation extends cc.Component{
 
     start(){
         this.buttonEquip.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagEquipOperation","onEquip")
+            Utility.bindBtnEvent(this.node,"BagEquipOperation","onEquip")
         )
         this.buttonUp.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagEquipOperation","onUp")
+            Utility.bindBtnEvent(this.node,"BagEquipOperation","onUp")
         )
         this.buttonWash.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagEquipOperation","onWash")
+            Utility.bindBtnEvent(this.node,"BagEquipOperation","onWash")
         )
         this.buttonShow.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagEquipOperation","onShow")
+            Utility.bindBtnEvent(this.node,"BagEquipOperation","onShow")
         )
         this.buttonDiscard.clickEvents.push(
-            Utils.bindBtnEvent(this.node,"BagEquipOperation","onDiscard")
+            Utility.bindBtnEvent(this.node,"BagEquipOperation","onDiscard")
         )
     }
     public onEquip(){
@@ -39,7 +39,7 @@ export default class BagEquipOperation extends cc.Component{
     }
     public onUp(){
         if(!MainData.scienceOpen){
-            Utils.showDialog('Science/ScienceView');
+            Utility.showDialog('Science/ScienceView');
             BagData.getInstance().bag.parent.destroy();
             return;
         }
@@ -47,7 +47,7 @@ export default class BagEquipOperation extends cc.Component{
     public onWash(){
         
         if(!MainData.scienceOpen){
-            Utils.showDialog('Science/ScienceView');
+            Utility.showDialog('Science/ScienceView');
             BagData.getInstance().bag.parent.destroy();
             return;
         }

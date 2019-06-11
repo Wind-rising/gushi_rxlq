@@ -1,7 +1,7 @@
 const {ccclass,property} = cc._decorator;
 
 import ItemData from "../../data/ItemData"
-import Utils from "../../utils/Utils"
+import Utility from "../../utils/Utility"
 import ManagerData from "../../data/ManagerData";
 import ScienceData from "./ScienceData"
 import Events from "../../signal/Events"
@@ -38,7 +38,7 @@ export default class EquipItem extends cc.Component{
     }
     public onClick(){
         this.node.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"EquipItem","openEquip")
+            Utility.bindBtnEvent(this.node,"EquipItem","openEquip")
         )
     }
 

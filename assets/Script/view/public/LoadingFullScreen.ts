@@ -1,5 +1,5 @@
 import CountController from "../../controllor/CountController";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 
 /**
  * 加载数据
@@ -61,7 +61,7 @@ export default class LoadingFullScreen extends cc.Component {
         if(this.instance){
             return;
         }
-        Utils.showDialog('match/LoadingDialog',{callBack:callBack});
+        Utility.showDialog('match/LoadingDialog',{callBack:callBack});
     }
 
     public static fadeOut () {

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "fc829d0a-aa2f-4d72-a285-7ec5a4a9e0c0",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "球员组合提示": {
+      "ver": "1.0.3",
+      "uuid": "c003b48d-bd3a-4a4f-b7af-79a5751a51af",
+      "rawTextureUuid": "fc829d0a-aa2f-4d72-a285-7ec5a4a9e0c0",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 245,
+      "height": 23,
+      "rawWidth": 245,
+      "rawHeight": 23,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

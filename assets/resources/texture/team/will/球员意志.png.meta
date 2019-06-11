@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "90fcf8aa-4e16-4ecd-96d5-82757a815357",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "球员意志": {
+      "ver": "1.0.3",
+      "uuid": "ee8e71d4-14f7-413a-8a97-fe908726d5e9",
+      "rawTextureUuid": "90fcf8aa-4e16-4ecd-96d5-82757a815357",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 80,
+      "height": 34,
+      "rawWidth": 80,
+      "rawHeight": 34,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

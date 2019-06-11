@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "ee1a7f0d-81da-43b1-bad6-9aff3b793f4f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_托管球员": {
+      "ver": "1.0.3",
+      "uuid": "ab029c5a-bf35-4063-8114-0228b9483b64",
+      "rawTextureUuid": "ee1a7f0d-81da-43b1-bad6-9aff3b793f4f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 96,
+      "height": 101,
+      "rawWidth": 96,
+      "rawHeight": 101,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -4,7 +4,7 @@ import CountController from "../../controllor/CountController";
 import ManagerData from "../../data/ManagerData";
 import PlayerSide from "../../data/type/PlayerSide";
 import IconManager from "../../config/IconManager";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import MatchConfig from "../../config/MatchConfig";
 
 /**
@@ -344,7 +344,7 @@ export default class CompetitionUI extends cc.Component {
         var url:string = IconManager.preURL+IconManager.PLAYER_PER+headStyle;
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
-                Utils.fadeErrorInfo(err.message);
+                Utility.fadeErrorInfo(err.message);
                 return;
             }
             mc.spriteFrame = spriteframe;
@@ -356,7 +356,7 @@ export default class CompetitionUI extends cc.Component {
         var url:string = IconManager.preURL+IconManager.PLAYER_ICON+headStyle;
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
-                Utils.fadeErrorInfo(err.message);
+                Utility.fadeErrorInfo(err.message);
                 return;
             }
             mc.spriteFrame = spriteframe;

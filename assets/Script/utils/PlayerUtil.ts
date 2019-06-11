@@ -322,7 +322,7 @@ export default class PlayerUtil {
     }
 		
     /**获取球员KP*/
-    public static getKP(callback:Function, forceUpdate:Boolean=true):void{
+    public static getKP(callback:Function, forceUpdate:boolean=true):void{
         if(!forceUpdate && this.kpiInfo){
             if(callback != null){
                 callback();

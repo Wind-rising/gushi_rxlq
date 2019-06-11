@@ -12,7 +12,7 @@ import ManagerData from "../data/ManagerData";
 import EventConst from "../data/EventConst";
 import Events from "../signal/Events";
 import ErrMsg from "../data/ErrMsg";
-import Utils from "../utils/Utils";
+import Utility from "../utils/Utility";
 import CountController from "./CountController";
 import LoadingFullScreen from "../view/public/LoadingFullScreen";
 
@@ -85,7 +85,7 @@ export default class MatchControllor extends Singleton {
         //     _matchCompare.showCompare(matchType, awayId, homeId);
         //     _matchCompare.addEventListener(MatchCompareView.START, onStart);
         // }
-        Utils.showDialog('match/MatchCompareView');
+        Utility.showDialog('match/MatchCompareView');
     }
     
     //获取比赛数据
@@ -160,7 +160,7 @@ export default class MatchControllor extends Singleton {
             if(data['data'] && data['data']['SyncData']['Score'])
                 ManagerData.getInstance().Score = parseInt(data['data']['SyncData']['Score']);
         }else{
-            Utils.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
+            Utility.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
             
             Events.getInstance().dispatch(EventConst.SHOW_MAIN);
             LoadingFullScreen.fadeOut();
@@ -210,7 +210,7 @@ export default class MatchControllor extends Singleton {
     
     private noMatchFun():void
     {
-        Utils.fadeErrorInfo("呀~录像找不着了哦！");
+        Utility.fadeErrorInfo("呀~录像找不着了哦！");
         Events.getInstance().dispatch(EventConst.SHOW_MATCH_SELECT, this._matchType);
         //关闭加载
         // LoadingView.getInstance().awaysInStage = false;

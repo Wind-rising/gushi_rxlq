@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "4f749316-bdf8-4d72-b463-fbde690ba3f4",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "银SG": {
+      "ver": "1.0.3",
+      "uuid": "44a2c794-b3a5-4adb-9c61-72e571451cee",
+      "rawTextureUuid": "4f749316-bdf8-4d72-b463-fbde690ba3f4",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 52,
+      "height": 52,
+      "rawWidth": 52,
+      "rawHeight": 52,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

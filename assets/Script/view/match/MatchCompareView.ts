@@ -1,6 +1,6 @@
 import URLConfig from "../../config/URLConfig";
 import MatchType from "../../data/type/MatchType";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import HttpManager from "../../utils/HttpManager";
 import MatchControllor from "../../controllor/MatchControllor";
 import PlayerUtil from "../../utils/PlayerUtil";
@@ -73,10 +73,10 @@ export default class MatchCompareView extends cc.Component {
         this.img_section_b = this.node.getChildByName('img_section_b').getComponent(cc.Sprite);
 
         this.btn_return.clickEvents.push(
-            Utils.bindBtnEvent(this.node,'MatchCompareView','onBtnReturn')
+            Utility.bindBtnEvent(this.node,'MatchCompareView','onBtnReturn')
         );
         this.btn_start.clickEvents.push(
-            Utils.bindBtnEvent(this.node,'MatchCompareView','onBtnStartMatch')
+            Utility.bindBtnEvent(this.node,'MatchCompareView','onBtnStartMatch')
         );
 
         this.initUI();
@@ -128,7 +128,7 @@ export default class MatchCompareView extends cc.Component {
 
             this.format(this._data[0].ManagerSolutions);
             //格式化整容信息
-            this.node.getChildByName('lbl_kpi_a').getComponent(cc.Label).string = Utils.getKPI(this._data[0].ManagerSolutions[0].Members)+"";
+            this.node.getChildByName('lbl_kpi_a').getComponent(cc.Label).string = Utility.getKPI(this._data[0].ManagerSolutions[0].Members)+"";
             this.node.getChildByName('lbl_kpi_b').getComponent(cc.Label).string = this._data[0].ManagerSolutions[1].KPI+"";
             
             //默认选中第一个
@@ -179,7 +179,7 @@ export default class MatchCompareView extends cc.Component {
             }
             
         }else{
-            Utils.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
+            Utility.fadeErrorInfo(ErrMsg.getInstance().getErr(data['code']));
         }
     }
 
@@ -196,7 +196,7 @@ export default class MatchCompareView extends cc.Component {
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err,spriteframe)=>{
             if(err){
-                Utils.fadeErrorInfo(err.message);
+                Utility.fadeErrorInfo(err.message);
                 return;
             }
             this.node.getChildByName('img_logo_a').getComponent(cc.Sprite).spriteFrame = spriteframe;
@@ -210,7 +210,7 @@ export default class MatchCompareView extends cc.Component {
         }
         cc.loader.loadRes(url,cc.SpriteFrame,(err, spriteframe)=>{
             if(err){
-                Utils.fadeErrorInfo(err.message);
+                Utility.fadeErrorInfo(err.message);
                 return;
             }
             this.node.getChildByName('img_logo_b').getComponent(cc.Sprite).spriteFrame = spriteframe;

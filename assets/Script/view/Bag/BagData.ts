@@ -3,7 +3,7 @@ import URLConfig from "../../config/URLConfig";
 import HttpManager from "../../utils/HttpManager";
 import Singleton from "../../Utils/Singleton";
 import ItemPool from "../../utils/ItemPool";
-import Utils from "../../utils/Utils";
+import Utility from "../../utils/Utility";
 import BagItem from "./BagItem";
 
 export default class BagData extends Singleton{
@@ -136,7 +136,7 @@ export default class BagData extends Singleton{
         }
     }
     public async createBagItem(data,parent = null){
-        let prefab = await Utils.insertPrefab(this.prefabUrlBagItem);
+        let prefab = await Utility.insertPrefab(this.prefabUrlBagItem);
         prefab.sComponent = prefab.getComponent(this.prefab_script_bag_item);
         prefab.sComponent.init(data)
         if(parent)
@@ -164,7 +164,7 @@ export default class BagData extends Singleton{
                     component = this.otherItemComponent;
                 break;
         }
-        let prefab = await Utils.insertPrefab(prefabUrl);
+        let prefab = await Utility.insertPrefab(prefabUrl);
         prefab.sComponent = prefab.getComponent(component);
         prefab.getComponent(component).init(data)
         if(parent)
@@ -192,7 +192,7 @@ export default class BagData extends Singleton{
                     component = this.otherButtonItemComponent;
                 break;
         }
-        let prefab = await Utils.insertPrefab(prefabUrl);
+        let prefab = await Utility.insertPrefab(prefabUrl);
         prefab.sComponent = prefab.getComponent(component);
         // prefab.getComponent(component).init(data)
         if(parent)
