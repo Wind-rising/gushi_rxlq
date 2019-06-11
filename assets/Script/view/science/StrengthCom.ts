@@ -1,28 +1,28 @@
 
-import switch_content from "./switch_content";
-import ScienceData from "./data_science"
+import ScienceData from "./ScienceData"
 import ItemData from "../../data/ItemData"
 import ManagerData from "../../data/ManagerData";
 import Utils from "../../utils/Utils"
 import URLConfig from "../../config/URLConfig"
 import HttpManager from "../../utils/HttpManager"
 import Events from "../../signal/Events";
+import SwitchCom from "./SwitchCom";
 const {ccclass,property} = cc._decorator;
 
 @ccclass    
-export default class StrengthCom extends switch_content{
+export default class StrengthCom extends SwitchCom{
     @property(cc.Node)
-    private icon:cc.Node;
+    private icon:cc.Node = null;
     @property(cc.Node)
-    private EName:cc.Node;
+    private EName:cc.Node = null;
     @property(cc.Node)
-    private levelUI:cc.Node;
+    private levelUI:cc.Node = null;
     @property(cc.Node)
-    private moneyUI:cc.Node;
+    private moneyUI:cc.Node = null;
     @property(cc.Node)
-    private upButton:cc.Node;
+    private upButton:cc.Node = null;
     @property(cc.Node)
-    private upFiveButton:cc.Node;
+    private upFiveButton:cc.Node = null;
 
     private _remainTimes = 0;
     start(){
@@ -30,10 +30,10 @@ export default class StrengthCom extends switch_content{
     }
     public onClick(){
         this.upButton.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"switch_content","onClickUp",1)
+            Utils.bindBtnEvent(this.node,"SwitchCom","onClickUp",1)
         )
         this.upFiveButton.getComponent(cc.Button).clickEvents.push(
-            Utils.bindBtnEvent(this.node,"switch_content","onClickUp",5)
+            Utils.bindBtnEvent(this.node,"SwitchCom","onClickUp",5)
         )
     }
     public show(isFresh = false){

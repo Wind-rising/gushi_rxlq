@@ -67,6 +67,8 @@ export default class IconManager extends cc.Component {
 		public static DRAFT_IMAGE:string = "draftpng/";
 		/** 日常活动图片 */
 		public static COMMONACTIVITY_ICON:string = "CommonActivity/";
+		/** 球员背包模块相关图片*/
+		public static PLAYER_ITEM_ICON:string = "playItem/";
 		
 		/**公会技能图片*/
 		public static UNION_SKILL:string = "unionSkill/";
@@ -96,23 +98,12 @@ export default class IconManager extends cc.Component {
 		}
 		
 		/**获取球员ICON*/
-		// public static getPlayerIcon(vo:ItemVo):BitmapData{
-		// 	//需要缓存的
-		// 	var key:string= vo.ItemCode+"_"+vo.playPos+"_"+vo.Str;
-		// 	var bmd:BitmapData = new BitmapData(57, 57, true, 0xff0000);
-		// 	var mc:MovieClip;
-		// 	/*var info:Object = ItemData.getItemInfo(vo.ItemCode);
-		// 	if(!info){
-		// 		info = new Object();
-		// 		info.CardLevel = vo.CardLevel;
-		// 	}*/
-		// 	var cardLevel:int = vo.CardLevel;
-		// 	mc = LibManager.getInstance().getUI("CardUI_"+cardLevel);
-		// 	mc.lvMC.gotoAndStop(vo.Str);
-		// 	mc.gotoAndStop(ItemData.getLabel(int(vo.playPos)));
-		// 	bmd.draw(mc);
-		// 	return bmd;
-		// }
+		public static getPlayerIcon(vo){
+			//需要缓存的
+			var key:string= vo.ItemCode+"_"+vo.playPos+"_"+vo.Str;
+			console.log(key)
+			// return bmd;
+		}
 		
 		/**获取完整图像地址*/
 		public static get preURL():string{

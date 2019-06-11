@@ -1,19 +1,19 @@
 
-import switch_content from "./switch_content";
 import Utils from "../../utils/Utils";
-import ScienceData from "./data_science"
+import ScienceData from "./ScienceData"
 import ItemData from "../../data/ItemData";
 import URLConfig from "../../config/URLConfig";
 import HttpManager from "../../utils/HttpManager";
 import ManagerData from "../../data/ManagerData";
+import SwitchCom from "./SwitchCom";
 const {ccclass,property} = cc._decorator;
 
 @ccclass    
-export default class washCom extends switch_content{
+export default class washCom extends SwitchCom{
     @property(cc.Sprite)
-    private icon:cc.Sprite;
+    private icon:cc.Sprite = null;
     @property(cc.RichText)
-    private EName:cc.RichText;
+    private EName:cc.RichText = null;
     @property([cc.RichText])
     private attrName:Array<cc.RichText> = [];
     @property([cc.Button])
@@ -21,13 +21,13 @@ export default class washCom extends switch_content{
     @property([cc.Sprite])
     private attrStateUI:Array<cc.Sprite> = [];
     @property(cc.SpriteFrame)
-    public attr_on:cc.SpriteFrame;
+    public attr_on:cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
-    private attr_lock:cc.SpriteFrame;
+    private attr_lock:cc.SpriteFrame = null;
     @property(cc.Label)
-    private tip:cc.Label;
+    private tip:cc.Label = null; 
     @property(cc.Button)
-    private washButton:cc.Button;
+    private washButton:cc.Button = null;
     private _activBtnNum:number = 0;
     private _freeTimes:number;
     private isSelect = [];
