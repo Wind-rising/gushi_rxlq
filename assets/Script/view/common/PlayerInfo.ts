@@ -1,3 +1,9 @@
+/**
+ * 球员信息标签
+ * 主要挂在common/PlayerInfo上，用于显示球员信息
+ */
+
+
 import ItemData from "../../data/ItemData";
 import ManagerData from "../../data/ManagerData";
 import PlayerUtil from "../../utils/PlayerUtil";
@@ -72,7 +78,8 @@ export default class PlayerInfo extends cc.Component {
         this.prg_spirit = this.node.getChildByName('prg_spirit').getComponent(cc.ProgressBar);
         this.btn_del = this.node.getChildByName('btn_del').getComponent(cc.Button);
 
-        this.init();
+        //拷贝的时候会调用这个，所以暂时不用
+        //this.init();
     }
 
     start () {
@@ -93,8 +100,7 @@ export default class PlayerInfo extends cc.Component {
         this.index = 0;
     }
 
-    format (data:Object, teamInfo:Object, section:number=0,primitive:boolean = false) {
-
+    setPlayerData (data:Object, teamInfo:Object, section:number=0,primitive:boolean = false) {
         this.srcData = data;
 
         var pid:string = (data ? data['Pid'] : "");

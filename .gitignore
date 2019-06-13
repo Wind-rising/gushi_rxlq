@@ -67,3 +67,4 @@ quick_gen_project_*_autogen.sh.meta
 .vscode/
 assets/Script/data/PlayerData.ts
 assets/Script/data/PlayerData.ts
+assets/resources/prefabs/Skill.meta

@@ -150,10 +150,10 @@ export default class XUtil {
     }
     
     /**
-     * 克隆数据
+     * 克隆JSON数据
      * @param source源数据
      * */
-    public static clone(source:Object):any
+    public static cloneObject(source:Object):any
     { 
         // var myBA:ByteArray = new ByteArray(); 
         // myBA.writeObject(source); 

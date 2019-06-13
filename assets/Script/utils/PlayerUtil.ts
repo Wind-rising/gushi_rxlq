@@ -66,7 +66,7 @@ export default class PlayerUtil {
      * 获取属性差值属性集合
      * */
     public static getMinus(data:Object, data2:Object):Object{
-        var obj:Object = XUtil.clone(data);
+        var obj:Object = XUtil.cloneObject(data);
         for(var i in obj){
             obj[i] -= Number(data2[i]);
         }
@@ -339,7 +339,7 @@ export default class PlayerUtil {
                 var storeDic = ManagerData.getInstance().storeDic;
                 
                 this.kpiInfo = data['data'][0].List;
-                this.myKpiInfo = XUtil.clone(this.kpiInfo);
+                this.myKpiInfo = XUtil.cloneObject(this.kpiInfo);
                 for(var i=0; i<list.length; i++){
                     list[i]['Kp'] = (this.kpiInfo[list[i]['Tid']]?this.kpiInfo[list[i]['Tid']].Kp:0)
                 }

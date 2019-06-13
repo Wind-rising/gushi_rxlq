@@ -59,7 +59,7 @@ export default class HttpManager extends cc.Component {
         /**
          * 发送请求
          */
-        let data = this.sendRequest(url,callback,context,'',method,headObj);
+        this.sendRequest(url,callback,context,'',method,headObj);
     };
 
     /**
@@ -68,8 +68,9 @@ export default class HttpManager extends cc.Component {
     */		
     private requestUrl(paraObj:Object,action:string):string
     {
-        var rd = Math.random().toString()
-        var qs = "d=" + JSON.stringify(paraObj) + "&snsinfo=" + escape(AppConfig.snsInfo)+"&rd=" + rd + "&DEBUGBYIP="+AppConfig.isDebug 
+        let rd = Math.random().toString()
+        let qs = "d=" + JSON.stringify(paraObj) + "&snsinfo=" + escape(AppConfig.snsInfo)+"&rd=" 
+            + rd + "&DEBUGBYIP="+AppConfig.isDebug + rd + "&QIU_SERVERID="+AppConfig.serverid ;
         return AppConfig.httpRoot + action + '.php?' +qs
     };
 
@@ -83,7 +84,7 @@ export default class HttpManager extends cc.Component {
         , headObj:Object = {})
     {
             Utility.showLoading();
-            var xhr = cc.loader.getXMLHttpRequest();
+            let xhr = cc.loader.getXMLHttpRequest();
             /*
              "arraybuffer",
             * "blob",

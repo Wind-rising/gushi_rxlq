@@ -6,8 +6,8 @@ import MatchControllor from "../../controllor/MatchControllor";
 import PlayerUtil from "../../utils/PlayerUtil";
 import ErrMsg from "../../data/ErrMsg";
 import IconManager from "../../config/IconManager";
-import PlayerInfo from "./PlayerInfo";
 import LoadingFullScreen from "../public/LoadingFullScreen";
+import PlayerInfo from "../common/PlayerInfo";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -242,7 +242,7 @@ export default class MatchCompareView extends cc.Component {
         // }
         for(var i=0; i<this.PLAYER_NUM; i++){//玩家是主队
             let player = this.node.getChildByName('player_a_'+(i+1)).getComponent(PlayerInfo);
-            player.format(homeData[i], this._data[0].ManagerSolutions[0].Members, index-1);
+            player.setPlayerData(homeData[i], this._data[0].ManagerSolutions[0].Members, index-1);
             // if(!Utils.playerKPs[hId]){
             //     Utils.playerKPs[hId] = new Array();
             // }
@@ -254,7 +254,7 @@ export default class MatchCompareView extends cc.Component {
         // PlayerC.teamInfo =  _data[0].ManagerSolutions[1].Members
         for(i=0; i<this.PLAYER_NUM; i++){
             let player = this.node.getChildByName('player_b_'+(i+1)).getComponent(PlayerInfo);
-            player.format(awayData[i], this._data[0].ManagerSolutions[1].Members, index-1);
+            player.setPlayerData(awayData[i], this._data[0].ManagerSolutions[1].Members, index-1);
             // if(!Utils.playerKPs[aId]){
             //     Utils.playerKPs[aId] = new Array();
             // }

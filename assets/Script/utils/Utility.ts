@@ -28,7 +28,7 @@ export default class Utility extends cc.Component {
                 cc.error('未找到 ' + "prefabs/"+name)
                 return;
             }
-            var dialog = cc.instantiate(prefab);
+            let dialog = cc.instantiate(prefab);
             dialog.position = args.pos || {x:cc.winSize.width/2,y:cc.winSize.height/2};
             dialog.parent = args.parent || cc.director.getScene();
             //TODO: 处理参数
@@ -78,7 +78,7 @@ export default class Utility extends cc.Component {
         onCancel?:Function
     }){
         //cc.find('alert').getComponent("Alert").confirm(content,onOk,args);
-        var alert = cc.find('alert');
+        let alert = cc.find('alert');
         if(alert){
             alert.getComponent("Alert").confirm(content,onOk,args);
         }else{
@@ -102,7 +102,7 @@ export default class Utility extends cc.Component {
      * @param content 显示loading转圈圈的效果 屏蔽点击
      */
     public static showLoading (content:string = ''):void {
-        var loading = cc.find('loading');
+        let loading = cc.find('loading');
         if(loading){
             loading.getComponent("Loading").show(content);
         }else{
@@ -121,7 +121,7 @@ export default class Utility extends cc.Component {
         }
     };
     public static hideLoading ():void{
-        var loading = cc.find('loading');
+        let loading = cc.find('loading');
         if(loading){
             loading.getComponent("Loading").hide();
         }
@@ -192,7 +192,7 @@ export default class Utility extends cc.Component {
 
         function onGetFeed(data:Object):void{
             if(data['res']){
-                var feedInfo:Object= data['data'][0].Last;
+                let feedInfo:Object= data['data'][0].Last;
                 if(feedInfo && feedInfo['code']){
                     this.share(feedInfo['code'], feedInfo["var"]);
                 }
@@ -233,7 +233,7 @@ export default class Utility extends cc.Component {
                     cc.error('未找到 ' + "prefabs/"+name)
                     return;
                 }
-                var dialog = cc.instantiate(prefab);
+                let dialog = cc.instantiate(prefab);
                 parent&&(dialog.parent = parent);
                 resolve(dialog);
             });
@@ -242,7 +242,7 @@ export default class Utility extends cc.Component {
 
     public  static loadUrlSprite(url,parent){
         cc.loader.loadRes(url, cc.SpriteFrame, function (err, spriteFrame) {
-            var sprite = parent.addComponent(cc.Sprite);
+            let sprite = parent.addComponent(cc.Sprite);
             sprite.spriteFrame = spriteFrame;
         });
     }
@@ -280,17 +280,17 @@ export default class Utility extends cc.Component {
             return ManagerData.getInstance().KPI;
         }
         //
-        var kp:number = 0;
-        for(var i in teamList){
+        let kp:number = 0;
+        for(let i in teamList){
             kp += calulateKP(teamList[i], parseInt(i));
         }
         return Math.floor(kp/4);
         
-        var info:Object;
+        let info:Object;
         function calulateKP(list:Array<Object>, section:number):number{
-            var tempKP:number = 0;
-            var pid:string;
-            for(var i=0; i<list.length; i++){
+            let tempKP:number = 0;
+            let pid:string;
+            for(let i=0; i<list.length; i++){
                 pid = list[i]?list[i]['Pid']:""
                 info = ItemData.getItemInfo(pid);
                 if(info){
@@ -309,11 +309,11 @@ export default class Utility extends cc.Component {
      * @return 体力值
      * */
     public static getStamina(pid:string, teamList:Object,  section:number):number{
-        var s:number;
-        var pInfo:Object = ItemData.getItemInfo(pid);
-        var section0:boolean
-        var section1:boolean;
-        var section2:boolean;
+        let s:number;
+        let pInfo:Object = ItemData.getItemInfo(pid);
+        let section0:boolean
+        let section1:boolean;
+        let section2:boolean;
         switch(section){
             case 0:
                 s = 100;
@@ -373,8 +373,8 @@ export default class Utility extends cc.Component {
         
         /**检测是否在某个列表中*/
         function checkPid(pid:String, list:Array<Object>):boolean{
-            var playerInfo:Object;
-            for(var i=0; i<list.length; i++){
+            let playerInfo:Object;
+            for(let i=0; i<list.length; i++){
                 playerInfo = list[i];
                 if(playerInfo && playerInfo['Pid'] == pid){
                     return true;
