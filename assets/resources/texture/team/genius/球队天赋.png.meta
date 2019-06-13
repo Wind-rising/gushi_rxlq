@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "9bfe8791-934e-4822-9d6f-5689ebe2adc5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "球队天赋": {
+      "ver": "1.0.3",
+      "uuid": "3c91481d-d855-4b84-82ac-9f4cc9ec410a",
+      "rawTextureUuid": "9bfe8791-934e-4822-9d6f-5689ebe2adc5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -1,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 2,
+      "width": 115,
+      "height": 29,
+      "rawWidth": 117,
+      "rawHeight": 33,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

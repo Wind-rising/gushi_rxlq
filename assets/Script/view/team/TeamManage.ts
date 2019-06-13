@@ -44,13 +44,13 @@ export default class TeamManage extends cc.Component {
      * 背包按钮
      */
     onShowPackage (e){
-
+        cc.log('打开背包')
     }
 
     /**
      * 显示战术研究
      */
     onShowTaticsResearch(e){
-        //
+        cc.log('打开战术研究')
     }
 }

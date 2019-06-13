@@ -15,9 +15,9 @@ export default class FormationData extends Singleton {
     //
     private _lvData:Object;
     //
-    private URL:string = "Dic_formation_chs.jpg";
+    private URL:string = "Dic_formation_chs";
     //阵型升级需要的数据
-    private FORMATION_LV_URL:string = "def/Dic_formationlv_chs.jpg";
+    private FORMATION_LV_URL:string = "Dic_formationlv_chs";
 
     constructor () {
         super();

@@ -31,7 +31,8 @@ export default class LoginScene extends cc.Component {
         this.bar_current = this.node.getChildByName("bar_current").getComponent(cc.ProgressBar);
         this.bar_current.progress = 0;
 
-        this.node.getChildByName('loginview').active = false;
+        this.node.getChildByName('login_view').active = false;
+        this.node.getChildByName('lay_server_list').active = false;
 
         /** 测试账号 */
         this.edt_account.string = 'test';
@@ -58,7 +59,7 @@ export default class LoginScene extends cc.Component {
                         }
                         //加载完配置表，开始登录
                         //this.startLogin();
-                        this.node.getChildByName('loginview').active = true;
+                        this.node.getChildByName('login_view').active = true;
                     }else{
                         Utility.alert('配置文件加载失败,请重试！',this.start,{title:'提示',showCancel:false});
                     }
@@ -77,11 +78,12 @@ export default class LoginScene extends cc.Component {
         }
         HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
             if(response.res){
-                //
-                cc.log(response);
+                cc.log('登录信息返回'+response);
                 AppConfig.snsInfo = response['data']['snsinfo'];
 
-                ManagerData.getInstance().refresh();
+                this.node.getChildByName('login_view').active = false;
+                // 显示服务器列表
+                this.node.getChildByName('lay_server_list').active = true;
             }else{
                 Utility.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
             }
