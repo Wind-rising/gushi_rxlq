@@ -19,7 +19,7 @@ export default class ErrMsg extends Singleton{
 
     _data:Object = null;
 
-    private URL:string = "Dic_code_chs";
+    private URL:string = "Dic_dic_code_chs";
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -33,7 +33,20 @@ export default class ErrMsg extends Singleton{
     public init(){
         Events.getInstance().addListener('EventJsonDataLoaded',function(name,data){
             if(name == this.URL){
-                this._data = data;
+                this._data = {};
+                for(let i in data){
+                    let arr1 = i.split(',');
+                    let arr2;
+                    let arr3;
+                    for(let j in data[i]){
+                        arr2 = j.split(',');
+                        arr3 = data[i][j].split(',');
+                    }
+                    this._data[arr1[0]] = {};
+                    for(let j = 0;j<arr2.length;j++){
+                        this._data[arr1[0]][arr2[j]] = arr3[j];
+                    }
+                }
             }
         },this);
     }

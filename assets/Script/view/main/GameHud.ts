@@ -18,6 +18,11 @@ export default class GameHud extends cc.Component {
     private btn_Science = null;
     @property(cc.Button)
     private btn_Bag = null;
+    @property(cc.Button)
+    private btn_Skill = null;
+
+    //技能
+    private _skillView = null;
 
     onLoad () {
         Events.getInstance().addListener(EventConst.SHOW_MSG, this.onShowMsg,this,this.EventListenerTag);
@@ -42,6 +47,9 @@ export default class GameHud extends cc.Component {
         this.btn_Science.getComponent(cc.Button).clickEvents.push(
             Utility.bindBtnEvent(this.node,"GameHud","onShowScienceView")
         );
+        this.btn_Skill.getComponent(cc.Button).clickEvents.push(
+            Utility.bindBtnEvent(this.node,"GameHud","onShowSkillView")
+        );
 
         /** 球员按钮 */
         bottom_right.getChildByName('btn_player').getComponent(cc.Button).clickEvents.push(
@@ -60,15 +68,21 @@ export default class GameHud extends cc.Component {
     public onShowMsg(data):void{
         //
     }
-
+    //背包
     public onShowBag(){
         Utility.showDialog('bag/Bag');
     }
+    //球员强化
     public onShowPlayerStrengthenView():void{
         Utility.showDialog('StrengthenView');
     }
+    //科技馆
     public onShowScienceView():void{
         Utility.showDialog('Science/ScienceView');
+    }
+    //技能
+    public onShowSkillView(){
+        Utility.showDialog('Skill/SkillView');
     }
 
 

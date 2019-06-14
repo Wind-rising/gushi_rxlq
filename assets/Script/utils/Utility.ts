@@ -212,7 +212,7 @@ export default class Utility extends cc.Component {
      * @param [string]handler 响应事件函数名
      * @param [string]param 响应式事件携带参数
      */
-    public static bindBtnEvent(target:any,component:string = "",handler:string="",param?:string){
+    public static bindBtnEvent(target:any,component:string = "",handler:string="",param?){
         let clickEventHandler = new cc.Component.EventHandler();
         clickEventHandler.target = target; //这个 node 节点是你的事件处理代码组件所属的节点，这里就是Button2
         clickEventHandler.component = component;//这个是脚本文件名
@@ -382,5 +382,17 @@ export default class Utility extends cc.Component {
             }
             return false;
         }
+    }
+
+    public static checkMVP(tid:string){
+        let list = ManagerData.getInstance().Period;
+        for(let i = 0;i<list.length;i++){
+            for(let j = 0;j<list[i].length;j++){
+                if(list[i][j].Tid == tid){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
