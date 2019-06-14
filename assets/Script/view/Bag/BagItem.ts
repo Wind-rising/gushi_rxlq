@@ -103,10 +103,10 @@ export default class BagItem extends cc.Component{
         }else{
             this.setValue(data);
             if(data.ItemCode){
-                let info = ItemData.getItemInfo(data.ItemCode);
+                let info = ItemData.getInstance().getItemInfo(data.ItemCode);
                 this._info = info;
                 if(this.ItemType == BagItem.TYPE_EQUIP){
-                    info = ItemData.getEquipInfo(this.Equip.Type + "" + this.Equip.Pair);
+                    info = ItemData.getInstance().getEquipInfo(this.Equip.Type + "" + this.Equip.Pair);
                     if(info){
                         this.itemName = info.Name+"";
                         this.Desc = info.Desc;
@@ -165,7 +165,7 @@ export default class BagItem extends cc.Component{
 
     private createIcon(){
         if(this.ItemType == BagItem.TYPE_PLAYER){
-            let pos = ItemData.getLabel(this._info.Position - 0);
+            let pos = ItemData.getInstance().getLabel(this._info.Position - 0);
             IconManager.getIcon(`img_${this._info.CardLevel}${pos}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
                 this.goodsItem.active = true;
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;

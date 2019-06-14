@@ -14,23 +14,19 @@ import Singleton from "../Utils/Singleton";
 export default class ItemData extends Singleton {
 
     /**文本-球员位置*/
-    private static posStr:"大前锋$小前锋$中锋$得分后卫$控球后卫";
-    /**文本-球员位置*/
-    private static posStr2:"中锋$大前锋$小前锋$得分后卫$控球后卫";
-    /***/
-    private static _args:Object;
+    private posStr:string = "大前锋$小前锋$中锋$得分后卫$控球后卫";
     /**道具数据*/
-    private static _itemData:Object;
+    private _itemData:Object;
     /**球员数据*/
-    private static _playerData:Object;
+    private _playerData:Object;
     /**装备数据*/
-    private static _equipData:Object;
+    private _equipData:Object;
     //
-    private static _equipPairData:Object;
+    private _equipPairData:Object;
     /**洗练属性数据*/
-    private static _holeData:Object;
+    private _holeData:Object;
     /**装备强化需要的钱*/
-    private static _strData:Object;
+    private _strData:Object;
     
     /**道具数据地址*/
     private static ITEM_URL:string = "Dic_item_chs";
@@ -47,10 +43,9 @@ export default class ItemData extends Singleton {
 
     constructor(){
         super();
-        ItemData.init();
+        this.init();
     }
-    public static init():void{
-        this._args = null;
+    public init():void{
         this._itemData = null;
         this._playerData = null;
         this._equipData = null;
@@ -93,12 +88,12 @@ export default class ItemData extends Singleton {
      * 5:普通（白色）、4:精英（蓝色）、3:元老（紫色）、2:史诗（橙色）、1:传奇（金色）
      * JumpShot 中投	ThreePoints 三分	Rejection 封盖	Steals 抢断	Pass 传球	Dribble 控球	Dunk 扣篮	Rebound 篮板	Speed 速度	Stamina 体能
      * */
-    public static getPlayerInfo(pid):any
+    public getPlayerInfo(pid):any
     {
         return this._playerData[pid];
     };
     /**根据位置获取标签*/
-    public static getLabel(pos:number):string
+    public getLabel(pos:number):string
     {   
 
         switch(pos){
@@ -124,7 +119,7 @@ export default class ItemData extends Singleton {
      * 获取道具数据
      * 
      * */
-    public static getItemInfo(itemCode:String):Object
+    public getItemInfo(itemCode:String):Object
     {
         var obj = this._itemData[itemCode.valueOf()];
         if(!obj){
@@ -137,7 +132,7 @@ export default class ItemData extends Singleton {
     };
 
     /**获取装备属性--其实就是套装属性*/
-    public static getEquipInfo(itemCode:string):Object
+    public getEquipInfo(itemCode:string):Object
     {
         var obj = this._equipData[itemCode];
         return obj;
@@ -147,7 +142,7 @@ export default class ItemData extends Singleton {
      * 获取套装公式
      * @param pairKey，组成为装备Id+套装ID；
      * */
-    public static getEquipPairInfo(pairKey:string):Object
+    public getEquipPairInfo(pairKey:string):Object
     {
         return this._equipPairData[pairKey]
     };
@@ -156,23 +151,23 @@ export default class ItemData extends Singleton {
      * 获取球员位置
      * @position球员位置
      * */
-    public static getPosStr(positon:number):string
+    public getPosStr(positon:number):string
     {
         //需要换个方式
-        var arr = this.posStr.split("$");
+        let arr = this.posStr.split("$");
         return arr[positon-1];
     };
     
     /**获取洗练属性*/
-    public static getHoleInfo(id:number):Object
+    public getHoleInfo(id:number):Object
     {
         return this._holeData[id]
     };
     
     /**根据卡牌获取卡牌颜色代码-如*/
-    public static getCardColor(lv:number):string
+    public getCardColor(lv:number):string
     {
-        var color = "#33FF33"
+        let color = "#33FF33"
         switch(lv){
             case 1:
                 color = "#FFCC33"
@@ -193,11 +188,12 @@ export default class ItemData extends Singleton {
                 color = "#33FF33";
                 break;
         }
+        //new cc.Color().fromHEX(
         return color;
     };
     
     /**根据装备套系获取装备颜色*/
-    public static getEquipColor(pair:number):string
+    public getEquipColor(pair:number):string
     {
         let color:string = "#33FF33"
         switch(pair){
@@ -233,7 +229,7 @@ export default class ItemData extends Singleton {
      * @param lv 装备等级
      * @param pair 装备套系
      */
-    public static getStrMoney(lv:number, pair:number):number
+    public getStrMoney(lv:number, pair:number):number
     {
         let info = this._strData[lv];
         if(!info){
@@ -247,7 +243,7 @@ export default class ItemData extends Singleton {
      * @param pid 球员编号
      * @return 带颜色名字
      */		
-    public static getPlayerHtmlName(pid:string):String
+    public getPlayerHtmlName(pid:string):String
     {
         var nameStr:string = "";
         var info = this.getPlayerInfo(pid);
@@ -258,7 +254,7 @@ export default class ItemData extends Singleton {
     };
 
     /**球员数据*/
-    public static getPlayerData():Object
+    public getPlayerData():Object
     {
         return this._playerData;
     };

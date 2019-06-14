@@ -1,21 +1,14 @@
+/**
+ * 登录场景主逻辑
+ */
+const {ccclass, property} = cc._decorator;
 import ManagerData from "../../data/ManagerData";
 import Events from "../../signal/Events";
 import HttpManager from "../../utils/HttpManager";
 import Utility from "../../utils/Utility";
 import AppConfig from "../../config/AppConfig";
-
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
-const {ccclass, property} = cc._decorator;
-
+import SelectedServer from "./SelectedServer";
+import MainControllor from "../../controllor/MainControllor";
 @ccclass
 export default class LoginScene extends cc.Component {
 
@@ -76,18 +69,10 @@ export default class LoginScene extends cc.Component {
             Utility.fadeErrorInfo('请输入账号，比如 test')
             return;
         }
-        HttpManager.getInstance().request({uname:this.edt_account.string,s:"14"},function(response){
-            if(response.res){
-                cc.log('登录信息返回'+response);
-                AppConfig.snsInfo = response['data']['snsinfo'];
+        MainControllor.getInstance().userName = this.edt_account.string;
+        this.node.getChildByName('lay_server_list').active = true;
 
-                this.node.getChildByName('login_view').active = false;
-                // 显示服务器列表
-                this.node.getChildByName('lay_server_list').active = true;
-            }else{
-                Utility.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
-            }
-        },this,'GET','login');
+        this.node.getChildByName('login_view').active = false;
     };
 
     // update (dt) {}

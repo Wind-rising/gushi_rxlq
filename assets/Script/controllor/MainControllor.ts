@@ -24,17 +24,22 @@ export default class MainControllor extends Singleton {
     public REFRESH_TIME:number = 180;
     public BEAT_TIME:number = 300;
 
-    private _elapsed:number = 0;
-    
-    private static _res:Object;
+    /** 用户名，登录的时候用 其他信息以后接渠道的时候再处理*/
+    public userName:string = '';
 
     private _schedule:cc.Scheduler = null;
 
+    /**
+     * 构造函数
+     */
     public constructor(){
         super();
         this._schedule = new cc.Scheduler();
         this.init();
     };
+    /**
+     * 初始化
+     */
     private init():void{
         Events.getInstance().addListener(ManagerData.INIT, this.onInit,this);
         //ManagerData.getInstance().refresh();
@@ -43,10 +48,13 @@ export default class MainControllor extends Singleton {
     public update(dt){
         this._schedule.update(dt);
     }
-
+    /**
+     * 侦听ManagerData.INIT 事件
+     * @param event 
+     */
     private onInit (event):void{
         if(ManagerData.getInstance().Logo){//加载主场景
-            this.initEvent();
+            Events.getInstance().addListener(AppConfig.SYS_INIT, this.onSysInit,this);
             //先预加载主场景
             cc.director.preloadScene('MainScene',(completedCount, totalCount, item)=>{
             },(error, asset)=>{
@@ -64,9 +72,7 @@ export default class MainControllor extends Singleton {
             
         }
     };
-    private initEvent():void{
-        Events.getInstance().addListener(AppConfig.SYS_INIT, this.onSysInit,this);
-    };
+    
     /**start游戏开始*/
     public startGame ()
     {

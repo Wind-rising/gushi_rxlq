@@ -63,13 +63,13 @@ export default class EquipItem extends cc.Component{
                 this.pic.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
             this._itemData = EquipData.getRingPro(data.Type);
-            this.EName.getComponent(cc.RichText).string =  `<color=${ItemData.getEquipColor(8)}>总冠军戒指</c>`
+            this.EName.getComponent(cc.RichText).string =  `<color=${ItemData.getInstance().getEquipColor(8)}>总冠军戒指</c>`
         }else{
             IconManager.getIcon(data.Type+(data.Pair+'.png'),IconManager.EQUP_ICON,(spriteFrame)=>{
                 this.pic.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
-            this._itemData = ItemData.getEquipInfo(data.Type+String(data.Pair));
-            this.EName.getComponent(cc.RichText).string =  `<color=${ItemData.getEquipColor(data.Pair)}>${this._itemData.Name}</c>`
+            this._itemData = ItemData.getInstance().getEquipInfo(data.Type+String(data.Pair));
+            this.EName.getComponent(cc.RichText).string =  `<color=${ItemData.getInstance().getEquipColor(data.Pair)}>${this._itemData.Name}</c>`
         }
         this.LevelUI.getComponent(cc.Label).string = "LV"+this.Lvl;
         if(this.Lvl == ManagerData.getInstance().Level){

@@ -190,7 +190,7 @@ export default class PlayerUtil {
     /**生成装备属性数据*/
     public static createProObj(item, playerData:Object):Object{
         var obj:Object = new Object();
-        var info:Object = ItemData.getEquipInfo(item.vo.Equip.Type+String(item.vo.Equip.Pair));
+        var info:Object = ItemData.getInstance().getEquipInfo(item.vo.Equip.Type+String(item.vo.Equip.Pair));
         if(info){
             obj[this.getProName(info['Attr_1_Name'])] = this.getTotalPro1(info['Attr_1_Num'], info['Grow'], item.vo.Equip.Lvl);
             obj[this.getProName(info['Attr_2_Name'])] = this.getTotalPro1(info['Attr_2_Num'], info['Grow'], item.vo.Equip.Lvl);
@@ -200,7 +200,7 @@ export default class PlayerUtil {
         var holePro:Object = new Object();
         var srcData:Object = playerData ? playerData['basicData'] :new Object();
         for(var i in holeInfo){
-            info = ItemData.getHoleInfo(holeInfo[i]);
+            info = ItemData.getInstance().getHoleInfo(holeInfo[i]);
             if(info){
                 tempPro = new Object();
                 var proStr:String = info['Desc'];

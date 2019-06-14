@@ -16,13 +16,13 @@ export default class AppConfig {
     /** 语言 */
     public static lang:string = 'zh';
     /**http服务器地址 */
-    public static httpRoot:string = 'http://h5.lanqiu.thinkygame.com:8080/test/';
+    public static httpRoot:string = 'http://flash.lanqiu.thinkygame.com:8080/test/';
     /** 平台 */
     public static plant:string = 'test';
     /** 当前版本 */
     public static version:string = '1.0.0';
     /**服务器ID*/
-    public static serverid:number = 1;
+    public static serverid:number = 14;
     /**平台配置地址*/
     public static platConfigURL:string = '';
     /**平台配置地址*/

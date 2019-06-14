@@ -12,6 +12,8 @@ import Utility from "../../utils/Utility";
 import ManagerData from "../../data/ManagerData";
 import ListViewCtrl from "../control/ListViewCtrl";
 import AppConfig from "../../config/AppConfig";
+import HttpManager from "../../utils/HttpManager";
+import MainControllor from "../../controllor/MainControllor";
 
 @ccclass
 export default class SelectedServer extends cc.Component {
@@ -48,7 +50,7 @@ export default class SelectedServer extends cc.Component {
                 return;
             }
             data['servers'].unshift({
-                "name":"本地配置",
+                "name":"默认QA服务",
                 "state":"正常",
                 "desc":"读取代码配置的服务器地址",
                 "httpRoot":AppConfig.httpRoot,
@@ -97,8 +99,20 @@ export default class SelectedServer extends cc.Component {
         AppConfig.serverid = this.selectData['serverid'];
         AppConfig.isDebug = this.selectData['isDebug'];
 
+        
+        this.startLogin();
+    }
 
-        this.node.active = false;
-        ManagerData.getInstance().refresh();
+    startLogin () {
+        HttpManager.getInstance().request({uname:MainControllor.getInstance().userName,s:"14"},function(response){
+            if(response.res){
+                cc.log('登录信息返回'+response);
+                this.node.active = false;
+                AppConfig.snsInfo = response['data']['snsinfo'];
+                ManagerData.getInstance().refresh();
+            }else{
+                Utility.alert('登录失败！ errorcode = ' + response.code,null,{showCancel:false});
+            }
+        },this,'GET','login');
     }
 }

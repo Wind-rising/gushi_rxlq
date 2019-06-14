@@ -152,11 +152,11 @@ export default class Trancelate extends Singleton {
         {
             mi = {};
             
-            mi.name = ItemData.getPlayerInfo(home['players'][i].pid).ShowName;
+            mi.name = ItemData.getInstance().getPlayerInfo(home['players'][i].pid).ShowName;
             
             mi.managerId = home['players'][i].pid;
             
-            mi.cardLevel = ItemData.getPlayerInfo(home['players'][i].pid).CardLevel;
+            mi.cardLevel = ItemData.getInstance().getPlayerInfo(home['players'][i].pid).CardLevel;
             
             mi.assistant = home['players'][i].assitant;
             
@@ -169,11 +169,11 @@ export default class Trancelate extends Singleton {
         {
             mi = {};
             
-            mi.name = ItemData.getPlayerInfo(away.players[i].pid).ShowName;
+            mi.name = ItemData.getInstance().getPlayerInfo(away.players[i].pid).ShowName;
             
             mi.managerId = away.players[i].pid;
             
-            mi.cardLevel = ItemData.getPlayerInfo(away.players[i].pid).CardLevel;
+            mi.cardLevel = ItemData.getInstance().getPlayerInfo(away.players[i].pid).CardLevel;
             
             mi.assistant = away.players[i].assitant;
             

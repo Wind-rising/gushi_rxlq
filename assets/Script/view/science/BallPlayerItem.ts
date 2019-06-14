@@ -18,8 +18,8 @@ export default class BallPlayerItem extends PackageItem{
             ScienceData.player_id = data.Pid;
         }
         let playerInfo = data.srcData;
-        this.thisName.getComponent(cc.RichText).string = "<color="+ItemData.getCardColor(playerInfo.CardLevel)+">"+playerInfo.ShowName+"</c>";
-        this.pos.getComponent(cc.Label).string = ItemData.getLabel(playerInfo.Position);
+        this.thisName.getComponent(cc.RichText).string = "<color="+ItemData.getInstance().getCardColor(playerInfo.CardLevel)+">"+playerInfo.ShowName+"</c>";
+        this.pos.getComponent(cc.Label).string = ItemData.getInstance().getLabel(playerInfo.Position);
         this.id = data.Pid;
         
         let equipNum = 0;

@@ -292,7 +292,7 @@ export default class Utility extends cc.Component {
             let pid:string;
             for(let i=0; i<list.length; i++){
                 pid = list[i]?list[i]['Pid']:""
-                info = ItemData.getItemInfo(pid);
+                info = ItemData.getInstance().getItemInfo(pid);
                 if(info){
                     tempKP += (info['Kp'] * Utility.getStamina(pid, teamList, section)/100)
                 }
@@ -310,7 +310,7 @@ export default class Utility extends cc.Component {
      * */
     public static getStamina(pid:string, teamList:Object,  section:number):number{
         let s:number;
-        let pInfo:Object = ItemData.getItemInfo(pid);
+        let pInfo:Object = ItemData.getInstance().getItemInfo(pid);
         let section0:boolean
         let section1:boolean;
         let section2:boolean;
