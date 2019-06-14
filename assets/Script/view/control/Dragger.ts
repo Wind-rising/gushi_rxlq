@@ -88,6 +88,7 @@ export default class Dragger extends cc.Component {
             return;
         }
         let location = event.touch.getLocation();
+        this.node.emit('drag2',location);
         for(let key in Dragger.drawNodeList){
             if(key != this.node.uuid){
                 let dragNode = Dragger.drawNodeList[key];

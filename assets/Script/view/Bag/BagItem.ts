@@ -172,21 +172,20 @@ export default class BagItem extends cc.Component{
                 IconManager.getIcon(`img_${this._data.Str}${this._info.CardLevel}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
                     this.playerNum.enabled = true;
                     this.playerNum.spriteFrame = spriteFrame;
-                    console.log(this.playerNum.spriteFrame)
                 })
             })
         }else if(this.ItemType == BagItem.TYPE_EQUIP){
-             IconManager.getIcon(this.Equip.Type + (this.Equip.Pair+'.png'),IconManager.EQUP_ICON,(spriteFrame)=>{
+             IconManager.getIcon(this.Equip.Type + (this.Equip.Pair+''),IconManager.EQUP_ICON,(spriteFrame)=>{
                 this.goodsItem.active = true;
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
         }else if(this.ItemType == BagItem.TYPE_CLOTHES||this._data.ItemType == BagItem.TYPE_RING){
-            IconManager.getIcon(this.ItemCode+'.png',null,(spriteFrame)=>{
+            IconManager.getIcon(this.ItemCode+'',null,(spriteFrame)=>{
                 this.goodsItem.active = true;
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })
         }else{
-            IconManager.getIcon(this.Image+'.png',IconManager.ITEM_ICON,(spriteFrame)=>{
+            IconManager.getIcon(this.Image+'',IconManager.ITEM_ICON,(spriteFrame)=>{
                 this.goodsItem.active = true;
                 this.goodsItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
             })

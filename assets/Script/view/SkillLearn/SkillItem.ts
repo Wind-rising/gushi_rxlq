@@ -1,5 +1,9 @@
 import SkillData from "../../data/SkillData";
 import IconManager from "../../config/IconManager";
+import Events from "../../signal/Events";
+import SkillLearnModel from "./SkillLearnModel";
+import Utility from "../../utils/Utility";
+import SkillLearnView from "./SkillLearnView";
 
 const {ccclass, property} = cc._decorator;
 
@@ -15,6 +19,7 @@ export default class SkillItem extends cc.Component {
     public color;
     private MAX_LV = 5;
     private _data;
+    private _index;
     
     public static COLOR_1 = 1;
     public static COLOR_2 = 1;
@@ -27,9 +32,11 @@ export default class SkillItem extends cc.Component {
     constructor(){
         super();
     }
-
-    public create(info = null){
-        console.log(info,"info")
+    start(){
+        this.node.on('drag2',this.onClick,this)
+    }
+    public create({info = null,index = -1}){
+        this._index = index;
         if((typeof info == 'object')){
             this._skillId = info.ItemCode;
             this.exp = info.Exp;
@@ -47,8 +54,13 @@ export default class SkillItem extends cc.Component {
             this.lv = parseInt((this._skillId+"").charAt(this._skillId.length - 1));
             this.color = this._data.Color;
         }
-        IconManager.getIcon(this._data.ItemCode+'.png',IconManager.COMM_SKILL,(spriteFrame)=>{
+        IconManager.getIcon(this._data.ItemCode+'',IconManager.COMM_SKILL,(spriteFrame)=>{
             this.icon.spriteFrame = spriteFrame;
         })
+    }
+    private onClick(location){
+        if(SkillLearnModel.skillBag.getBoundingBoxToWorld().contains(location)){
+            Events.getInstance().dispatch(SkillLearnModel.EventSkillItemClick,[this._index])
+        }
     }
 }

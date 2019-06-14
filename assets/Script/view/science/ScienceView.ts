@@ -157,7 +157,6 @@ export default class main_science_dialog extends cc.Component{
     private refresPlayeer(data){
         if(data.res){
             this.playerData = data.data;
-            console.log(this.playerData,"1111")
             for(var i=0; i<this.playerData.length; i++){
                 if(ManagerData.getInstance().Project[i]){
                     this.playerData[i].Pid = ManagerData.getInstance().Project[i].Pid;
@@ -169,8 +168,6 @@ export default class main_science_dialog extends cc.Component{
         }
     }
     public getPlayListData(index,num){
-
-        console.log(this.playerData,"22222")
         let originalData = this.playerData.slice(num*index,num*(index+1));
         for(let i = 0;i<originalData.length;i++){
             if(!originalData[i].srcData){

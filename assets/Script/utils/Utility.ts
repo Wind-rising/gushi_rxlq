@@ -51,7 +51,6 @@ export default class Utility extends cc.Component {
      * @param function onCancel
      */
     public static alert (content:String,onOk?:Function,args?:any):void {
-        console.log(args,11111111111)
         this.showConfirm(content,onOk,args);
     };
     /**

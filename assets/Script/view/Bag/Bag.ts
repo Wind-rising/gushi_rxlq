@@ -174,7 +174,6 @@ export default class Bag extends cc.Component{
         if(exceptTypeList){
             for(i in this._srcItems){
                 item = this._srcItems[i];
-                console.log(item)
                 if(!exceptTypeList || exceptTypeList.indexOf(item.sComponent.ItemType) == -1){
                     item.sComponent.isLock = true;
                 }

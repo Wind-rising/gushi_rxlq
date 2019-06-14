@@ -16,7 +16,7 @@ export default class AppConfig {
     /** 语言 */
     public static lang:string = 'zh';
     /**http服务器地址 */
-    public static httpRoot:string = 'http://h5.lanqiu.thinkygame.com:8080/test/';
+    public static httpRoot:string = 'http://flash.lanqiu.thinkygame.com:8080/test/';
     /** 平台 */
     public static plant:string = 'test';
     /** 当前版本 */

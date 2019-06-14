@@ -34,21 +34,20 @@ export default class BagPlayerInfo extends cc.Component{
         let info = ItemData.getPlayerInfo(data.ItemCode);
         this.price.string = `工资：${info.Salary}`;
         this.score.string = info.Kp;
-        console.log(info,"111111")
         let pos = ItemData.getLabel(info.Position - 0);
         IconManager.getIcon(`img_${pos}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
             this.posUI.spriteFrame = spriteFrame;
         })
-        IconManager.getIcon(`${info.Pid}.png`,IconManager.LOTTERY_PIC,(spriteFrame)=>{
+        IconManager.getIcon(`${info.Pid}`,IconManager.LOTTERY_PIC,(spriteFrame)=>{
             this.playerImg.spriteFrame = spriteFrame;
         })
         if(info.StarSkill){
-            IconManager.getIcon(`${info.StarSkill}.png`,IconManager.SKILL_WORDS,(spriteFrame)=>{
+            IconManager.getIcon(`${info.StarSkill}`,IconManager.SKILL_WORDS,(spriteFrame)=>{
                 this.playerImg.spriteFrame = spriteFrame;
             })
         }
         if(info.CombSkill){
-            IconManager.getIcon(`${info.CombSkill}.png`,IconManager.SKILL_WORDS,(spriteFrame)=>{
+            IconManager.getIcon(`${info.CombSkill}`,IconManager.SKILL_WORDS,(spriteFrame)=>{
                 this.groupskill.spriteFrame = spriteFrame;
             })
         }

@@ -42,7 +42,6 @@ export default class BagSwitchHead extends cc.Component{
     }
     public state = 0;
     public active_on(){
-        console.log(11111111)
         if(this.state == 1){
             return;
         }
