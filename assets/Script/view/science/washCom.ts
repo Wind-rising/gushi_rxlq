@@ -72,9 +72,9 @@ export default class washCom extends SwitchCom{
             this.EName.string = selectEquip.EName.getComponent(cc.RichText).string;
             for(let i = 0;i<this.attrName.length;i++){
                 if(selectEquip._data.Hole[i]){
-                    let holeInfo = ItemData.getHoleInfo(selectEquip._data.Hole[i]);
+                    let holeInfo = ItemData.getInstance().getHoleInfo(selectEquip._data.Hole[i]);
                     if(holeInfo){
-                        let color = ItemData.getCardColor(holeInfo.Color);
+                        let color = ItemData.getInstance().getCardColor(holeInfo.Color);
                         color = color.replace('#','0x');
                         this.attrName[i].string = `<color=${color}>${holeInfo.Desc}</c>`
                     }

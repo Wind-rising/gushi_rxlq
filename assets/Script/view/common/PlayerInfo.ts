@@ -106,11 +106,11 @@ export default class PlayerInfo extends cc.Component {
         var pid:string = (data ? data['Pid'] : "");
 
         if(pid){
-            var info:Object = ItemData.getPlayerInfo(pid);
+            var info:Object = ItemData.getInstance().getPlayerInfo(pid);
             if(info){
                 this.data = info;
                 if(info){
-                    this.lbl_name.string = "<font color='"+ItemData.getCardColor(info['CardLevel'])+"'>"+info['ShowName']+"</font>";
+                    this.lbl_name.string = "<font color='"+ItemData.getInstance().getCardColor(info['CardLevel'])+"'>"+info['ShowName']+"</font>";
                 }
                 this.frameBg.spriteFrame = this.iconBgFrame[parseInt(info['CardLevel'])];
 

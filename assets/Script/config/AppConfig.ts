@@ -22,7 +22,7 @@ export default class AppConfig {
     /** 当前版本 */
     public static version:string = '1.0.0';
     /**服务器ID*/
-    public static serverid:number = 1;
+    public static serverid:number = 14;
     /**平台配置地址*/
     public static platConfigURL:string = '';
     /**平台配置地址*/

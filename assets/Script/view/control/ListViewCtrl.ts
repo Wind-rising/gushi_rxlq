@@ -4,6 +4,11 @@ import Utility from "../../utils/Utility";
  * 滚动条控件,直接挂在scrollview节点上
  * 
  * 目前只支持垂直滚动，水平滚动的以后再添加支持
+ * 
+ * 使用的时候需要指定一个默认的节点模板，如果scrollview下面有节点，会默认用第一个作为模板
+ * 
+ * 节点如果带有Button组件，则会在选中的时候把Button设置为interactable = false
+ * 如果节点下挂了子节点 名字为img_selected 则会把这张图片作为选中标识符
  */
 const {ccclass, property} = cc._decorator;
 
@@ -23,14 +28,11 @@ export default class ListViewCtrl extends cc.Component {
     private bufferZone:number = 0; // when item is away from bufferZone, we relocate it
 
     /** 刷新时间 */
-    private updateInterval:number = 0.4;
+    private updateInterval:number = 0;
     private lastContentPosY:number = 0;
     private updateTimer:number = 0;
     private cellListObj:Object[] = null;//[{item:cc.Node,idx:number}]
     private content:cc.Node = null;
-
-    /** 选中的索引 */
-    private selectedIndex:number = 0;
     
     // use this for initialization
     onLoad () {
@@ -62,10 +64,6 @@ export default class ListViewCtrl extends cc.Component {
 
             this.node.emit('initCell',item,i);
             this.cellListObj.push({item:item,idx:i});
-            // let button = item.getComponent(cc.Button);
-            // if(button){
-            //     Utility.bindBtnEvent(this.node,'ListViewCtrl','onCellSelected',''+i);
-            // }
             this.bindItemClickEvent(item,i);
         }
     };
@@ -84,10 +82,13 @@ export default class ListViewCtrl extends cc.Component {
     onCellSelected (idx:number){
         for(let i = 0;i<this.cellListObj.length;i++){
             let item = this.cellListObj[i]['item'];
+            let selected = (idx == this.cellListObj[i]['idx']);
+            /** 如果是按钮的话用按钮 */
             let btn = item.getComponent(cc.Button);
-            if(btn){
-                btn.interactable = (idx == this.cellListObj[i]['idx']);
-            }
+            btn && (btn.interactable = selected);
+            /** 默认选中标识 img_selected */
+            let img_selected = item.getChildByName('img_selected');
+            img_selected && (img_selected.active = selected);
             if(idx == this.cellListObj[i]['idx']){
                 this.node.emit('selectedCell', item, idx);
             }
@@ -144,8 +145,15 @@ export default class ListViewCtrl extends cc.Component {
      * @param count 添加的数量 默认为1
      */
     addItem(count:number = 1) {
-        this.content.height = (this.totalCount + count) * (this.itemTemplate.height + this.spacing) + this.spacing; // get total content height
-        this.totalCount = this.totalCount + count;
+        this.setItemCount(this.totalCount+count);
+    };
+
+    /**
+     * 设置节点数量
+     */
+    setItemCount(count:number = 0) {
+        this.content.height = count * (this.itemTemplate.height + this.spacing) + this.spacing; // get total content height
+        this.totalCount = count;
         
         for(let i = 0;i<this.cellListObj.length;i++){
             let active = (this.totalCount>i);
@@ -154,13 +162,13 @@ export default class ListViewCtrl extends cc.Component {
                 this.node.emit('initCell',this.cellListObj[i]['item'],this.cellListObj[i]['idx']);
             }
         }
-    };
+        this.moveBottomItemToTop();
+    }
 
+    /**
+     * 删除一个节点
+     */
     removeItem() {
-        if (this.totalCount - 1 < 30) {
-            cc.error("can't remove item less than 30!");
-            return;
-        }
 
         this.content.height = (this.totalCount - 1) * (this.itemTemplate.height + this.spacing) + this.spacing; // get total content height
         this.totalCount = this.totalCount - 1;

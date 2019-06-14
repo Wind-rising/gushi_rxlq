@@ -611,7 +611,7 @@ export default class CompetitionUI extends cc.Component {
     //显示播报信息
     public showMessage(XPid:string, YPid:string=""):void
     {
-        // var playerX:String = ItemData.getPlayerHtmlName(XPid);
+        // var playerX:String = ItemData.getInstance().getPlayerHtmlName(XPid);
         
         // var mes:String;
         

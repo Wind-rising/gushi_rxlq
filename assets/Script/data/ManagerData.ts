@@ -197,8 +197,8 @@ export default class ManagerData extends Singleton {
                     var buffMsg:Object = data['data'][0].List[0];
                     //球员id
                     var clothesId:string = buffMsg['Value'];
-                    var itemObj:Object = ItemData.getItemInfo(clothesId);
-                    var color:string = ItemData.getCardColor(1) ;
+                    var itemObj:Object = ItemData.getInstance().getItemInfo(clothesId);
+                    var color:string = ItemData.getInstance().getCardColor(1) ;
 
                     //您使用的 尼克斯队服 即将到期，是否续约该队服
                     var altStr:string  = "您使用的<font color='"+color+"'>"+itemObj['Name']+"</font>已经到期，综合实力已降低，是否重新购买该队服？";

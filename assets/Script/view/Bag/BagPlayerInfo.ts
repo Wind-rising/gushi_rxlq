@@ -31,10 +31,10 @@ export default class BagPlayerInfo extends cc.Component{
         this.score.string = '';
         this.price.string = '';
         this._data = data;
-        let info = ItemData.getPlayerInfo(data.ItemCode);
+        let info = ItemData.getInstance().getPlayerInfo(data.ItemCode);
         this.price.string = `工资：${info.Salary}`;
         this.score.string = info.Kp;
-        let pos = ItemData.getLabel(info.Position - 0);
+        let pos = ItemData.getInstance().getLabel(info.Position - 0);
         IconManager.getIcon(`img_${pos}`,IconManager.PLAYER_ITEM_ICON,(spriteFrame)=>{
             this.posUI.spriteFrame = spriteFrame;
         })

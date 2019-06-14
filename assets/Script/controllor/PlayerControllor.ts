@@ -15,6 +15,8 @@ export default class PlayerControllor extends Singleton {
     public tacticsSection:number = 0;
     /** 替补球员列表显示第几页 */
     public tempPlayerPage:number = 0;
+    /** 球员列表选中的索引 */
+    public selectedPlayerIdx:number = 0;
     //------------------------------------------------------
     /**
      * 球员信息页面

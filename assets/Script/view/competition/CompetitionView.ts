@@ -3,7 +3,6 @@ import Events from "../../signal/Events";
 import EventConst from "../../data/EventConst";
 import CompetitionUI from "./CompetitionUI";
 import CompetitionMap from "./CompetitionMap";
-import ItemData from "../../data/ItemData";
 import BallNode from "./BallNode";
 import PlayerNode from "./PlayerNode";
 import UIConfig from "../../config/UIConfig";

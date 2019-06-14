@@ -22,7 +22,7 @@ export default class BagOtherInfo extends cc.Component{
 
     public init(data){
         this.data = data;
-        let itemInfo = ItemData.getItemInfo(this.data.ItemCode);
+        let itemInfo = ItemData.getInstance().getItemInfo(this.data.ItemCode);
         let color = 1;
         if(itemInfo){
             if(itemInfo.Type == BagItem.TYPE_SIGNER){
@@ -49,7 +49,7 @@ export default class BagOtherInfo extends cc.Component{
                 this.item3.string = itemInfo.UseDesc+"";
                 // console.log(itemInfo.ValidTime,4)
             }
-            this.CName.string = `<color=${ItemData.getCardColor(color)}>${itemInfo.Name}</c>`
+            this.CName.string = `<color=${ItemData.getInstance().getCardColor(color)}>${itemInfo.Name}</c>`
         }
     }
 }

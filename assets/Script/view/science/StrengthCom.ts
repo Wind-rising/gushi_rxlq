@@ -56,7 +56,7 @@ export default class StrengthCom extends SwitchCom{
             this.icon.getComponent(cc.Sprite).spriteFrame = selectEquip.pic.getComponent(cc.Sprite).spriteFrame;
             this.EName.getComponent(cc.RichText).string = selectEquip.EName.getComponent(cc.RichText).string;
             this.levelUI.getComponent(cc.Label).string = "装备等级"+selectEquip.Lvl;
-            this.moneyUI.getComponent(cc.Label).string = "消耗金币："+ItemData.getStrMoney(selectEquip.Lvl , selectEquip._data.Pair);
+            this.moneyUI.getComponent(cc.Label).string = "消耗金币："+ItemData.getInstance().getStrMoney(selectEquip.Lvl , selectEquip._data.Pair);
             if(selectEquip.Lvl >= ScienceData.EQUIP_MAX_LV){
                 this.moneyUI.getComponent(cc.Label).string = "已到最高等级";
             }

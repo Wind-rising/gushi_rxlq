@@ -42,7 +42,7 @@ export default class PlayerListData extends Singleton {
         let originalData = this._data.slice(num*index,num*(index+1));
         for(let i = 0;i<originalData.length;i++){
             if(!originalData[i].srcData){
-                originalData[i].srcData = ItemData.getPlayerInfo(originalData[i].Pid);
+                originalData[i].srcData = ItemData.getInstance().getPlayerInfo(originalData[i].Pid);
             }
         }
         return originalData;

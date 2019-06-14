@@ -246,7 +246,7 @@ export default class CreateRoleView extends cc.Component {
             let info;
             for(var i = 0;i < this.ITEM_MUN; i++){
                 let mc = this.playerList[i];
-                info = ItemData.getPlayerInfo(tempData[i]);
+                info = ItemData.getInstance().getPlayerInfo(tempData[i]);
                 arr.push(info.Pid);
 
                 /** 球员位置缩写 */
@@ -258,7 +258,7 @@ export default class CreateRoleView extends cc.Component {
                 var kp = tempData['KpInfo'][info.Pid]['Kp']
                 mc.getChildByName('lbl_kpi').getComponent(cc.Label).string = ''+Math.floor(kp);
                 if(info){
-                    mc.getChildByName('lbl_name').getComponent(cc.RichText).string = "<font color='"+ItemData.getCardColor(info.CardLevel)+"'>"+info.ShowName+"</font>";
+                    mc.getChildByName('lbl_name').getComponent(cc.RichText).string = "<font color='"+ItemData.getInstance().getCardColor(info.CardLevel)+"'>"+info.ShowName+"</font>";
                 }
                 mc.getComponent(cc.Sprite).spriteFrame = this.iconBgFrame[info.CardLevel]
                 var url:string = IconManager.preURL+IconManager.PLAYER_HEAD+info.HeadStyle;
