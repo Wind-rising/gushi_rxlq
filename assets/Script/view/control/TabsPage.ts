@@ -18,6 +18,20 @@ export default class TabsPage extends cc.Component {
 
     set index (value){
         this.selectedIndex = value;
+        for(let i = 0;i < this.btnList.length; i++){
+            let btn:cc.Button = this.btnList[i];
+            if(this.selectedIndex == i){
+                btn.enabled = false;
+                this.nodList.length>i && (this.nodList[i].active = true);
+            }else{
+                btn.enabled = true;
+                this.nodList.length>i && (this.nodList[i].active = false);
+            }
+        }
+    }
+
+    get selectedNode (){
+        return this.nodList[this.selectedIndex];
     }
 
     onLoad () {

@@ -155,10 +155,6 @@ export default class XUtil {
      * */
     public static cloneObject(source:Object):any
     { 
-        // var myBA:ByteArray = new ByteArray(); 
-        // myBA.writeObject(source); 
-        // myBA.position = 0; 
-        // return(myBA.readObject()); 
         return  JSON.parse(JSON.stringify(source));
     }
     

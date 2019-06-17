@@ -17,6 +17,8 @@ export default class PlayerControllor extends Singleton {
     public tempPlayerPage:number = 0;
     /** 球员列表选中的索引 */
     public selectedPlayerIdx:number = 0;
+    /** 球员管理页面选中的球员数据 */
+    public playerInfo:Object = null;
     //------------------------------------------------------
     /**
      * 球员信息页面

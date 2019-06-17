@@ -6,11 +6,13 @@ const {ccclass, property} = cc._decorator;
 import Utility from "../../utils/Utility";
 import PlayerControllor from "../../controllor/PlayerControllor";
 import ManagerData from "../../data/ManagerData";
-import PlayerUtil from "../../utils/PlayerUtil";
 import URLConfig from "../../config/URLConfig";
 import HttpManager from "../../utils/HttpManager";
 import ListViewCtrl from "../control/ListViewCtrl";
 import ItemData from "../../data/ItemData";
+import PlayerInfoCom from "./PlayerInfoCom";
+import XUtil from "../../utils/XUtil";
+import PlayerUtil from "../../utils/PlayerUtil";
 @ccclass
 export default class PlayerManage extends cc.Component {
 
@@ -20,20 +22,15 @@ export default class PlayerManage extends cc.Component {
 
     /** 球员数据 */
     playerData:Object = null;
+
     /** 球员列表 */
     src_player_list:cc.Node = null;
-    /** 球员位置图片 */
-    nod_pos:cc.Node = null;
-    /** 球员位置文本 */
-    lbl_position:cc.Label = null;
-    /** 球员名称 */
-    lbl_player_name:cc.Label = null;
-    /** 球员工资 */
-    lbl_salary:cc.Label = null;
-    /** 球员综合能力 */
-    lbl_kpi:cc.Label = null;
-    /** 球员装备列表 */
-    img_equipment_0:cc.Sprite = null;
+
+    /** 中间部分选中的球员信息 */
+    nod_show:PlayerInfoCom = null;
+
+    /** 球员属性页面四个节点（最右侧信息） */
+    nod_attrs:cc.Node[] = null;
 
     // LIFE-CYCLE CALLBACKS:
     lbl_max_cat:cc.Label = null;
@@ -43,15 +40,16 @@ export default class PlayerManage extends cc.Component {
         this.lbl_max_cat = img_player_list.getChildByName('lbl_max_cat').getComponent(cc.Label);
         this.src_player_list = img_player_list.getChildByName('src_player_list');
 
-        let nod_show = this.node.getChildByName('nod_show');
-        this.nod_pos = nod_show.getChildByName('nod_pos');
-        this.lbl_position = nod_show.getChildByName('lbl_position').getComponent(cc.Label);
-        this.lbl_player_name = nod_show.getChildByName('lbl_player_name').getComponent(cc.Label);
-        this.lbl_salary = nod_show.getChildByName('lbl_salary').getComponent(cc.Label);
-        this.lbl_kpi = nod_show.getChildByName('lbl_kpi').getComponent(cc.Label);
-        this.img_equipment_0 = nod_show.getChildByName('img_equipment_0').getComponent(cc.Sprite);
+        this.nod_show = this.node.getChildByName('nod_show').getComponent(PlayerInfoCom);
+        
+        this.nod_attrs = [];
+        let nod_attr = this.node.getChildByName('nod_attr');
+        for(let i = 0;i < 4;i++){
+            this.nod_attrs.push(nod_attr.getChildByName('nod_'+i));
+        }
 
         this.controllor = PlayerControllor.getInstance();
+        this.playerData = {};
 
         //返回
         /** 返回按钮 */
@@ -62,16 +60,6 @@ export default class PlayerManage extends cc.Component {
         //增加工资帽
         img_player_list.getChildByName('btn_add_hat').getComponent(cc.Button).clickEvents.push(
             Utility.bindBtnEvent(this.node,'PlayerManage','addWageCap')
-        );
-
-        //解雇球员
-        nod_show.getChildByName('btn_fire').getComponent(cc.Button).clickEvents.push(
-            Utility.bindBtnEvent(this.node,'PlayerManage','onFirePlayer')
-        );
-
-        //一键脱装备
-        nod_show.getChildByName('btn_unload_equipment').getComponent(cc.Button).clickEvents.push(
-            Utility.bindBtnEvent(this.node,'PlayerManage','onUnloadEquipment')
         );
         
         this.getData();
@@ -89,20 +77,6 @@ export default class PlayerManage extends cc.Component {
      */
     addWageCap (e:cc.Event) {
         this.controllor.addWageCap();
-    }
-
-    /**
-     * 解雇球员
-     */
-    onFirePlayer () {
-        //
-    }
-
-    /**
-     * 一键脱装备
-     */
-    onUnloadEquipment(){
-        //
     }
 
     /**
@@ -132,12 +106,20 @@ export default class PlayerManage extends cc.Component {
      */
     private onGetData(data:Object):void{
         if(data['res']){
-            this.playerData = data['data'];
-            if(this.playerData){
-                ManagerData.getInstance().setValue(this.playerData);
+            if(data['data']){
+                ManagerData.getInstance().setValue(data['data']);
             }
         }
-        this.initScrollList(ManagerData.getInstance().Project);
+        this.formatSalary();
+        PlayerUtil.getKP(()=>{
+            let playerList = [];
+            for(let i = 0;i<ManagerData.getInstance().Project.length;i++){
+                let playerData = XUtil.cloneObject(ManagerData.getInstance().Project[i]);
+                playerData['basicData'] = ItemData.getInstance().getPlayerInfo(playerData['Pid']);
+                playerList.push(playerData);
+            }
+            this.initScrollList(playerList);
+        });
     }
 
     /**
@@ -145,6 +127,10 @@ export default class PlayerManage extends cc.Component {
      * @param playerList 
      */
     initScrollList(playerList:Array<Object>){
+        /** 排序 */
+        playerList.sort((a:Object,b:Object):number=>{
+            return b['Kp'] - a['Kp'];
+        });
         /** 服务器列表 */
         this.src_player_list.off('initCell');
         this.src_player_list.on('initCell',(cell,idx)=>{
@@ -164,7 +150,7 @@ export default class PlayerManage extends cc.Component {
         
         this.src_player_list.getComponent(ListViewCtrl).addItem(playerList.length);
 
-        this.src_player_list.getComponent(ListViewCtrl).onCellSelected(this.controllor.selectedPlayerIdx);//默认选中第0个
+        this.src_player_list.getComponent(ListViewCtrl).onCellSelected(this.controllor.selectedPlayerIdx);
     }
 
     /**
@@ -173,14 +159,14 @@ export default class PlayerManage extends cc.Component {
      * @param data 
      */
     refreshListCell (cell:cc.Node, data:Object, idx:number) {
-        let cfgData = ItemData.getInstance().getPlayerInfo(data['Pid']);
+        let basicData = data['basicData'];
         let lbl_name = cell.getChildByName('lbl_name');
-        lbl_name.getComponent(cc.Label).string = cfgData['Name'];
-        lbl_name.color = new cc.Color().fromHEX(ItemData.getInstance().getCardColor(parseInt(cfgData['CardLevel'])));
+        lbl_name.getComponent(cc.Label).string = basicData['Name'];
+        lbl_name.color = new cc.Color().fromHEX(ItemData.getInstance().getCardColor(parseInt(basicData['CardLevel'])));
 
-        cell.getChildByName('lbl_kpi').getComponent(cc.Label).string = cfgData['Kp'];
-        cell.getChildByName('lbl_pos').getComponent(cc.Label).string = ItemData.getInstance().getLabel(parseInt(cfgData['Position']));;
-        //cell.getChildByName('img_state').getComponent(cc.Sprite);
+        cell.getChildByName('lbl_kpi').getComponent(cc.Label).string = ''+Math.floor(data['Kp']);
+        cell.getChildByName('lbl_pos').getComponent(cc.Label).string = ItemData.getInstance().getLabel(parseInt(basicData['Position']));;
+        cell.getChildByName('img_state').active = false;
     }
     /**
      * 选中球员
@@ -188,16 +174,29 @@ export default class PlayerManage extends cc.Component {
      * @param data 
      */
     selectListCell(cell:cc.Node, data:Object){
-        let cfgData = ItemData.getInstance().getPlayerInfo(data['Pid']);
-        let pos = parseInt(cfgData['Position']);
-        for(let i = 0;i < 5; i++){
-            this.nod_pos.getChildByName('img_'+i).active = pos == (i+1);
+        let playerInfo:Object = this.playerData[data['Tid']];
+        if(playerInfo){
+            this.formatPlayerData(playerInfo);
+        }else{
+            let args  = [{"n":URLConfig.ManagerPlayer, "i":{Mid:"", Tid:data['Tid']}}];
+            HttpManager.getInstance().request({args:args,action:URLConfig.Get_Data},(responce)=>{
+                if(responce['res']){
+                    let playerInfo = responce['data'][0];
+                    playerInfo['basicData'] = data['basicData'];
+                    this.playerData[data['Tid']] = playerInfo;
+                    this.formatPlayerData(playerInfo);
+                }else{
+                    Utility.fadeErrorInfo('获取球员信息失败');
+                }
+            },this);
         }
-        this.lbl_position.string = ItemData.getInstance().getPosStr(pos);
-        this.lbl_player_name.string = cfgData['Name']
-        this.lbl_player_name.node.color = new cc.Color().fromHEX(ItemData.getInstance().getCardColor(parseInt(cfgData['CardLevel'])));
-        
-        this.lbl_salary.string = "球员工资："+cfgData['Salary']+"万";
-        this.lbl_kpi.string = cfgData['Kp'];
+    }
+
+    formatPlayerData(playerInfo:Object){
+        this.nod_show.formatData(playerInfo);
+        for(let i = 0;i<this.nod_attrs.length;i++){
+            PlayerControllor.getInstance().playerInfo = playerInfo;
+            this.nod_attrs[i].emit('selectedPlayer',playerInfo);
+        }
     }
 };

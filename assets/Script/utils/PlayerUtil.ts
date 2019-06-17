@@ -30,7 +30,7 @@ export default class PlayerUtil {
      * 获取大属性值-适用于单个数据包情形
      * */
     public static getBigPro(key:string, data:Object):number{
-        var num:number;
+        let num:number;
         switch(key){
             case "attack":
                 num =  (Number(data['JumpShot'])+Number(data['ThreePoints']))/2
@@ -51,7 +51,7 @@ export default class PlayerUtil {
                 num = Number(data[key]);
                 break;
         }
-        return num;
+        return Math.floor(num);
     };
 		
     /**获取属性字符串*/
@@ -66,9 +66,9 @@ export default class PlayerUtil {
      * 获取属性差值属性集合
      * */
     public static getMinus(data:Object, data2:Object):Object{
-        var obj:Object = XUtil.cloneObject(data);
-        for(var i in obj){
-            obj[i] -= Number(data2[i]);
+        let obj:Object = XUtil.cloneObject(data);
+        for(let i in obj){
+            obj[i] -= parseInt(data2[i]);
         }
         return obj;
     }
@@ -77,7 +77,7 @@ export default class PlayerUtil {
      * 生成一个全属性属性合集,包括等级提升，装备
      * */
     public static getTotalProObject(data:Object):Object{
-        var totalPro:Object = new Object();
+        let totalPro:Object = new Object();
         totalPro['JumpShot'] = 0;
         totalPro['ThreePoints'] = 0;
         totalPro['Rejection'] = 0;
@@ -88,9 +88,9 @@ export default class PlayerUtil {
         totalPro['Rebound'] = 0;
         totalPro['Speed'] = 0;
         totalPro['Stamina'] = 0;
-        var per:number = this.getLvPro(data['Level']);
-        var basicProTotal:Object = this.addObject(data['basicData'], data['PptPy']);
-        for(var i in totalPro){
+        let per:number = this.getLvPro(data['Level']);
+        let basicProTotal:Object = this.addObject(data['basicData'], data['PptPy']);
+        for(let i in totalPro){
             //基础属性
             if(data['basicData']){
                 totalPro[i] += Number(data['basicData'][i]);
@@ -128,7 +128,7 @@ export default class PlayerUtil {
      * @type 属性类型 1为所有属性，2为基础属性，
      * */
     public static getTotalPro(key:string, data:Object, type:number=1):number{
-        var totalPro:Object = new Object();
+        let totalPro:Object = new Object();
         totalPro['JumpShot'] = 0;
         totalPro['ThreePoints'] = 0;
         totalPro['Rejection'] = 0;

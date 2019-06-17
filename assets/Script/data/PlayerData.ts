@@ -6,7 +6,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class PlayerListData extends Singleton{
     private _data:Object;
-    private URL:String = "Dic_player_chs";
+    private URL:string = "Dic_player_chs";
 
     constructor(){
         super();
@@ -19,7 +19,9 @@ export default class PlayerListData extends Singleton{
             }
         },this);
     }
-    public getPlayerInfo(pid:String){
+    public getPlayerInfo(pid:string){
         return this._data[pid];
     }
 }
+
+PlayerListData.getInstance();

@@ -108,8 +108,8 @@ export default class BagItem extends cc.Component{
                 if(this.ItemType == BagItem.TYPE_EQUIP){
                     info = ItemData.getInstance().getEquipInfo(this.Equip.Type + "" + this.Equip.Pair);
                     if(info){
-                        this.itemName = info.Name+"";
-                        this.Desc = info.Desc;
+                        this.itemName = info['Name']+"";
+                        this.Desc = info['Desc'];
                     }
                 }else if(this.ItemType == BagItem.TYPE_RING){
 					this.itemName = "总冠军戒指";
