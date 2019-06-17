@@ -22,6 +22,9 @@ export default class SkillPlayerList extends cc.Component {
             Utility.bindBtnEvent(this.node,'SkillPlayerList','onClick')
         )
     }
+    public init(data){
+        this.data = data;
+    }
     public onClick(){
         SkillLearnModel.selectPlayer = this.node;
     }

@@ -123,7 +123,7 @@ export default class PlayerNode extends cc.Component {
         this._cloth = cloth;
         this._matchType = matchType;
         this._showId = showId;
-        this._data = ItemData.getPlayerInfo(this._info['pid']);
+        this._data = ItemData.getInstance().getPlayerInfo(this._info['pid']);
     }
     
     stop () {

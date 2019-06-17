@@ -4,6 +4,7 @@ import Events from "../../signal/Events";
 import SkillLearnModel from "./SkillLearnModel";
 import Utility from "../../utils/Utility";
 import SkillLearnView from "./SkillLearnView";
+import Dragger from "../control/Dragger";
 
 const {ccclass, property} = cc._decorator;
 
@@ -13,30 +14,40 @@ export default class SkillItem extends cc.Component {
     public icon:cc.Sprite;
 
     private _skillId;
-    public uuid;
+    private _uuid;
     public lv;
     public exp;
     public color;
     private MAX_LV = 5;
-    private _data;
+    public _data;
     private _index;
     
     public static COLOR_1 = 1;
-    public static COLOR_2 = 1;
-    public static COLOR_3 = 1;
-    public static COLOR_4 = 1;
-    public static COLOR_5 = 1;
+    public static COLOR_2 = 2;
+    public static COLOR_3 = 3;
+    public static COLOR_4 = 4;
+    public static COLOR_5 = 5;
 
     public static ITEM_EXP = [80,40,20,10];
 
+    public set uuid(val){
+        this._uuid = val;
+    }
+    public get uuid(){
+        return this._uuid;
+    }
     constructor(){
         super();
     }
     start(){
         this.node.on('drag2',this.onClick,this)
     }
-    public create({info = null,index = -1}){
+    public create({info = null,index = -1,type = 0}){
+        // this._data = info;
         this._index = index;
+        if(type){
+            this.node.removeComponent(Dragger)
+        }
         if((typeof info == 'object')){
             this._skillId = info.ItemCode;
             this.exp = info.Exp;
@@ -53,10 +64,10 @@ export default class SkillItem extends cc.Component {
         if(this._data){
             this.lv = parseInt((this._skillId+"").charAt(this._skillId.length - 1));
             this.color = this._data.Color;
+            IconManager.getIcon(this._data.ItemCode+'',IconManager.COMM_SKILL,(spriteFrame)=>{
+                this.icon.spriteFrame = spriteFrame;
+            })
         }
-        IconManager.getIcon(this._data.ItemCode+'',IconManager.COMM_SKILL,(spriteFrame)=>{
-            this.icon.spriteFrame = spriteFrame;
-        })
     }
     private onClick(location){
         if(SkillLearnModel.skillBag.getBoundingBoxToWorld().contains(location)){

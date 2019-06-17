@@ -6,6 +6,7 @@ export default class SkillLearnModel{
 
     public static EventSelect = "SkillLearnModelselect";
     public static EventSkillItemClick = "SkillLearnModelSkillItemClick";
+    public static EventSkillBagChange = "SkillLearnModelBagChange";
 
     //球员列表信息
     public static playerListData;
@@ -66,7 +67,8 @@ export default class SkillLearnModel{
         prefab.sComponent = prefab.getComponent(SkillLearnModel.SkillItemScript);
         prefab.sComponent.create&&prefab.sComponent.create({
             "info":data,
-            "index":options.index
+            "index":options.index,
+            "type":options.type
         })
         if(parent)
             prefab.parent = parent;

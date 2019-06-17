@@ -171,7 +171,7 @@ export default class main_science_dialog extends cc.Component{
         let originalData = this.playerData.slice(num*index,num*(index+1));
         for(let i = 0;i<originalData.length;i++){
             if(!originalData[i].srcData){
-                originalData[i].srcData = ItemData.getPlayerInfo(originalData[i].Pid);
+                originalData[i].srcData = ItemData.getInstance().getPlayerInfo(originalData[i].Pid);
             }
         }
         return originalData;

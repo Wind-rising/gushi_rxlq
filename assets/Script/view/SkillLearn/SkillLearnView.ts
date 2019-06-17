@@ -8,6 +8,8 @@ import ItemData from "../../data/ItemData";
 import Events from "../../signal/Events";
 import ErrMsg from "../../data/ErrMsg";
 import SkillItem from "./SkillItem";
+import Dragger from "../control/Dragger";
+import SkillBag from "./SkillBag";
 
 const {ccclass, property} = cc._decorator;
 
@@ -57,12 +59,23 @@ export default class SkillLearnView extends cc.Component {
     }
 
     private init(){
+    SkillLearnModel.playerListData = null;
+    SkillLearnModel.playerItemArr = [];
+    SkillLearnModel.currentPlayer = "";
+    SkillLearnModel.currentTid;
+    SkillLearnModel._selectPlayer;
+    SkillLearnModel.playerSkillMap = {};
+    SkillLearnModel.skillItems = [];
+    SkillLearnModel.skillBag =null;
+    SkillLearnModel._skillMap = {};
+
+
         this.getPlayerListData();
         for(let i = 0;i<this.btn_arr_train.length;i++){
             this.btn_arr_train[i].clickEvents.push(
                 Utility.bindBtnEvent(this.node,'SkillLearnView','askSkill',[{
                     type:"1",
-                    lv:1,
+                    lv:i+1,
                     oneKey:0
                 }])
             )
@@ -77,6 +90,12 @@ export default class SkillLearnView extends cc.Component {
                 oneKey:1
             }])
         )
+        this.btn_skillBag.clickEvents.push(
+            Utility.bindBtnEvent(this.node,'SkillLearnView','onBag')
+        )
+        this.btn_allPick.clickEvents.push(
+            Utility.bindBtnEvent(this.node,'SkillLearnView','save')
+        )
         // askSkill
     }
     private addListener(){
@@ -84,7 +103,8 @@ export default class SkillLearnView extends cc.Component {
         Events.getInstance().addListener(SkillLearnModel.EventSkillItemClick,this.save,this)
     }
     private removeListener(){
-        Events.getInstance().addListener(SkillLearnModel.EventSelect,this.onSelect,this)
+        Events.getInstance().removeListener(SkillLearnModel.EventSelect,this.onSelect,this)
+        Events.getInstance().removeListener(SkillLearnModel.EventSkillItemClick,this.save,this)
     }
     private onClose(){
         this.node.destroy();
@@ -132,18 +152,19 @@ export default class SkillLearnView extends cc.Component {
         let data;
         let sItem;
         for(let i = 0;i<SkillLearnModel.playerListData.length;i++){
-            item = await SkillLearnModel.createBagItem({});
+            item = await SkillLearnModel.createBagItem({data:SkillLearnModel.playerListData[i]});
+            // item.sComponent.init(SkillLearnModel.playerListData[i]);
             item.sComponent.node_bg.interactable = true;
             let isMainPlayer = Utility.checkMVP(SkillLearnModel.playerListData[i].Tid);
             if(!isMainPlayer){
                 item.sComponent.node_bg.interactable = false;
             }
             item.sComponent.node_effect.active = false;
-            data = ItemData.getPlayerInfo(SkillLearnModel.playerListData[i].Pid);
+            data = ItemData.getInstance().getPlayerInfo(SkillLearnModel.playerListData[i].Pid);
             item.sComponent.data = SkillLearnModel.playerListData[i];
-            item.sComponent.rtxt_MName.string = `<color=${ItemData.getCardColor(data.CardLevel)}>${data.ShowName}</c>`;
+            item.sComponent.rtxt_MName.string = `<color=${ItemData.getInstance().getCardColor(data.CardLevel)}>${data.ShowName}</c>`;
             item.sComponent.lbl_trainPoint.string = SkillLearnModel.playerListData[i].TrainExp+"";
-            item.sComponent.lbl_pos.string = ItemData.getLabel(data.Position - 0);
+            item.sComponent.lbl_pos.string = ItemData.getInstance().getLabel(data.Position - 0);
             SkillLearnModel.playerItemArr.push(item);
             if(SkillLearnModel.currentPlayer&&SkillLearnModel.playerListData[i].Pid == SkillLearnModel.currentPlayer){
                 sItem = item;
@@ -152,7 +173,7 @@ export default class SkillLearnView extends cc.Component {
         if(!sItem){
             sItem = SkillLearnModel.playerItemArr[0];
         }
-        SkillLearnModel.selectPlayer = sItem;
+        // SkillLearnModel.selectPlayer = sItem;
         for(let i = 0;i<SkillLearnModel.playerItemArr.length;i++){
             SkillLearnModel.playerItemArr[i].parent = this.cont_playerList;
         }
@@ -281,7 +302,7 @@ export default class SkillLearnView extends cc.Component {
         }
     }
     //一键拾取
-    private save(index){
+    private save(index = -1){
         var srvArgs = {
             action:URLConfig.Post_Team_SkillAskSave,
             args: {
@@ -309,25 +330,35 @@ export default class SkillLearnView extends cc.Component {
         if(dis){
             this.effect(dis);
         }else{
-
+            this.effect();
         }
     }
-    private effect(obj:cc.Node){
-        let Node = cc.instantiate(obj);
-        Node.removeComponent(SkillItem);//复制的节点不能在挂载拖拽组件
-        Node.zIndex = 1000;
-        Node.position = obj.parent.convertToNodeSpaceAR(Node.position);
-        Node.parent = cc.director.getScene();
-        console.log(Node,"node");
-        Node.runAction(cc.moveTo(1000,this.node.parent.convertToWorldSpaceAR(Node.position)))
-        obj.removeFromParent();
+    private effect(obj:cc.Node = null){
+        if(obj){
+            obj.removeFromParent();
+        }else{
+            this.cont_skillList[0].removeAllChildren();
+        }
         this.delSKill(obj);
     }
     private delSKill(obj){
-        for(let i = 0;i<SkillLearnModel.skillItems.length;i++){
-            if(SkillLearnModel.skillItems[i].uuid == obj.uuid){
-                SkillLearnModel.skillItems.splice(i,1);
+        if(obj){
+            for(let i = 0;i<SkillLearnModel.skillItems.length;i++){
+                if(SkillLearnModel.skillItems[i].uuid == obj.uuid){
+                    SkillLearnModel.skillItems.splice(i,1);
+                }
             }
+        }else{
+            SkillLearnModel.skillItems = [];
+        }
+    }
+    private onBag(){
+        // this.SkillBag()
+        if(SkillLearnModel.selectPlayer){
+            SkillBag.open({
+                data:[SkillLearnModel.selectPlayer.sComponent.data],
+                res:true,
+            },true,true);
         }
     }
 }
