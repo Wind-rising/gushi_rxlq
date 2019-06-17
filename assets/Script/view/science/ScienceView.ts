@@ -72,7 +72,7 @@ export default class main_science_dialog extends cc.Component{
     }
     public initData(){
         ScienceData.playerListPageIndex = 0;
-        ScienceData.player_id = -1;
+        ScienceData.player_id = "-1";
         ScienceData.equipListPageIndex = 0;
         ScienceData.equipIndex = -1;
         ScienceData.playerEquip = null;
@@ -80,7 +80,7 @@ export default class main_science_dialog extends cc.Component{
     //初始化设置
     public async init(){
         ScienceData.playerListPageIndex = 0;
-        ScienceData.player_id = -1;
+        ScienceData.player_id = "-1";
         ScienceData.selectPlayer = null;
         ScienceData.equipListPageIndex = 0;
         ScienceData.equipIndex = -1;
@@ -145,7 +145,7 @@ export default class main_science_dialog extends cc.Component{
                 "n":URLConfig.ManagerPlayer,
                 "i":{
                     Mid:"",
-                    Tid:playerList[i].Tid
+                    Tid:playerList[i]['Tid']
                 }
             })
         }
@@ -159,7 +159,7 @@ export default class main_science_dialog extends cc.Component{
             this.playerData = data.data;
             for(var i=0; i<this.playerData.length; i++){
                 if(ManagerData.getInstance().Project[i]){
-                    this.playerData[i].Pid = ManagerData.getInstance().Project[i].Pid;
+                    this.playerData[i].Pid = ManagerData.getInstance().Project[i]['Pid'];
                     this.playerData[i].Kp = PlayerUtil.getKPByTid(this.playerData[i].Tid);
                 }
             }

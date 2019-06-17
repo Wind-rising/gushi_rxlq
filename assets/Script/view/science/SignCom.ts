@@ -93,11 +93,11 @@ export default class SignCom extends SwitchCom{
                 str += `${data.Attr_2_Name}+${this.getTotalPro(data.Attr_2_Num,data.Grow,data.Lvl)}\n`
             }
             if(obj._data.Sign){
-                let itemInfo = ItemData.getItemInfo(obj._data.Sign);
+                let itemInfo = ItemData.getInstance().getItemInfo(obj._data.Sign);
                 if(itemInfo){
-                    let color = 5;
-                    if(itemInfo.Effect){
-                        let tempArr = String(itemInfo.Effect).split(';');
+                    let color:any = 5;
+                    if(itemInfo['Effect']){
+                        let tempArr = String(itemInfo['Effect']).split(';');
                         for(let i = 0;i<tempArr.length;i++){
                             if(String(tempArr[i]).indexOf('color') != -1){
                                 color = String(tempArr[i]).split(':')[1];
@@ -105,12 +105,12 @@ export default class SignCom extends SwitchCom{
                             }
                         }
                     }
-                    let htmlStr = `<b><color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c></b>\n`;
-                    let desArr = (itemInfo.Desc+"").split('</p>')
+                    let htmlStr = `<b><color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c></b>\n`;
+                    let desArr = (itemInfo['Desc']+"").split('</p>')
                     if(desArr[1]){
                         desArr = (desArr[1]+'').split('<br/>');
                     }
-                    htmlStr += `<color=${ItemData.getCardColor(5-color)}>${desArr[1]}</c>`;
+                    htmlStr += `<color=${ItemData.getInstance().getCardColor(5-color)}>${desArr[1]}</c>`;
                     this.haveSignUI.string = htmlStr;
                 }
             }
@@ -133,10 +133,10 @@ export default class SignCom extends SwitchCom{
         this.SignEffect.string = '';
         this.SignMoney.string = '';
         if(data){
-            let color = 5;
-            let itemInfo = ItemData.getItemInfo(data.ItemCode);
-            if(itemInfo.Effect){
-                let tempArr = String(itemInfo.Effect).split(";");
+            let color:any = 5;
+            let itemInfo = ItemData.getInstance().getItemInfo(data.ItemCode);
+            if(itemInfo['Effect']){
+                let tempArr = String(itemInfo['Effect']).split(";");
                 for(let i = 0;i<tempArr.length;i++){
                     if(String(tempArr[i]).indexOf('color')!=-1){
                         color = String(tempArr[i]).split(":")[1];
@@ -144,15 +144,15 @@ export default class SignCom extends SwitchCom{
                     }
                 }
             }
-            IconManager.getIcon(itemInfo.Image+"",IconManager.ITEM_ICON,(spriteFrame)=>{
+            IconManager.getIcon(itemInfo['Image']+"",IconManager.ITEM_ICON,(spriteFrame)=>{
                 this.SignIcon.spriteFrame = spriteFrame;
             });
-            this.SignName.string =`<color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c>`;
-            let strList = (itemInfo.Desc+"").split("</p>");
+            this.SignName.string =`<color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c>`;
+            let strList = (itemInfo['Desc']+"").split("</p>");
             let tempStr = (strList[0]+"").replace("<p>","");
             tempStr = tempStr.replace("<br/>","\t");
             this.SignInfo.string = tempStr;
-            this.SignMoney.string = `花费：${EquipData.getSignMoney(color).money}球票`
+            this.SignMoney.string = `花费：${EquipData.getSignMoney(color)['money']}球票`
             tempStr = (strList[1]+"").replace("<p>","");
             this.SignEffect.string = tempStr.replace("<br/>","");
 
@@ -166,12 +166,12 @@ export default class SignCom extends SwitchCom{
             Utility.showAlert('需要装备');
         }else{
             if(ScienceData.selectEquip._data.Sign){
-                let itemInfo = ItemData.getItemInfo(ScienceData.selectEquip._data.Sign);
+                let itemInfo = ItemData.getInstance().getItemInfo(ScienceData.selectEquip._data.Sign);
                 let htmlStr = '';
                 if(itemInfo){
-                    let color = 5;
-                    if(itemInfo.Effect){
-                        let tempArr = String(itemInfo.Effect).split(';');
+                    let color:any = 5;
+                    if(itemInfo['Effect']){
+                        let tempArr = String(itemInfo['Effect']).split(';');
                         for(let i = 0;i<tempArr.length;i++){
                             if(String(tempArr[i]).indexOf("color") != -1){
                                 color = String(tempArr[i]).split(":")[1];
@@ -179,18 +179,18 @@ export default class SignCom extends SwitchCom{
                             }
                         }
                     }
-                    htmlStr = `装备已有签名<color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c>,是否替换为`;
-                    itemInfo = ItemData.getItemInfo(this._data.ItemCode);
-                    if(itemInfo.Effect){
-                        let tempArr = String(itemInfo.Effect).split(';');
+                    htmlStr = `装备已有签名<color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c>,是否替换为`;
+                    itemInfo = ItemData.getInstance().getItemInfo(this._data.ItemCode);
+                    if(itemInfo['Effect']){
+                        let tempArr = String(itemInfo['Effect']).split(';');
                         for(let i = 0;i<tempArr.length;i++){
-                            if(String(tempArr[i]),indexOf("color") != -1){
+                            if(String(tempArr[i]).indexOf("color") != -1){
                                 color = String(tempArr[i]).split(":")[1];
                                 break;
                             }
                         }
                     }
-                    htmlStr += `<color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c>`;
+                    htmlStr += `<color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c>`;
                 }
                 Utility.alert(htmlStr,()=>{
                     this.onConfirmSign();

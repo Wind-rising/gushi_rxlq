@@ -2,8 +2,6 @@ import SkillData from "../../data/SkillData";
 import IconManager from "../../config/IconManager";
 import Events from "../../signal/Events";
 import SkillLearnModel from "./SkillLearnModel";
-import Utility from "../../utils/Utility";
-import SkillLearnView from "./SkillLearnView";
 import Dragger from "../control/Dragger";
 
 const {ccclass, property} = cc._decorator;
@@ -11,13 +9,13 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class SkillItem extends cc.Component {
     @property(cc.Sprite)
-    public icon:cc.Sprite;
+    public icon:cc.Sprite = null;
 
-    private _skillId;
-    private _uuid;
+    private _skillId; 
+    private _uuid;   
     public lv;
     public exp;
-    public color;
+    public color; 
     private MAX_LV = 5;
     public _data;
     private _index;

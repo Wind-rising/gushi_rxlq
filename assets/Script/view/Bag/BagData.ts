@@ -135,10 +135,10 @@ export default class BagData extends Singleton{
     }
     public async createBagItem(data,parent = null){
         let prefab = await Utility.insertPrefab(this.prefabUrlBagItem);
-        prefab.sComponent = prefab.getComponent(this.prefab_script_bag_item);
-        prefab.sComponent.init(data)
+        prefab['sComponent'] = prefab['getComponent'](this.prefab_script_bag_item);
+        prefab['sComponent'].init(data)
         if(parent)
-            prefab.parent = parent;
+            prefab['parent'] = parent;
         return prefab;
     }
     public async createShowUI(e,data,parent = null){
@@ -151,7 +151,7 @@ export default class BagData extends Singleton{
                 break;
             case BagItem.TYPE_EQUIP:
                     prefabUrl = this.prefab_url_info_equip;
-                    component = this.equipItemComponent;
+                    component = this.prefab_script_info_equip;
                 break;
             case BagItem.TYPE_RING:
                     // prefabUrl = this.equipPrefabUrl;
@@ -163,10 +163,10 @@ export default class BagData extends Singleton{
                 break;
         }
         let prefab = await Utility.insertPrefab(prefabUrl);
-        prefab.sComponent = prefab.getComponent(component);
-        prefab.getComponent(component).init(data)
+        prefab['sComponent'] = prefab['getComponent'](component);
+        prefab['getComponent'](component).init(data)
         if(parent)
-            prefab.parent = parent;
+            prefab['parent'] = parent;
         return prefab;
     }
     public async createButtonUI(e,data,parent = null){
@@ -191,10 +191,10 @@ export default class BagData extends Singleton{
                 break;
         }
         let prefab = await Utility.insertPrefab(prefabUrl);
-        prefab.sComponent = prefab.getComponent(component);
+        prefab['sComponent'] = prefab['getComponent'](component);
         // prefab.getComponent(component).init(data)
         if(parent)
-            prefab.parent = parent;
+            prefab['parent'] = parent;
         return prefab;
     }
 

@@ -7,8 +7,6 @@ import Utility from "../../utils/Utility";
 import ItemData from "../../data/ItemData";
 import Events from "../../signal/Events";
 import ErrMsg from "../../data/ErrMsg";
-import SkillItem from "./SkillItem";
-import Dragger from "../control/Dragger";
 import SkillBag from "./SkillBag";
 
 const {ccclass, property} = cc._decorator;
@@ -118,7 +116,7 @@ export default class SkillLearnView extends cc.Component {
                 "n":URLConfig.ManagerPlayer,
                 "i":{
                     Mid:"",
-                    Tid:playerList[i].Tid
+                    Tid:playerList[i]['Tid']
                 }
             })
         }
@@ -135,7 +133,7 @@ export default class SkillLearnView extends cc.Component {
             SkillLearnModel.playerListData = data.data;
             for(let i = 0;i<SkillLearnModel.playerListData.length;i++){
                 if(ManagerData.getInstance().Project[i]){
-                    SkillLearnModel.playerListData[i].Pid = ManagerData.getInstance().Project[i].Pid;
+                    SkillLearnModel.playerListData[i].Pid = ManagerData.getInstance().Project[i]['Pid'];
                     SkillLearnModel.playerListData[i].Kp = PlayerUtil.getKPByTid(SkillLearnModel.playerListData[i].Tid)
                 }
             }

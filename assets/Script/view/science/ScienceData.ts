@@ -13,7 +13,7 @@ export default class ScienceData{
     //球员列表页索引
     public static playerListPageIndex = 0;
     //当前球员索引
-    public static player_id = -1;
+    public static player_id = "-1";
     //当前装备
     public static selectPlayer = null;
     //一页装备列表个数

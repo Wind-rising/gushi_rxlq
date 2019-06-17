@@ -74,9 +74,9 @@ export default class washCom extends SwitchCom{
                 if(selectEquip._data.Hole[i]){
                     let holeInfo = ItemData.getInstance().getHoleInfo(selectEquip._data.Hole[i]);
                     if(holeInfo){
-                        let color = ItemData.getInstance().getCardColor(holeInfo.Color);
+                        let color = ItemData.getInstance().getCardColor(holeInfo['Color']);
                         color = color.replace('#','0x');
-                        this.attrName[i].string = `<color=${color}>${holeInfo.Desc}</c>`
+                        this.attrName[i].string = `<color=${color}>${holeInfo['Desc']}</c>`
                     }
                     this._activBtnNum++;
                     this.attrButton[i].interactable = true;

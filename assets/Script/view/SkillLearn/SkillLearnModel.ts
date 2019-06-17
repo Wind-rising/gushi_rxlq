@@ -55,23 +55,23 @@ export default class SkillLearnModel{
     //球员item加载
     public static async createBagItem({data = null,parent = null,...options}){
         let prefab = await Utility.insertPrefab(SkillLearnModel.PlayerItemPrefabUrl);
-        prefab.sComponent = prefab.getComponent(SkillLearnModel.PlayerItemScript);
-        prefab.sComponent.init&&prefab.sComponent.init(data)
+        prefab['sComponent'] = prefab['getComponent'](SkillLearnModel.PlayerItemScript);
+        prefab['sComponent'].init&&prefab['sComponent'].init(data)
         if(parent)
-            prefab.parent = parent;
+            prefab['parent'] = parent;
         return prefab;
     }
     //技能item加载
     public static async createSkillItem({data = null,parent = null,...options}){
         let prefab = await Utility.insertPrefab(SkillLearnModel.SkillItemPrefabUrl);
-        prefab.sComponent = prefab.getComponent(SkillLearnModel.SkillItemScript);
-        prefab.sComponent.create&&prefab.sComponent.create({
+        prefab['sComponent'] = prefab['getComponent'](SkillLearnModel.SkillItemScript);
+        prefab['sComponent'].create&&prefab['sComponent'].create({
             "info":data,
             "index":options.index,
             "type":options.type
         })
         if(parent)
-            prefab.parent = parent;
+            prefab['parent'] = parent;
         return prefab;
     }
 }
