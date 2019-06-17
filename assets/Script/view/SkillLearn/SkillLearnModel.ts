@@ -5,6 +5,7 @@ import Events from "../../signal/Events";
 export default class SkillLearnModel{
 
     public static EventSelect = "SkillLearnModelselect";
+    public static EventSkillItemClick = "SkillLearnModelSkillItemClick";
 
     //球员列表信息
     public static playerListData;
@@ -30,10 +31,12 @@ export default class SkillLearnModel{
     public static skillItems = [];
     //按钮个数
     public static BTN_NUM = 5;
-    //技能一行个数
-    public static SKILL_NUM = 8;
+    //技能背包
+    public static skillBag =null;
+    // //技能一行个数
+    // public static SKILL_NUM = 8;
     //技能一行数
-    public static SKILL_LINE = 3;
+    // public static SKILL_LINE = 3;
     //球员技能列表长度
     public static _skillMap = {};
     public static get selectPlayer(){
@@ -61,7 +64,10 @@ export default class SkillLearnModel{
     public static async createSkillItem({data = null,parent = null,...options}){
         let prefab = await Utility.insertPrefab(SkillLearnModel.SkillItemPrefabUrl);
         prefab.sComponent = prefab.getComponent(SkillLearnModel.SkillItemScript);
-        prefab.sComponent.create&&prefab.sComponent.create(data)
+        prefab.sComponent.create&&prefab.sComponent.create({
+            "info":data,
+            "index":options.index
+        })
         if(parent)
             prefab.parent = parent;
         return prefab;

@@ -26,7 +26,6 @@ export default class BagEquipInfo extends cc.Component{
     private data;
 
     public init(data){
-        console.log(data);
         this.data = data.Equip;
         let equipData = ItemData.getEquipInfo(this.data.Type+""+this.data.Pair);
         let str = "";
@@ -88,7 +87,7 @@ export default class BagEquipInfo extends cc.Component{
         }else{
             this.tips.string = `可改造成【${nextInfo.Name}】`;
         }
-        IconManager.getIcon(equipData.Type + (equipData.Pair+'.png'),IconManager.EQUP_ICON,(spriteFrame)=>{
+        IconManager.getIcon(equipData.Type + (equipData.Pair+''),IconManager.EQUP_ICON,(spriteFrame)=>{
             this.icon.spriteFrame = spriteFrame;
         });
     }

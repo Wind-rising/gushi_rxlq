@@ -92,8 +92,6 @@ export default class SignCom extends SwitchCom{
             if(data.Attr_2_Name){
                 str += `${data.Attr_2_Name}+${this.getTotalPro(data.Attr_2_Num,data.Grow,data.Lvl)}\n`
             }
-            console.log(str,"str")
-            console.log(obj)
             if(obj._data.Sign){
                 let itemInfo = ItemData.getItemInfo(obj._data.Sign);
                 if(itemInfo){
@@ -146,7 +144,7 @@ export default class SignCom extends SwitchCom{
                     }
                 }
             }
-            IconManager.getIcon(itemInfo.Image+".png",IconManager.ITEM_ICON,(spriteFrame)=>{
+            IconManager.getIcon(itemInfo.Image+"",IconManager.ITEM_ICON,(spriteFrame)=>{
                 this.SignIcon.spriteFrame = spriteFrame;
             });
             this.SignName.string =`<color=${ItemData.getCardColor(5-color)}>${itemInfo.Name}</c>`;
@@ -167,7 +165,6 @@ export default class SignCom extends SwitchCom{
         }else if(!ScienceData.selectEquip){
             Utility.showAlert('需要装备');
         }else{
-            console.log(ScienceData.selectEquip,"ScienceData.selectEquip")
             if(ScienceData.selectEquip._data.Sign){
                 let itemInfo = ItemData.getItemInfo(ScienceData.selectEquip._data.Sign);
                 let htmlStr = '';

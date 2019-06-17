@@ -75,7 +75,6 @@ export default class IconManager extends cc.Component {
 		 */
 		public static getIcon(url:string, type:string, callback:Function, context?){
 			url = 'image/'+type+url
-			console.log(url,"url111")
 			cc.loader.loadRes(url, cc.SpriteFrame, function (err, spriteFrame) {
                 if (err) {
                     Utility.fadeErrorInfo(err.message || JSON.stringify(err));
@@ -93,7 +92,6 @@ export default class IconManager extends cc.Component {
 		public static getPlayerIcon(vo){
 			//需要缓存的
 			var key:string= vo.ItemCode+"_"+vo.playPos+"_"+vo.Str;
-			console.log(key)
 			// return bmd;
 		}
 		

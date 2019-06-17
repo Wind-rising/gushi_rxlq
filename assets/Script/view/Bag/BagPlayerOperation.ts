@@ -30,7 +30,6 @@ export default class BagPlayerOperation extends cc.Component{
     }
     public onUseItem(data){
         if(data.res){
-            console.log(BagData.getInstance().nowItems._data)
             if(BagData.getInstance().nowItems._data.ItemType == BagItem.TYPE_PLAYER){
                 ManagerData.getInstance().refresh();
             }else{

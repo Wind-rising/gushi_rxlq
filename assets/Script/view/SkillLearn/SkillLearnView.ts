@@ -7,6 +7,7 @@ import Utility from "../../utils/Utility";
 import ItemData from "../../data/ItemData";
 import Events from "../../signal/Events";
 import ErrMsg from "../../data/ErrMsg";
+import SkillItem from "./SkillItem";
 
 const {ccclass, property} = cc._decorator;
 
@@ -33,6 +34,8 @@ export default class SkillLearnView extends cc.Component {
     //按钮-技能背包
     @property(cc.Button)
     private btn_skillBag:cc.Button = null;
+    @property(cc.Node)
+    public skillBag:cc.Node = null;
 
     //内容-球员列表
     @property(cc.Node)
@@ -46,6 +49,7 @@ export default class SkillLearnView extends cc.Component {
 
     start(){
         this.addListener();
+        SkillLearnModel.skillBag = this.skillBag;
         this.init();
     }
     onDestroy(){
@@ -64,12 +68,20 @@ export default class SkillLearnView extends cc.Component {
             )
         }
         this.btn_close.clickEvents.push(
-            Utility.bindBtnEvent(this.node,'SKillLearnView','onClose')
+            Utility.bindBtnEvent(this.node,'SkillLearnView','onClose')
+        )
+        this.btn_allTrain.clickEvents.push(
+            Utility.bindBtnEvent(this.node,'SkillLearnView','askSkill',[{
+                type:"1",
+                lv:1,
+                oneKey:1
+            }])
         )
         // askSkill
     }
     private addListener(){
         Events.getInstance().addListener(SkillLearnModel.EventSelect,this.onSelect,this)
+        Events.getInstance().addListener(SkillLearnModel.EventSkillItemClick,this.save,this)
     }
     private removeListener(){
         Events.getInstance().addListener(SkillLearnModel.EventSelect,this.onSelect,this)
@@ -131,7 +143,6 @@ export default class SkillLearnView extends cc.Component {
             item.sComponent.data = SkillLearnModel.playerListData[i];
             item.sComponent.rtxt_MName.string = `<color=${ItemData.getCardColor(data.CardLevel)}>${data.ShowName}</c>`;
             item.sComponent.lbl_trainPoint.string = SkillLearnModel.playerListData[i].TrainExp+"";
-            console.log(data,"datadatadatadata")
             item.sComponent.lbl_pos.string = ItemData.getLabel(data.Position - 0);
             SkillLearnModel.playerItemArr.push(item);
             if(SkillLearnModel.currentPlayer&&SkillLearnModel.playerListData[i].Pid == SkillLearnModel.currentPlayer){
@@ -143,7 +154,6 @@ export default class SkillLearnView extends cc.Component {
         }
         SkillLearnModel.selectPlayer = sItem;
         for(let i = 0;i<SkillLearnModel.playerItemArr.length;i++){
-            console.log(SkillLearnModel.playerItemArr[i])
             SkillLearnModel.playerItemArr[i].parent = this.cont_playerList;
         }
     }
@@ -199,7 +209,6 @@ export default class SkillLearnView extends cc.Component {
     }
     //技能列表，背包，请教
     private async formatPlayer(data){
-        console.log(data,111111555555555)
         this.clear();
         let index = 0;
         for(let i = 0;i<SkillLearnModel.BTN_NUM;i++){
@@ -219,13 +228,16 @@ export default class SkillLearnView extends cc.Component {
             if(!data.SkillItems){
                 data.SkillItems = {};
             }
-            item = await SkillLearnModel.createSkillItem({data:iconList[i]});
+            item = await SkillLearnModel.createSkillItem({
+                data:iconList[i],
+                index:i
+            });
             SkillLearnModel.skillItems.push(item);
         }
         SkillLearnModel._skillMap[SkillLearnModel.currentTid] = iconList.length;
         data.SkillItems = SkillLearnModel.skillItems;
         for(let i = 0;i<SkillLearnModel.skillItems.length;i++){
-            SkillLearnModel.skillItems[i].parent = this.cont_skillList[Math.floor(i/SkillLearnModel.SKILL_NUM)];
+            SkillLearnModel.skillItems[i].parent = this.cont_skillList[0];
         }
     }
     //请教
@@ -256,12 +268,65 @@ export default class SkillLearnView extends cc.Component {
                 if(tempInfo.ItemCode && tempInfo.ItemCodes[0] == "0" && oneKey != 1){
                     Utility.showAlert("运气欠佳，什么都没得到!");
                 }
-                SkillLearnModel.selectPlayer.sComponent.data.TrainExp = parseInt(data.data.SyncData.TrainExp);
-                
+                let trainExp = parseInt(data.data.SyncData.TrainExp);
+                SkillLearnModel.selectPlayer.sComponent.data.TrainExp = trainExp;
+                SkillLearnModel.selectPlayer.sComponent.lbl_trainPoint = trainExp+"";
+                Events.getInstance().dispatch(SkillLearnModel.EventSelect)
+                // SkillLearnModel.player
             }else{
-                let msg = ErrMsg.getInstance().getErr(data);
-                msg = msg.replace("${level}",data['var'].Level);
+                let msg = ErrMsg.getInstance().getErr(data.code);
+                // msg = msg.replace("${level}",data['var'].Level);
                 Utility.showAlert(msg);
+            }
+        }
+    }
+    //一键拾取
+    private save(index){
+        var srvArgs = {
+            action:URLConfig.Post_Team_SkillAskSave,
+            args: {
+                "Tid":SkillLearnModel.currentTid, 
+                "Num":index - 0 + 1
+            }
+        };
+        HttpManager.getInstance().request(srvArgs,onSaveSkill,this);
+
+        function onSaveSkill(data){
+            if(data.res){
+                SkillLearnModel._skillMap[SkillLearnModel.currentTid] = 0;
+                let info = SkillLearnModel.playerSkillMap[SkillLearnModel.currentTid];
+                if(index == -1){
+                    this.showEffect();
+                    info.Bag = [];
+                }else{
+                    this.showEffect(SkillLearnModel.skillItems[index]);
+                }
+            }
+        }
+    }
+    private showEffect(disPlayObject = null){
+        let dis = disPlayObject;
+        if(dis){
+            this.effect(dis);
+        }else{
+
+        }
+    }
+    private effect(obj:cc.Node){
+        let Node = cc.instantiate(obj);
+        Node.removeComponent(SkillItem);//复制的节点不能在挂载拖拽组件
+        Node.zIndex = 1000;
+        Node.position = obj.parent.convertToNodeSpaceAR(Node.position);
+        Node.parent = cc.director.getScene();
+        console.log(Node,"node");
+        Node.runAction(cc.moveTo(1000,this.node.parent.convertToWorldSpaceAR(Node.position)))
+        obj.removeFromParent();
+        this.delSKill(obj);
+    }
+    private delSKill(obj){
+        for(let i = 0;i<SkillLearnModel.skillItems.length;i++){
+            if(SkillLearnModel.skillItems[i].uuid == obj.uuid){
+                SkillLearnModel.skillItems.splice(i,1);
             }
         }
     }

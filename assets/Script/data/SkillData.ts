@@ -51,7 +51,6 @@ export default class SkillData extends Singleton
     
     /**获取技能信息*/
     public getSkillInfo(skillId):Object{
-        console.log(this._data)
         return this._data[skillId]; 
     }
     

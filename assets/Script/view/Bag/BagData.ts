@@ -64,7 +64,6 @@ export default class BagData extends Singleton{
         if(types && types.length){
             for(let i = 0;i<this.Items.length;i++){
                 item = this.Items[i];
-                console.log(types.indexOf(item.sComponent.ItemType));
                 if(item && (types.indexOf(item.sComponent.ItemType)!= -1)){
                     tempItems.push(item);
                 }
@@ -94,7 +93,6 @@ export default class BagData extends Singleton{
     }
 
     public async onRefresh(data){
-        console.log(data,"data");
         if(data.res){
             data = data.data[0];
             this.INum = data.INum;
@@ -218,7 +216,6 @@ export default class BagData extends Singleton{
 
 
     public useItem(item,callback){
-        console.log(item,"itemitemitemitem")
         if(item._data.ItemType == BagItem.TYPE_PLAYER && item._data.Str > 1){
 
         }else if(item._data.ItemCode == "24014" || item._data.ItemCode == "24013"){
