@@ -46,8 +46,9 @@ export default class TabsPage extends cc.Component {
             clickEventHandler.handler = 'onBtnSelected';
             clickEventHandler.customEventData = i.toString();
             btn.clickEvents.push(clickEventHandler);
-
+            
             if(this.selectedIndex == i){
+                console.log(btn)
                 btn.enabled = false;
                 this.nodList.length>i && (this.nodList[i].active = true);
             }else{
@@ -67,7 +68,7 @@ export default class TabsPage extends cc.Component {
         if(this.selectedIndex == index){
             return;
         }
-        this.btnList[this.selectedIndex].enabled = true;
+        this.btnList[this.selectedIndex].enabled = true
         this.nodList.length>this.selectedIndex && (this.nodList[this.selectedIndex].active = false);
         this.selectedIndex = index;
         this.btnList[this.selectedIndex].enabled = false;
