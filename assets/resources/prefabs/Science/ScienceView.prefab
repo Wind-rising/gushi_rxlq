@@ -14265,7 +14265,7 @@
     "asset": {
       "__uuid__": "bf1d11fd-a09f-41c5-8e55-3d7379b6605e"
     },
-    "fileId": "12OUyQpRhJJp6AfK4pMPKW",
+    "fileId": "51ZS5PeANI06/RBIjssLC7",
     "sync": false
   },
   {
@@ -15397,6 +15397,16 @@
       "__id__": 425
     },
     "_enabled": true,
+    "icon": null,
+    "CName": null,
+    "haveSignUI": null,
+    "SignIcon": null,
+    "SignName": null,
+    "SignInfo": null,
+    "SignEffect": null,
+    "SignMoney": null,
+    "signButton": null,
+    "openBag": null,
     "_id": ""
   },
   {
