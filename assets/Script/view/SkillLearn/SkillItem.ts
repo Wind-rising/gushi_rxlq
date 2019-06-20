@@ -8,8 +8,10 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SkillItem extends cc.Component {
+    
     @property(cc.Sprite)
     public icon:cc.Sprite = null;
+
 
     private _skillId; 
     private _uuid;   
@@ -28,14 +30,11 @@ export default class SkillItem extends cc.Component {
 
     public static ITEM_EXP = [80,40,20,10];
 
-    public set uuid(val){
+    public set Uuid(val){
         this._uuid = val;
     }
-    public get uuid(){
+    public get Uuid(){
         return this._uuid;
-    }
-    constructor(){
-        super();
     }
     start(){
         this.node.on('drag2',this.onClick,this)
@@ -49,7 +48,7 @@ export default class SkillItem extends cc.Component {
         if((typeof info == 'object')){
             this._skillId = info.ItemCode;
             this.exp = info.Exp;
-            this.uuid = info.Uuid;
+            this.Uuid = info.Uuid;
         }else{
             this._skillId = info;
         }
