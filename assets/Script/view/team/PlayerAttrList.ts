@@ -1,11 +1,10 @@
-import PlayerUtil from "../../utils/PlayerUtil";
-import PlayerControllor from "../../controllor/PlayerControllor";
 
 /**
  * 球员属性
  */
 const {ccclass, property} = cc._decorator;
-
+import PlayerUtil from "../../utils/PlayerUtil";
+import PlayerControllor from "../../controllor/PlayerControllor";
 @ccclass
 export default class PlayerAttrList extends cc.Component {
 
@@ -27,7 +26,7 @@ export default class PlayerAttrList extends cc.Component {
             this.nod_attr_list.push(nod_attr);
         }
 
-        this.node.on('selectedPlayer',(playerInfo)=>{
+        this.node.on('selectedPlayer',()=>{
             //选中球员的时候被调用
             if(this.node.active){
                 this.formatData();

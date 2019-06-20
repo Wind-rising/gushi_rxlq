@@ -13,6 +13,7 @@ import ItemData from "../../data/ItemData";
 import PlayerInfoCom from "./PlayerInfoCom";
 import XUtil from "../../utils/XUtil";
 import PlayerUtil from "../../utils/PlayerUtil";
+import Events from "../../signal/Events";
 @ccclass
 export default class PlayerManage extends cc.Component {
 
@@ -22,6 +23,9 @@ export default class PlayerManage extends cc.Component {
 
     /** 球员数据 */
     playerData:Object = null;
+
+    /** 选中的节点 */
+    selectedCell:cc.Node = null;
 
     /** 球员列表 */
     src_player_list:cc.Node = null;
@@ -34,6 +38,8 @@ export default class PlayerManage extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
     lbl_max_cat:cc.Label = null;
+
+    static REFRESH:'player_info_refresh';
 
     onLoad () {
         let img_player_list = this.node.getChildByName('img_player_list');
@@ -61,8 +67,29 @@ export default class PlayerManage extends cc.Component {
         img_player_list.getChildByName('btn_add_hat').getComponent(cc.Button).clickEvents.push(
             Utility.bindBtnEvent(this.node,'PlayerManage','addWageCap')
         );
+
+        /** 事件处理 */
+        Events.getInstance().addListener(PlayerManage.REFRESH,()=>{
+            let data = PlayerControllor.getInstance().playerInfo;
+            let args  = [{"n":URLConfig.ManagerPlayer, "i":{Mid:"", Tid:data['Tid']}}];
+            HttpManager.getInstance().request({args:args,action:URLConfig.Get_Data},(responce)=>{
+                if(responce['res']){
+                    let playerInfo = responce['data'][0];
+                    playerInfo['basicData'] = data['basicData'];
+                    this.playerData[data['Tid']] = playerInfo;
+                    this.formatPlayerData(playerInfo,this.selectedCell);
+                }else{
+                    Utility.fadeErrorInfo('获取球员信息失败');
+                }
+            },this);
+
+        },this,this.EventListenerTag)
         
         this.getData();
+    }
+
+    onDestroy () {
+        Events.getInstance().removeByTag(this.EventListenerTag);
     }
 
     start () {
@@ -136,7 +163,7 @@ export default class PlayerManage extends cc.Component {
         this.src_player_list.on('initCell',(cell,idx)=>{
             if(playerList.length>idx){
                 //初始化球员节点信息
-                this.refreshListCell(cell,playerList[idx],idx);
+                this.refreshListCell(cell,playerList[idx]);
             }
         });
         
@@ -144,7 +171,8 @@ export default class PlayerManage extends cc.Component {
             if(playerList.length>idx){
                 //选择某个球员
                 this.controllor.selectedPlayerIdx = idx;
-                this.selectListCell(cell,playerList[idx]);
+                this.selectedCell = cell;
+                this.selectListCell(playerList[idx],null);
             }
         });
         
@@ -158,7 +186,7 @@ export default class PlayerManage extends cc.Component {
      * @param cell 
      * @param data 
      */
-    refreshListCell (cell:cc.Node, data:Object, idx:number) {
+    refreshListCell (cell:cc.Node, data:Object) {
         let basicData = data['basicData'];
         let lbl_name = cell.getChildByName('lbl_name');
         lbl_name.getComponent(cc.Label).string = basicData['Name'];
@@ -173,10 +201,10 @@ export default class PlayerManage extends cc.Component {
      * @param cell 选中的节点
      * @param data 
      */
-    selectListCell(cell:cc.Node, data:Object){
+    selectListCell(data:Object, cell:cc.Node){
         let playerInfo:Object = this.playerData[data['Tid']];
         if(playerInfo){
-            this.formatPlayerData(playerInfo);
+            this.formatPlayerData(playerInfo,cell);
         }else{
             let args  = [{"n":URLConfig.ManagerPlayer, "i":{Mid:"", Tid:data['Tid']}}];
             HttpManager.getInstance().request({args:args,action:URLConfig.Get_Data},(responce)=>{
@@ -184,7 +212,7 @@ export default class PlayerManage extends cc.Component {
                     let playerInfo = responce['data'][0];
                     playerInfo['basicData'] = data['basicData'];
                     this.playerData[data['Tid']] = playerInfo;
-                    this.formatPlayerData(playerInfo);
+                    this.formatPlayerData(playerInfo,cell);
                 }else{
                     Utility.fadeErrorInfo('获取球员信息失败');
                 }
@@ -192,11 +220,14 @@ export default class PlayerManage extends cc.Component {
         }
     }
 
-    formatPlayerData(playerInfo:Object){
+    formatPlayerData(playerInfo:Object, cell:cc.Node){
         this.nod_show.formatData(playerInfo);
         for(let i = 0;i<this.nod_attrs.length;i++){
             PlayerControllor.getInstance().playerInfo = playerInfo;
-            this.nod_attrs[i].emit('selectedPlayer',playerInfo);
+            this.nod_attrs[i].emit('selectedPlayer');
+        }
+        if(cell){
+            this.refreshListCell(cell,playerInfo);
         }
     }
 };

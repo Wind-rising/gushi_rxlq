@@ -11,6 +11,7 @@ import URLConfig from "../../config/URLConfig";
 import ErrMsg from "../../data/ErrMsg";
 import Events from "../../signal/Events";
 import PlayerControllor from "../../controllor/PlayerControllor";
+import PlayerManage from "./PlayerManage";
 @ccclass
 export default class PlayerTrain extends cc.Component {
 
@@ -75,7 +76,7 @@ export default class PlayerTrain extends cc.Component {
         );
 
         /** 普通培养 巨星培养切换 */
-        this.toggle_type.toggleItems[this.trainType].isChecked = true;
+        this.toggle_type.toggleItems[(this.trainType-1)].isChecked = true;
         this.toggle_type.checkEvents.push(
             Utility.bindBtnEvent(this.node,'PlayerTrain','selectedTrainType')
         );
@@ -120,12 +121,12 @@ export default class PlayerTrain extends cc.Component {
         }
         //上次培养的信息
         this.btn_save.interactable = false;
-        this.btn_train.interactable = false;
+        //this.btn_train.interactable = false;
         
         this.formatPro();
         this.getPYData();
         
-        this.toggle_type.toggleItems[this.trainType].isChecked = true;
+        this.toggle_type.toggleItems[(this.trainType-1)].isChecked = true;
     }
 
     /** 培养按钮 */
@@ -140,7 +141,7 @@ export default class PlayerTrain extends cc.Component {
         HttpManager.getInstance().request({args:args,action:URLConfig.Post_Team_PyPlayer},(responce)=>{
             if(responce['res']){
                 this.btn_save.interactable = true;
-                this.btn_train.interactable = false;
+                //this.btn_train.interactable = false;
 				//
 				this.currentExData = responce['data']['Post_Team_PyPlayer'];
 				this.formatEx();
@@ -164,14 +165,15 @@ export default class PlayerTrain extends cc.Component {
             if(responce['res']){
                 if(responce.data && responce.data.SyncData.Score)
                     ManagerData.getInstance().Score = parseInt(responce.data.SyncData.Score);
-                this.btn_save.interactable = false;
-                this.btn_train.interactable = true;
+                //this.btn_save.interactable = false;
+                //this.btn_train.interactable = true;
                 if(mode ==1){
                     this.playerInfo['PptPy'] = this.currentExData;
                 }
-                this.formatPro();
+                // this.formatPro();
+                // this.formatEx();
                 //更新数据============
-                //MainDispatcher.getInstance().dispatchEvent(new Event(PlayerManageView.REFRESH));
+                Events.getInstance().dispatch(PlayerManage.REFRESH,[this.playerInfo]);
             }
         });
     }
@@ -197,17 +199,25 @@ export default class PlayerTrain extends cc.Component {
         let args  = [{"n":URLConfig.PlayerPy, "i":{Tid:this.playerInfo['Tid']}}];
         HttpManager.getInstance().request({args:args,action:URLConfig.Get_Data},(responce)=>{
             if(responce['res']){
-				this.currentExData = responce['data'][0];
-				if(this.currentExData){
-					this.formatEx();
+                this.currentExData = responce['data'][0];
+                if(this.isValidate(this.currentExData)){
                     this.btn_save.interactable = true;
-                    this.btn_train.interactable = false;
-				}else{
+                }else{
+                    this.currentExData = this.playerInfo['PptPy'];
                     this.btn_save.interactable = false;
-                    this.btn_train.interactable = true;
                 }
+                this.formatEx();
 			}
         });
+    }
+    //判定附加属性是否有效
+    private isValidate(obj:Object):boolean{
+        for(let i in obj){
+            if(obj[i]){
+                return true;
+            }
+        }
+        return false;
     }
     /** 训练类型选择 */
     selectedTrainType (e){
@@ -245,6 +255,30 @@ export default class PlayerTrain extends cc.Component {
             let exStr = PlayerUtil.getNumStr(exNum);
             this.totalExtPro += exNum;
             this.nod_attr_list[i].getChildByName('lbl_value_new').getComponent(cc.Label).string = value+exStr;
+        }
+        for(let i = 0;i < this.attrlist.length;i++){
+            let img_flat = this.nod_attr_list[i].getChildByName('img_flat');
+            let img_up = this.nod_attr_list[i].getChildByName('img_up');
+            let img_down = this.nod_attr_list[i].getChildByName('img_down');
+            if(this.totalExtPro == 0){
+                img_up.active = false;
+                img_down.active = false;
+                img_flat.active = true;
+                img_flat.getComponent(cc.Animation).stop();
+            }else{
+                let key = this.attrlist[i];
+                let exNum = PlayerUtil.getBigPro(key, extData);
+                img_up.active = exNum>0;
+                img_flat.active = exNum == 0;
+                img_down.active = exNum < 0;
+                if(exNum>0){
+                    img_up.getComponent(cc.Animation).play('up_down');
+                }else if(exNum<0){
+                    img_down.getComponent(cc.Animation).play('up_down');
+                }else{
+                    img_flat.getComponent(cc.Animation).play('up_down');
+                }
+            }
         }
     }
 

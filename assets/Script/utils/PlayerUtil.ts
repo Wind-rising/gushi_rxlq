@@ -335,16 +335,16 @@ export default class PlayerUtil {
         
         function onGetKp(data:Object):void{
             if(data['res']){
-                var list = ManagerData.getInstance().Project;
-                var storeDic = ManagerData.getInstance().storeDic;
+                let list = ManagerData.getInstance().Project;
+                let storeDic = ManagerData.getInstance().storeDic;
                 
                 this.kpiInfo = data['data'][0].List;
                 this.myKpiInfo = XUtil.cloneObject(this.kpiInfo);
-                for(var i=0; i<list.length; i++){
+                for(let i=0; i<list.length; i++){
                     list[i]['Kp'] = (this.kpiInfo[list[i]['Tid']]?this.kpiInfo[list[i]['Tid']].Kp:0)
                 }
                 
-                for(var Tid in this.kpiInfo) 
+                for(let Tid in this.kpiInfo) 
                 {
                     storeDic[Tid] = this.kpiInfo[Tid].trusteeship;
                 }

@@ -3,6 +3,8 @@ import ItemData from "../../data/ItemData";
 import PlayerSkillItem from "./PlayerSkillItem";
 import IconManager from "../../config/IconManager";
 import StarSkillData from "../../data/StarSkillData";
+import Events from "../../signal/Events";
+import PlayerManage from "./PlayerManage";
 
 /**
  * 显示球员信息 
@@ -12,7 +14,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class PlayerInfoCom extends cc.Component {
-
     //装备数量
     private EQUIP_NUM:number = 6;
     
@@ -63,7 +64,6 @@ export default class PlayerInfoCom extends cc.Component {
             Utility.bindBtnEvent(this.node,'PlayerManage','onUnloadEquipment')
         );
     }
-
     start () {
 
     }
