@@ -14,7 +14,7 @@ import MainData from "../MainData";
 const {ccclass,property} = cc._decorator;
 
 @ccclass
-export default class main_science_dialog extends cc.Component{
+export default class ScienceView extends cc.Component{
     //声明模块
     @property(cc.Node)
     private btn_close = null;
@@ -88,7 +88,7 @@ export default class main_science_dialog extends cc.Component{
         ScienceData.playerEquip = null;
         ScienceData.index = 0;
         this.btn_close.getComponent(cc.Button).clickEvents.push(
-            Utility.bindBtnEvent(this.node,"main_science_dialog","close")
+            Utility.bindBtnEvent(this.node,"ScienceView","close")
         )
         this.navChange(0,false);
         //初始化球员信息
