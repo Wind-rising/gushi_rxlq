@@ -119,7 +119,7 @@ export default class Bag extends cc.Component{
                 this.onGetItems(items);
             })
         }else{
-
+            
         }
     }
     //刷新

@@ -14,8 +14,8 @@ export default class strengthView extends cc.Component {
     @property(cc.Button)
     private btn_next:cc.Button = null;
     @property(cc.Label)
-    private lbl_pageNum:cc.Label = null;
-    
+    private lbl_pageNum:cc.Label = null;  
+     
     start(){
         this.addListener();
         this.init();
@@ -24,7 +24,7 @@ export default class strengthView extends cc.Component {
         this.removeListener();
     }
     private addListener(){
-
+        
     } 
     private removeListener(){
         
