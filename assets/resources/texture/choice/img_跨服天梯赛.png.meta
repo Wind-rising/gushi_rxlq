@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "c8ab0e00-c95f-4750-9690-a450899e817b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_跨服天梯赛": {
+      "ver": "1.0.3",
+      "uuid": "4a174261-bb88-4d10-bd3b-28ffc7fd92e5",
+      "rawTextureUuid": "c8ab0e00-c95f-4750-9690-a450899e817b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 525,
+      "height": 385,
+      "rawWidth": 525,
+      "rawHeight": 385,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

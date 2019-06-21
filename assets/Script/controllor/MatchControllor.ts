@@ -56,6 +56,14 @@ export default class MatchControllor extends Singleton {
         this._matchId = value;
     }
 
+    public showMatchSelect(){
+        Utility.showDialog('match/MatchSelectView');
+    }
+
+    public showNormalMatch(){
+        Utility.showDialog('match/NormalMatchView');
+    }
+
     /**
      * 比赛开始-由赛前对比开始
      * @param matchType 比赛类型
@@ -68,23 +76,6 @@ export default class MatchControllor extends Singleton {
         this._awayId = awayId;
         this._matchType = matchType;
         this._matchId = matchId;
-
-        /*if(_matchType == MatchType.ALLSTAR_MATCH || _matchType == MatchType.NORMAL_MATCH){*/
-        // if(this._matchType == MatchType.LADDER_CROSSSERVER_MATCH)
-        // {
-        //     _matchCompareNew.AwaySid = AwaySid;
-        //     _matchCompareNew.HomeSid = HomeSid;
-        //     _matchCompareNew.MatchId = MatchId;
-        //     _matchCompareNew.showCompare(matchType, awayId, homeId);
-        //     _matchCompareNew.addEventListener(MatchCompareView.START, onStart);
-        // }
-        // else if(_matchType != "-1"){
-        //     _matchCompareNew.showCompare(matchType, awayId, homeId);
-        //     _matchCompareNew.addEventListener(MatchCompareView.START, onStart);
-        // }else{
-        //     _matchCompare.showCompare(matchType, awayId, homeId);
-        //     _matchCompare.addEventListener(MatchCompareView.START, onStart);
-        // }
         Utility.showDialog('match/MatchCompareView');
     }
     

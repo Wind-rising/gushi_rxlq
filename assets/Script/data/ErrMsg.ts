@@ -19,7 +19,7 @@ export default class ErrMsg extends Singleton{
 
     _data:Object = null;
 
-    private URL:string = "Dic_dic_code_chs";
+    private URL:string = "Dic_code_chs";
 
     // LIFE-CYCLE CALLBACKS:
 

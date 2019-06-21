@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "351f90ec-87d2-4c47-a506-813f24d54b60",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_butten挑战2": {
+      "ver": "1.0.3",
+      "uuid": "9d4d62c1-cc7a-48af-9431-92886fd24382",
+      "rawTextureUuid": "351f90ec-87d2-4c47-a506-813f24d54b60",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 99,
+      "height": 28,
+      "rawWidth": 99,
+      "rawHeight": 28,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

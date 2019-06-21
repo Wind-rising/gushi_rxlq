@@ -21,7 +21,7 @@ export default class PlayerListData extends Singleton {
                 "n":URLConfig.ManagerPlayer,
                 "i":{
                     Mid:"",
-                    Tid:playerList[i].Tid
+                    Tid:playerList[i]['Tid']
                 }
             })
         }
@@ -29,8 +29,8 @@ export default class PlayerListData extends Singleton {
         let data = await HttpManager.getInstance().request(vo,null,this);
         this._data = [];
         for(let i = 0;i<10;i++){
-            for(let j = 0;j<data.data.length;j++){
-                this._data.push(data.data[j])
+            for(let j = 0;j<data['data'].length;j++){
+                this._data.push(data['data'][j])
             }
         }
         return this._data;

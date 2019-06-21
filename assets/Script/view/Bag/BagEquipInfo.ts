@@ -77,7 +77,7 @@ export default class BagEquipInfo extends cc.Component{
                 if(desArr[1]){
                     desArr = (desArr[1]+"").split("<br/>");
                 }
-                this.signUI.string = `<color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c>\n<color=${ItemData.getCardColor(5-color)}>${desArr[1]}</c>`
+                this.signUI.string = `<color=${ItemData.getInstance().getCardColor(5-color)}>${itemInfo['Name']}</c>\n<color=${ItemData.getInstance().getCardColor(5-color)}>${desArr[1]}</c>`
             }
         }
         //

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "b4a79118-2098-4b00-b442-804051e4c71d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_font选择挑战对手": {
+      "ver": "1.0.3",
+      "uuid": "d204b709-e8d3-4076-bc54-befeb40e2497",
+      "rawTextureUuid": "b4a79118-2098-4b00-b442-804051e4c71d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 213,
+      "height": 30,
+      "rawWidth": 213,
+      "rawHeight": 30,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "55b127c4-df5c-4d9f-a719-2f21bcd8fb1c",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_竞技场": {
+      "ver": "1.0.3",
+      "uuid": "926664a4-ddf8-4350-9024-3509afae04cd",
+      "rawTextureUuid": "55b127c4-df5c-4d9f-a719-2f21bcd8fb1c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 538,
+      "height": 392,
+      "rawWidth": 538,
+      "rawHeight": 392,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

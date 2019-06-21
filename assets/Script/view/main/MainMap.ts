@@ -1,5 +1,6 @@
 import Events from "../../signal/Events";
 import EventConst from "../../data/EventConst";
+import MatchControllor from "../../controllor/MatchControllor";
 
 /**
  * 主场景地图
@@ -9,7 +10,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class MainMap extends cc.Component {
 
-    @property
     EventListenerTag: string = 'MainMapListener';
 
     // LIFE-CYCLE CALLBACKS:
@@ -32,4 +32,8 @@ export default class MainMap extends cc.Component {
     }
 
     // update (dt) {}
+
+    onClickMatch(e:cc.Event.EventTouch){
+        MatchControllor.getInstance().showMatchSelect();
+    }
 }
