@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5616197183098592,
-      "y": 0.5616197183098592,
+      "x": 0.868838028169014,
+      "y": 0.868838028169014,
       "z": 1
     },
     "_quat": {
@@ -1405,11 +1405,11 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 2
+      "__id__": 5
     },
     "component": "",
-    "_componentId": "583b05i74xI6YiUP/q1m1cQ",
-    "handler": "testEnterMatch",
+    "_componentId": "e0de2w/EXNFpJInQwuKFD9h",
+    "handler": "onClickMatch",
     "customEventData": ""
   },
   {
@@ -1476,7 +1476,6 @@
       "__id__": 5
     },
     "_enabled": true,
-    "EventListenerTag": "MainMapListener",
     "_id": "17cz3EIzxPkpMxifNFv7Ho"
   },
   {
@@ -3290,7 +3289,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 39.37,
+      "width": 41,
       "height": 12
     },
     "_anchorPoint": {
@@ -4363,7 +4362,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.81,
+      "width": 30,
       "height": 12
     },
     "_anchorPoint": {
@@ -4536,7 +4535,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27.81,
+      "width": 30,
       "height": 12
     },
     "_anchorPoint": {

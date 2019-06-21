@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "0a3c2d75-f562-4299-96fc-42fe16eeedc8",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "img_NBA联赛": {
+      "ver": "1.0.3",
+      "uuid": "4bcc7e89-4f23-4c32-b415-abff4ff08dfe",
+      "rawTextureUuid": "0a3c2d75-f562-4299-96fc-42fe16eeedc8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 525,
+      "height": 375,
+      "rawWidth": 525,
+      "rawHeight": 375,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -116,16 +116,16 @@ export default class BagItem extends cc.Component{
 					//info = EquipData.getRingPro(data.Ring.Type);
 				}else{
 					if(info){
-						this.isOutBag  = (parseInt(info.UseFlag) != 0);
-						if(info.Type){
-							this._itemType = info.Type;
+						this.isOutBag  = (parseInt(info['UseFlag']) != 0);
+						if(info['Type']){
+							this._itemType = info['Type'];
 						}
-						this.itemName = info.Name+"";
-						this.Image = info.Image;
-						this.Desc = info.Desc;
+						this.itemName = info['Name']+"";
+						this.Image = info['Image'];
+						this.Desc = info['Desc'];
 						if(this.ItemType == BagItem.TYPE_PLAYER){
-							this.playPos = info.Position
-							this.CardLevel = info.CardLevel;
+							this.playPos = info['Position']
+							this.CardLevel = info['CardLevel'];
 						}else if(this.ItemType == BagItem.TYPE_SIGNER){
 							// if(info.Effect){
 							// 	var tempArr:Array = String(info.Effect).split(";");
